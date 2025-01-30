@@ -18,3 +18,7 @@
 * Day 22 part 2
 * Day 24 part 2
 * Day 25 part 2
+
+### Running
+
+`$env:PYTHONPATH="src"; pipenv run pytest -s test`
