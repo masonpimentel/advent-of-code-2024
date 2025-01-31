@@ -39,6 +39,7 @@ class Day17:
 
 
     def solve(self):
+        print('')
         with open(
             join('src', 'd17', 'input.txt'), encoding="utf-8"
         ) as f:

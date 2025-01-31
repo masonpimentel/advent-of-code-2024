@@ -4,6 +4,7 @@ from os.path import join
 
 class Day01:
     def solve(self):
+        print('')
         print(f'Runs in ~0.009 seconds')
 
         with open(
