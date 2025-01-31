@@ -1,9 +1,11 @@
 from d01.d01 import Day01
+from d17.d17 import Day17
 
 import time
 
 EXPECTED_RESULTS = {
-    '01': ('1319616', '27267728')
+    "01": ("1319616", "27267728"),
+    "17": ("4,6,1,4,2,1,3,1,6", 'unknown')
 }
 
 # Expected to pass a class with a .solve method that returns a tuple of strings
@@ -22,3 +24,7 @@ def runner(d, expected: tuple[str, str]):
 def test_Day01():
     d = Day01()
     runner(d, EXPECTED_RESULTS['01'])
+
+def test_Day17():
+    d = Day17()
+    runner(d, EXPECTED_RESULTS['17'])
