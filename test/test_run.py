@@ -2,6 +2,8 @@ from d01.d01 import Day01
 from d02.d02 import Day02
 from d03.d03 import Day03
 from d04.d04 import Day04
+from d05.d05 import Day05
+from d06.d06 import Day06
 from d17.d17 import Day17
 
 import time
@@ -36,6 +38,7 @@ EXPECTED_RESULTS = {
 
 # Expected to pass a class with a .solve method that returns a tuple of strings
 def runner(d, expected: tuple[str, str]):
+    print()
     start = time.perf_counter()
 
     res = d.solve()
@@ -62,6 +65,14 @@ def test_Day03():
 def test_Day04():
     d = Day04()
     runner(d, EXPECTED_RESULTS['04'])
+
+def test_Day05():
+    d = Day05()
+    runner(d, EXPECTED_RESULTS['05'])
+
+# def test_Day06():
+#     d = Day06()
+#     runner(d, EXPECTED_RESULTS['06'])
 
 def test_Day17():
     d = Day17()

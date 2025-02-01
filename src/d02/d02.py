@@ -4,7 +4,6 @@ from os.path import join
 
 class Day02:
     def solve(self):
-        print('')
         print(f'Runs in ~0.012 seconds')
 
         def check_line(vals: list[int]) -> bool:
