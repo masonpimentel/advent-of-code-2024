@@ -6,6 +6,8 @@ from d05.d05 import Day05
 from d06.d06 import Day06
 from d07.d07 import Day07
 from d08.d08 import Day08
+from d09.d09 import Day09
+from d10.d10 import Day10
 from d17.d17 import Day17
 
 import time
@@ -39,8 +41,9 @@ EXPECTED_RESULTS = {
 }
 
 # Expected to pass a class with a .solve method that returns a tuple of strings
-def runner(d, expected: tuple[str, str]):
+def runner(d, expected: tuple[str, str], day_str: str):
     print()
+    print(f'Running Day {day_str}')
     start = time.perf_counter()
 
     res = d.solve()
@@ -54,36 +57,55 @@ def runner(d, expected: tuple[str, str]):
 
 def test_Day01():
     d = Day01()
-    runner(d, EXPECTED_RESULTS['01'])
+    s = '01'
+    runner(d, EXPECTED_RESULTS[s], s)
 
 def test_Day02():
     d = Day02()
-    runner(d, EXPECTED_RESULTS['02'])
+    s = '02'
+    runner(d, EXPECTED_RESULTS[s], s)
 
 def test_Day03():
     d = Day03()
-    runner(d, EXPECTED_RESULTS['03'])
+    s = '03'
+    runner(d, EXPECTED_RESULTS[s], s)
 
 def test_Day04():
     d = Day04()
-    runner(d, EXPECTED_RESULTS['04'])
+    s = '04'
+    runner(d, EXPECTED_RESULTS[s], s)
 
 def test_Day05():
     d = Day05()
-    runner(d, EXPECTED_RESULTS['05'])
+    s = '05'
+    runner(d, EXPECTED_RESULTS[s], s)
 
 # def test_Day06():
 #     d = Day06()
-#     runner(d, EXPECTED_RESULTS['06'])
+    # s = '06'
+    # runner(d, EXPECTED_RESULTS[s], s)
 
 def test_Day07():
     d = Day07()
-    runner(d, EXPECTED_RESULTS['07'])
+    s = '07'
+    runner(d, EXPECTED_RESULTS[s], s)
 
 def test_Day08():
     d = Day08()
-    runner(d, EXPECTED_RESULTS['08'])
+    s = '08'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+# def test_Day09():
+#     d = Day09()
+#     s = '09'
+#     runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day10():
+    d = Day10()
+    s = '10'
+    runner(d, EXPECTED_RESULTS[s], s)
 
 def test_Day17():
     d = Day17()
-    runner(d, EXPECTED_RESULTS['17'])
+    s = '17'
+    runner(d, EXPECTED_RESULTS[s], s)
