@@ -15,29 +15,29 @@ import time
 EXPECTED_RESULTS = {
     "01": ("1319616", "27267728"),
     "02": ("213", "285"),
-    "03": ("unknown", "unknown"),
-    "04": ("unknown", "unknown"),
-    "05": ("unknown", "unknown"),
-    "06": ("unknown", "unknown"),
-    "07": ("unknown", "unknown"),
-    "08": ("unknown", "unknown"),
-    "09": ("unknown", "unknown"),
-    "10": ("unknown", "unknown"),
-    "11": ("unknown", "unknown"),
-    "12": ("unknown", "unknown"),
-    "13": ("unknown", "unknown"),
-    "14": ("unknown", "unknown"),
-    "15": ("unknown", "unknown"),
-    "16": ("unknown", "unknown"),
+    "03": ("153469856", "77055967"),
+    "04": ("2543", "1930"),
+    "05": ("7074", "4828"),
+    "06": ("5305", "2143"),
+    "07": ("7885693428401", "348360680516005"),
+    "08": ("311", "1115"),
+    "09": ("6367087064415", "6390781891880"),
+    "10": ("617", "1477"),
+    "11": ("204022", "241651071960597"),
+    "12": ("1437300", "849332"),
+    "13": ("26599", "106228669504887"),
+    "14": ("211692000", "6587"),
+    "15": ("1514353", "1533076"),
+    "16": ("1533076", "583"),
     "17": ("4,6,1,4,2,1,3,1,6", 'unknown'),
-    "18": ("unknown", "unknown"),
-    "19": ("unknown", "unknown"),
-    "20": ("unknown", "unknown"),
+    "18": ("324", "46,23"),
+    "19": ("283", "615388132411142"),
+    "20": ("1426", "1000697"),
     "21": ("unknown", "unknown"),
     "22": ("unknown", "unknown"),
-    "23": ("unknown", "unknown"),
-    "24": ("unknown", "unknown"),
-    "25": ("unknown", "unknown"),
+    "23": ("1476", "ca,dw,fo,if,ji,kg,ks,oe,ov,sb,ud,vr,xr"),
+    "24": ("57632654722854", "unknown"),
+    "25": ("3223", "unknown"),
 }
 
 # Expected to pass a class with a .solve method that returns a tuple of strings
@@ -80,10 +80,10 @@ def test_Day05():
     s = '05'
     runner(d, EXPECTED_RESULTS[s], s)
 
-# def test_Day06():
-#     d = Day06()
-    # s = '06'
-    # runner(d, EXPECTED_RESULTS[s], s)
+def test_Day06():
+    d = Day06()
+    s = '06'
+    runner(d, EXPECTED_RESULTS[s], s)
 
 def test_Day07():
     d = Day07()
@@ -95,10 +95,10 @@ def test_Day08():
     s = '08'
     runner(d, EXPECTED_RESULTS[s], s)
 
-# def test_Day09():
-#     d = Day09()
-#     s = '09'
-#     runner(d, EXPECTED_RESULTS[s], s)
+def test_Day09():
+    d = Day09()
+    s = '09'
+    runner(d, EXPECTED_RESULTS[s], s)
 
 def test_Day10():
     d = Day10()
