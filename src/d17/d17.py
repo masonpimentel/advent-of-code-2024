@@ -11,7 +11,7 @@ class Day17:
         self.b = 0
         self.c = 0
         self.instructions = []
-        self.output = []
+        self.num_instructions = 0
     
     def combo_operand(self, combo: int) -> int:
         match combo:
@@ -36,75 +36,81 @@ class Day17:
                 self.b = res
             case 'C':
                 self.c = res
+    
+    def run_program(self, a: int, b: int, c: int) -> str:
+        self.a = a
+        self.b = b
+        self.c = c
+        
+        ins_ptr = 0
+        output = []
+        
+        while ins_ptr < self.num_instructions:
+            if ins_ptr == self.num_instructions - 1:
+                print(f'Problem: cannot get operand because ins_ptr is at last instruction')
+                return ''
 
+            # print(f'self.a {self.a} self.b {self.b} self.c {self.c} ins_ptr {ins_ptr} output {self.output}')
+
+            instruction = self.instructions[ins_ptr]
+            operand = self.instructions[ins_ptr + 1]
+            # print(f'instruction {instruction} operand {operand}')
+            new_ins_ptr = ins_ptr + 2
+
+            match instruction:
+                case 0:
+                    self.dv(operand, 'A')
+                case 6:
+                    self.dv(operand, 'B')
+                case 7:
+                    self.dv(operand, 'C')
+                case 1:
+                    self.b = self.b ^ operand
+                case 2:
+                    self.b = self.combo_operand(operand) % 8
+                case 3:
+                    # is this right??
+                    # opcode 3 | jnz
+                    # do nothing if register A is 0
+                    #  increment instruction pointer by 2 as usual
+                    # set instruction pointer to literal value
+                    #  dont increment instruction pointer
+                    if self.a != 0:
+                        new_ins_ptr = operand
+                case 4:
+                    self.b = self.b ^ self.c
+                case 5:
+                    output.append(self.combo_operand(operand) % 8)
+            
+            ins_ptr = new_ins_ptr
+
+        return ",".join(list(map(str, output)))
 
     def solve(self):
         with open(
             join('src', 'd17', 'input.txt'), encoding="utf-8"
         ) as f:
             line = f.readline()
-
-            self.a = int(search(r'\d+', line).group())
-
-            line = f.readline()
-
-            self.b = int(search(r'\d+', line).group())
+            orig_a = int(search(r'\d+', line).group())
 
             line = f.readline()
+            orig_b = int(search(r'\d+', line).group())
 
-            self.c = int(search(r'\d+', line).group())
+            line = f.readline()
+            orig_c = int(search(r'\d+', line).group())
 
             line = f.readline()
             line = f.readline()
 
             self.instructions = list(map(lambda v: int(v), findall(r'\d+', line)))
-
-            num_instructions = len(self.instructions)
+            self.num_instructions = len(self.instructions)
 
 
 
             # print(f'self.a {self.a} self.b {self.b} self.c {self.c} self.instructions {self.instructions}')
 
 
-            ins_ptr = 0
-            while ins_ptr < num_instructions:
-                if ins_ptr == num_instructions - 1:
-                    print(f'Problem: cannot get operand because ins_ptr is at last instruction')
-                    break
 
-                # print(f'self.a {self.a} self.b {self.b} self.c {self.c} ins_ptr {ins_ptr} output {self.output}')
-
-                instruction = self.instructions[ins_ptr]
-                operand = self.instructions[ins_ptr + 1]
-                # print(f'instruction {instruction} operand {operand}')
-                new_ins_ptr = ins_ptr + 2
-
-                match instruction:
-                    case 0:
-                        self.dv(operand, 'A')
-                    case 6:
-                        self.dv(operand, 'B')
-                    case 7:
-                        self.dv(operand, 'C')
-                    case 1:
-                        self.b = self.b ^ operand
-                    case 2:
-                        self.b = self.combo_operand(operand) % 8
-                    case 3:
-                        # is this right??
-                        # opcode 3 | jnz
-                        # do nothing if register A is 0
-                        #  increment instruction pointer by 2 as usual
-                        # set instruction pointer to literal value
-                        #  dont increment instruction pointer
-                        if self.a != 0:
-                            new_ins_ptr = operand
-                    case 4:
-                        self.b = self.b ^ self.c
-                    case 5:
-                        self.output.append(self.combo_operand(operand) % 8)
-                
-                ins_ptr = new_ins_ptr
             
             # print(f'self.a {self.a} self.b {self.b} self.c {self.c} ins_ptr {ins_ptr}')
                     
@@ -113,7 +119,11 @@ class Day17:
             # print(f'output ---')
             # print(self.output)
 
-            pt_1_res = ",".join(list(map(str, self.output)))
+            pt_1_res = self.run_program(orig_a, orig_b, orig_c)
+
+
+
+
             print(f'pt_1_res: {pt_1_res}')
             print(f'pt_2_res: TODO')
         
