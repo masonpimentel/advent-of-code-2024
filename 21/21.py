@@ -160,35 +160,28 @@ with open(
         line = f.readline()
 
 for code in codes:
-    seq = 0
+    seq = ''
 
     for c in code:
-        keypad_res = direction_to_keypad(key_row, key_col, c, set())
-        dir_2_seq, key_row, key_col = keypad_res[0], keypad_res[2], keypad_res[3]
+        dir_2_seq, _, key_row, key_col = direction_to_keypad(key_row, key_col, c, set())
 
         # print(f'keypad_res {keypad_res}')
 
         for dst_2 in dir_2_seq:
-            dir_2_res = direction_to_direction(dir_2_row, dir_2_col, dst_2, set())
-
             # print(f'dir_2_res {dir_2_res} dst {dst_2}, start row {dir_2_row}, start col {dir_2_col}')
 
-            dir_1_seq, dir_2_row, dir_2_col = dir_2_res[0], dir_2_res[2], dir_2_res[3]
-
-            
+            dir_1_seq, _, dir_2_row, dir_2_col = direction_to_direction(dir_2_row, dir_2_col, dst_2, set())
 
             for dst_1 in dir_1_seq:
-                dir_1_res = human_to_direction(dir_1_row, dir_1_col, dst_1, set())
+                human_seq, _, dir_1_row, dir_1_col = human_to_direction(dir_1_row, dir_1_col, dst_1, set())
 
-                # print(f'dir_1_res {dir_1_res} dst {dst_1}, start row {dir_1_row}, start col {dir_1_col}')
+                seq += human_seq
 
-                human_seq, dir_1_row, dir_1_col = dir_1_res[0], dir_1_res[2], dir_1_res[3]
+    # <vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A
 
-                seq += dir_1_res[1]
-
-    # print(code)
-    # print(seq)
-    # print(len(seq))
+    print(code)
+    print(seq)
+    print(len(seq))
     print(f'pt_1_res: TODO')
     print(f'pt_2_res: TODO')
 
