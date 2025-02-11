@@ -204,38 +204,46 @@ dp: dict[str, dict[str, int]] = {}
 dir_pad_dp: dict[int, dict[str, dict[str, tuple[str, int]]]] = {}
 dir_pad_same_level_dp: dict[str, dict[str, list[tuple[str, int]]]] = {}
 
-
-with open(
-    'input.txt', encoding="utf-8"
-) as f:
-    line = f.readline()
-
-
-    while line:
-        code = [c for c in line]
-
-        codes.append(code[:-1] if code[-1] == '\n' else code)
-
+def solve(direction_keypad_count: int) -> str:
+    with open(
+        'input.txt', encoding="utf-8"
+    ) as f:
         line = f.readline()
 
 
-human_level = 3
-for code in codes:
-    # s = ''
-    l = 0
-    for i in range(len(code)):
-        if i == 0:
-            l += number_pad_press('A', code[i], human_level)
-        else:
-            l += number_pad_press(code[i - 1], code[i], human_level)
+        while line:
+            code = [c for c in line]
 
-    # print(f'code {code} s {s} len(s) {len(s)}')
-    print(f'code {code} l {l}')
-    # print(f'dp ---')
-    # print(dp)
+            codes.append(code[:-1] if code[-1] == '\n' else code)
+
+            line = f.readline()
 
 
+    res = 0
+    for code in codes:
+        # s = ''
+        l = 0
+        for i in range(len(code)):
+            if i == 0:
+                l += number_pad_press('A', code[i], direction_keypad_count)
+            else:
+                l += number_pad_press(code[i - 1], code[i], direction_keypad_count)
 
+        # print(f'code {code} s {s} len(s) {len(s)}')
+        print(f'code {code} l {l}')
+
+        numeric_of_code = int(''.join(code[:-1]))
+        res += (l * numeric_of_code)
+        # print(f'dp ---')
+        # print(dp)
+    
+    return str(res)
+
+
+pt_1_res = solve(3)
+
+print(f'pt_1_res: {pt_1_res}')
+print(f'pt_2_res: {'TODO'}')
 
 
         
