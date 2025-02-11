@@ -1,55 +1,5 @@
 from sys import maxsize
 
-DIRECTION_PAD_ROWS = 2
-DIRECTION_PAD_COLS = 3
-
-direction_pad = [
-    ['X', '^', 'A'],
-    ['<', 'v', '>']
-]
-
-human_to_direction_dp = {}
-
-def human_to_direction(row: int, col: int, dst: str, seen: set[str]) -> tuple[str, int, int, int]:
-    if row < 0 or row >= DIRECTION_PAD_ROWS or col < 0 or col >= DIRECTION_PAD_COLS:
-        return ('', maxsize, row, col)
-    
-    seen_tpl = (row, col)
-    if seen_tpl in seen:
-        return ('', maxsize, row, col)
-    
-    if direction_pad[row][col] == 'X':
-        return ('', maxsize, row, col)
-
-    if direction_pad[row][col] == dst:
-        return ('A', 1, row, col)
-    
-    best_distance = maxsize
-    seq = ''
-    res_row = -1
-    res_col = -1
-
-    seen.add(seen_tpl)
-    for row_diff, col_diff, input in [(-1, 0, '^'), (0, 1, '>'), (1, 0, 'v'), (0, -1, '<')]:
-        check_row = row + row_diff
-        check_col = col + col_diff
-        rec_res = human_to_direction(check_row, check_col, dst, seen)
-
-        this_seq = input + rec_res[0]
-        this_dis = 1 + rec_res[1]
-
-        if this_dis < best_distance:
-            best_distance = this_dis
-            seq = this_seq
-            res_row = rec_res[2]
-            res_col = rec_res[3]
-    
-    seen.remove(seen_tpl)
-    return (seq, best_distance, res_row, res_col)
-
-NUMBER_PAD_ROWS = 4
-NUMBER_PAD_COLS = 3
-
 number_pad = [
     ['7', '8', '9'],
     ['4', '5', '6'],
@@ -57,94 +7,203 @@ number_pad = [
     ['X', '0', 'A'],
 ]
 
-direction_to_keypad_dp = {}
+NUMBER_PAD_ROWS = len(number_pad)
+NUMBER_PAD_COLS = len(number_pad[0])
 
-def direction_to_keypad(row: int, col: int, dst: str, seen: set[str]) -> tuple[str, int, int, int]:
-    if row < 0 or row >= NUMBER_PAD_ROWS or col < 0 or col >= NUMBER_PAD_COLS:
-        return ('', maxsize, row, col)
-    
-    seen_tpl = (row, col)
-    if seen_tpl in seen:
-        return ('', maxsize, row, col)
-    
-    if number_pad[row][col] == 'X':
-        return ('', maxsize, row, col)
+row_col_from_num_pad: dict[str, tuple[int, int]] = {
+    number_pad[row][col]: (row, col)
+    for row in range(NUMBER_PAD_ROWS)
+    for col in range(NUMBER_PAD_COLS)
+}
 
-    if number_pad[row][col] == dst:
-        return ('A', 1, row, col)
-    
+direction_pad = [
+    ['X', '^', 'A'],
+    ['<', 'v', '>']
+]
+
+DIRECTION_PAD_ROWS = len(direction_pad)
+DIRECTION_PAD_COLS = len(direction_pad[0])
+
+row_col_from_dir_pad: dict[str, tuple[int, int]] = {
+    direction_pad[row][col]: (row, col)
+    for row in range(DIRECTION_PAD_ROWS)
+    for col in range(DIRECTION_PAD_COLS)
+}
+
+def dir_pad_same_level(src: str, dst: str, seen: set[str]) -> list[tuple[str, int]]:
+    if src in seen or src == 'X':
+        return [('', maxsize)]
+
+    if src == dst:
+        return [('A', 1)]
+
+
+    seen.add(src)
+
+    src_row, src_col = row_col_from_dir_pad[src]
+
+    possible_this_level: list[tuple[str, int]] = []
+
+    for row_diff, col_diff, input in [(-1, 0, '^'), (0, 1, '>'), (1, 0, 'v'), (0, -1, '<')]:
+        check_row = src_row + row_diff
+        check_col = src_col + col_diff
+
+        if check_row < 0 or check_row >= DIRECTION_PAD_ROWS or check_col < 0 or check_col >= DIRECTION_PAD_COLS:
+            continue
+
+        this_move_dst = direction_pad[check_row][check_col]
+
+        this_layer_res = dir_pad_same_level(this_move_dst, dst, seen)
+
+        # print(f'src {src} dst {dst} this_layer_res {this_layer_res}')
+
+        for this_layer_seq, this_layer_dist in this_layer_res:
+            if this_layer_dist < maxsize:
+                possible_this_level.append((input + this_layer_seq, 1 + this_layer_dist))
+
+    seen.remove(src)
+
+    return possible_this_level
+
+def dir_pad_all_levels(src: str, dst: str, level: int, human_level: int) -> tuple[str, int]:
+    if level not in dir_pad_dp:
+        dir_pad_dp[level] = {}
+    if src not in dir_pad_dp[level]:
+        dir_pad_dp[level][src] = {}
+    if dst in dir_pad_dp[level][src]:
+        return dir_pad_dp[level][src][dst]
+
+    if level == human_level:
+        return (dst, 1)
+
+    if src == 'X':
+        return ('', maxsize)
+
+    if src == dst:
+        return ('A', 1)
+
+    if src not in dir_pad_same_level_dp:
+        dir_pad_same_level_dp[src] = {}
+    if dst in dir_pad_same_level_dp[src]:
+        possible_this_level = dir_pad_same_level_dp[src][dst]
+    else:
+        possible_this_level = dir_pad_same_level(src, dst, set())
+        dir_pad_same_level_dp[src][dst] = possible_this_level
+
     best_distance = maxsize
     seq = ''
-    res_row = -1
-    res_col = -1
 
-    seen.add(seen_tpl)
+    # print(f'level {level} possible_this_level {possible_this_level}')
+
+    for this_layer_seq, _ in possible_this_level:
+        lower_layers_seq = ''
+        lower_layers_dist = 0
+
+        for i in range(len(this_layer_seq)):
+            lower_dst = this_layer_seq[i]
+            lower_level = level + 1
+
+            if i == 0:
+                lower_src = 'A'
+                lower_layers_res = dir_pad_all_levels('A', this_layer_seq[i], lower_level, human_level)
+            else:
+                lower_src = this_layer_seq[i - 1]
+
+            if lower_level in dir_pad_dp and lower_src in dir_pad_dp[lower_level] and lower_dst in dir_pad_dp[lower_level][lower_src]:
+                lower_layers_res = dir_pad_dp[lower_level][lower_src][lower_dst]
+            else:
+                lower_layers_res = dir_pad_all_levels(lower_src, lower_dst, lower_level, human_level)
+        
+            lower_layers_seq, lower_layers_dist = '', lower_layers_dist + lower_layers_res[1]
+        
+        # print(f'level {level} this_layer_seq {this_layer_seq} lower_layers_seq {lower_layers_seq} lower_layers_dist {lower_layers_dist}')
+
+        if lower_layers_dist < best_distance:
+            best_distance = lower_layers_dist
+            seq = lower_layers_seq
+
+    r = (seq, best_distance)
+    dir_pad_dp[level][src][dst] = r
+    # print(f'level {level} src {src} dst {dst}')
+    return r
+
+
+def number_pad_possible(src: str, dst: str, seen: set[str]) -> list[tuple[str, int]]:
+    if src in seen or src == 'X':
+        return [('', maxsize)]
+
+    if src == dst:
+        return [('A', 1)]
+
+    seen.add(src)
+
+    src_row, src_col = row_col_from_num_pad[src]
+
+    possible_this_level: list[tuple[str, int]] = []
+
     for row_diff, col_diff, input in [(-1, 0, '^'), (0, 1, '>'), (1, 0, 'v'), (0, -1, '<')]:
-        check_row = row + row_diff
-        check_col = col + col_diff
-        rec_res = direction_to_keypad(check_row, check_col, dst, seen)
+        check_row = src_row + row_diff
+        check_col = src_col + col_diff
 
-        this_seq = input + rec_res[0]
-        this_dis = 1 + rec_res[1]
+        if check_row < 0 or check_row >= NUMBER_PAD_ROWS or check_col < 0 or check_col >= NUMBER_PAD_COLS:
+            continue
 
-        if this_dis < best_distance:
-            best_distance = this_dis
-            seq = this_seq
-            res_row = rec_res[2]
-            res_col = rec_res[3]
+        this_move_dst = number_pad[check_row][check_col]
+
+        this_layer_res = number_pad_possible(this_move_dst, dst, seen)
+
+        for this_layer_seq, this_layer_dist in this_layer_res:
+            if this_layer_dist < maxsize:
+                possible_this_level.append((input + this_layer_seq, 1 + this_layer_dist))
+
+    seen.remove(src)
+
+    return possible_this_level
+
+
+def number_pad_press(src: str, dst: str, levels: int) -> int:
+    if src not in dp:
+        dp[src] = {}
+    if dst in dp[src]:
+        # print('cached num pad src {src} dst {dst}')
+        return dp[src][dst]
     
-    seen.remove(seen_tpl)
-    return (seq, best_distance, res_row, res_col)
+    possible_ways = number_pad_possible(src, dst, set())
 
-direction_to_direction_dp = {}
-
-def direction_to_direction(row: int, col: int, dst: str, seen: set[str]) -> tuple[str, int, int, int]:
-    if row < 0 or row >= DIRECTION_PAD_ROWS or col < 0 or col >= DIRECTION_PAD_COLS:
-        return ('', maxsize, row, col)
-    
-    seen_tpl = (row, col)
-    if seen_tpl in seen:
-        return ('', maxsize, row, col)
-    
-    if direction_pad[row][col] == 'X':
-        return ('', maxsize, row, col)
-
-    if direction_pad[row][col] == dst:
-        return ('A', 1, row, col)
-    
     best_distance = maxsize
     seq = ''
-    res_row = -1
-    res_col = -1
 
-    seen.add(seen_tpl)
-    for row_diff, col_diff, input in [(-1, 0, '^'), (0, 1, '>'), (1, 0, 'v'), (0, -1, '<')]:
-        check_row = row + row_diff
-        check_col = col + col_diff
-        rec_res = direction_to_direction(check_row, check_col, dst, seen)
+    for this_layer_seq, _ in possible_ways:
+        lower_layers_seq = ''
+        lower_layers_dist = 0
 
-        this_seq = input + rec_res[0]
-        this_dis = 1 + rec_res[1]
+        for i in range(len(this_layer_seq)):
+            lower_dst = this_layer_seq[i]
+            if i == 0:
+                lower_src = 'A'
+            else:
+                lower_src = this_layer_seq[i - 1]
+                
+            if 1 in dir_pad_dp and lower_src in dir_pad_dp[1] and lower_dst in dir_pad_dp[1][lower_src]:
+                lower_layers_res = dir_pad_dp[1][lower_src][lower_dst]
+            else:
+                lower_layers_res = dir_pad_all_levels(lower_src, lower_dst, 1, levels)
+        
+            lower_layers_seq, lower_layers_dist = lower_layers_seq + lower_layers_res[0], lower_layers_dist + lower_layers_res[1]
 
-        if this_dis < best_distance:
-            best_distance = this_dis
-            seq = this_seq
-            res_row = rec_res[2]
-            res_col = rec_res[3]
-    
-    seen.remove(seen_tpl)
-    return (seq, best_distance, res_row, res_col)
-
-dir_1_row = 0
-dir_1_col = 2
-dir_2_row = 0
-dir_2_col = 2
-key_row = 3
-key_col = 2
-
+        if lower_layers_dist < best_distance:
+            best_distance = lower_layers_dist
+            seq = lower_layers_seq
+        
+    dp[src][dst] = best_distance
+    return best_distance
 
 
 codes: list[str] = []
+dp: dict[str, dict[str, int]] = {}
+dir_pad_dp: dict[int, dict[str, dict[str, tuple[str, int]]]] = {}
+dir_pad_same_level_dp: dict[str, dict[str, list[tuple[str, int]]]] = {}
+
 
 with open(
     'input.txt', encoding="utf-8"
@@ -159,31 +218,24 @@ with open(
 
         line = f.readline()
 
+
+human_level = 3
 for code in codes:
-    seq = ''
+    # s = ''
+    l = 0
+    for i in range(len(code)):
+        if i == 0:
+            l += number_pad_press('A', code[i], human_level)
+        else:
+            l += number_pad_press(code[i - 1], code[i], human_level)
 
-    for c in code:
-        dir_2_seq, _, key_row, key_col = direction_to_keypad(key_row, key_col, c, set())
+    # print(f'code {code} s {s} len(s) {len(s)}')
+    print(f'code {code} l {l}')
+    # print(f'dp ---')
+    # print(dp)
 
-        # print(f'keypad_res {keypad_res}')
 
-        for dst_2 in dir_2_seq:
-            # print(f'dir_2_res {dir_2_res} dst {dst_2}, start row {dir_2_row}, start col {dir_2_col}')
 
-            dir_1_seq, _, dir_2_row, dir_2_col = direction_to_direction(dir_2_row, dir_2_col, dst_2, set())
-
-            for dst_1 in dir_1_seq:
-                human_seq, _, dir_1_row, dir_1_col = human_to_direction(dir_1_row, dir_1_col, dst_1, set())
-
-                seq += human_seq
-
-    # <vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A
-
-    print(code)
-    print(seq)
-    print(len(seq))
-    print(f'pt_1_res: TODO')
-    print(f'pt_2_res: TODO')
 
 
         
