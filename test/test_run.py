@@ -10,6 +10,8 @@ from d09.d09 import Day09
 from d10.d10 import Day10
 from d11.d11 import Day11
 from d12.d12 import Day12
+from d13.d13 import Day13
+from d14.d14 import Day14
 from d17.d17 import Day17
 
 import time
@@ -115,6 +117,16 @@ def test_Day11():
 def test_Day12():
     d = Day12()
     s = '12'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day13():
+    d = Day13()
+    s = '13'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day14():
+    d = Day14()
+    s = '14'
     runner(d, EXPECTED_RESULTS[s], s)
 
 def test_Day17():
