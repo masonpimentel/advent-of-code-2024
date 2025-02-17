@@ -1,4 +1,4 @@
-print(f'Runs in ~5.748 seconds')
+
 
 from os.path import join
 
@@ -8,6 +8,7 @@ class Day07:
         self.pt_2_res = ''
 
     def solve(self):
+        print(f'Runs in ~5.748 seconds')
         with open(
             join('src', 'd07', 'input.txt'), encoding="utf-8"
         ) as f:
