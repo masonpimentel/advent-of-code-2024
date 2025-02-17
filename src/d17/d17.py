@@ -3,6 +3,8 @@ from re import search, findall
 
 from typing import Literal
 
+from sys import maxsize
+
 from os.path import join
 
 class Day17:
@@ -11,7 +13,7 @@ class Day17:
         self.b = 0
         self.c = 0
         self.instructions = []
-        self.output = []
+        self.num_instructions = 0
     
     def combo_operand(self, combo: int) -> int:
         match combo:
@@ -37,88 +39,108 @@ class Day17:
             case 'C':
                 self.c = res
 
+    def get_output_str(self, output_arr: list[int]) -> str:
+        return ",".join(list(map(str, output_arr)))
+    
+    def run_program(self, a: int, b: int, c: int) -> list[str]:
+        self.a = a
+        self.b = b
+        self.c = c
+        
+        ins_ptr = 0
+        output = []
+        
+        while ins_ptr < self.num_instructions:
+            if ins_ptr == self.num_instructions - 1:
+                print(f'Problem: cannot get operand because ins_ptr is at last instruction')
+                return ''
+
+            # print(f'self.a {self.a} self.b {self.b} self.c {self.c} ins_ptr {ins_ptr} output {self.output}')
+
+            instruction = self.instructions[ins_ptr]
+            operand = self.instructions[ins_ptr + 1]
+            # print(f'instruction {instruction} operand {operand}')
+            new_ins_ptr = ins_ptr + 2
+
+            match instruction:
+                case 0:
+                    self.dv(operand, 'A')
+                case 6:
+                    self.dv(operand, 'B')
+                case 7:
+                    self.dv(operand, 'C')
+                case 1:
+                    self.b = self.b ^ operand
+                case 2:
+                    self.b = self.combo_operand(operand) % 8
+                case 3:
+                    if self.a != 0:
+                        new_ins_ptr = operand
+                case 4:
+                    self.b = self.b ^ self.c
+                case 5:
+                    output.append(self.combo_operand(operand) % 8)
+            
+            ins_ptr = new_ins_ptr
+
+        return output
 
     def solve(self):
         with open(
             join('src', 'd17', 'input.txt'), encoding="utf-8"
         ) as f:
             line = f.readline()
-
-            self.a = int(search(r'\d+', line).group())
-
-            line = f.readline()
-
-            self.b = int(search(r'\d+', line).group())
+            orig_a = int(search(r'\d+', line).group())
 
             line = f.readline()
+            orig_b = int(search(r'\d+', line).group())
 
-            self.c = int(search(r'\d+', line).group())
+            line = f.readline()
+            orig_c = int(search(r'\d+', line).group())
 
             line = f.readline()
             line = f.readline()
 
             self.instructions = list(map(lambda v: int(v), findall(r'\d+', line)))
+            self.num_instructions = len(self.instructions)
 
-            num_instructions = len(self.instructions)
+            pt_1_res = self.get_output_str(self.run_program(orig_a, orig_b, orig_c))
+            pt_2_res = -1
+
+            a = 0
 
 
+            def rec(instructions: int, a: int, ins_idx: int, ins_len: int, orig_b: int, orig_c: int) -> int:
+                output = self.run_program(a, orig_b, orig_c)
 
-            # print(f'self.a {self.a} self.b {self.b} self.c {self.c} self.instructions {self.instructions}')
 
+                res = maxsize
 
-            ins_ptr = 0
-            while ins_ptr < num_instructions:
-                if ins_ptr == num_instructions - 1:
-                    print(f'Problem: cannot get operand because ins_ptr is at last instruction')
-                    break
-
-                # print(f'self.a {self.a} self.b {self.b} self.c {self.c} ins_ptr {ins_ptr} output {self.output}')
-
-                instruction = self.instructions[ins_ptr]
-                operand = self.instructions[ins_ptr + 1]
-                # print(f'instruction {instruction} operand {operand}')
-                new_ins_ptr = ins_ptr + 2
-
-                match instruction:
-                    case 0:
-                        self.dv(operand, 'A')
-                    case 6:
-                        self.dv(operand, 'B')
-                    case 7:
-                        self.dv(operand, 'C')
-                    case 1:
-                        self.b = self.b ^ operand
-                    case 2:
-                        self.b = self.combo_operand(operand) % 8
-                    case 3:
-                        # is this right??
-                        # opcode 3 | jnz
-                        # do nothing if register A is 0
-                        #  increment instruction pointer by 2 as usual
-                        # set instruction pointer to literal value
-                        #  dont increment instruction pointer
-                        if self.a != 0:
-                            new_ins_ptr = operand
-                    case 4:
-                        self.b = self.b ^ self.c
-                    case 5:
-                        self.output.append(self.combo_operand(operand) % 8)
+                if len(output) >= ins_idx and instructions[-ins_idx] == output[-ins_idx]:
+                    if ins_idx == ins_len:
+                        return a
+                    else:
+                        for inc in range(8):
+                            # When you have a match on this output index
+                            # there are 8 more possible values that a can be
+                            rec_res = rec(instructions, (a * 8) + inc, ins_idx + 1, ins_len, orig_b, orig_c)
+                            res = min(res, rec_res)
                 
-                ins_ptr = new_ins_ptr
-            
-            # print(f'self.a {self.a} self.b {self.b} self.c {self.c} ins_ptr {ins_ptr}')
+                return res
                     
 
-            
-            # print(f'output ---')
-            # print(self.output)
+            pt_2_res = maxsize
+            for try_a in range(8):
+                rec_res = rec(self.instructions, try_a, 1, len(self.instructions), orig_b, orig_c)
 
-            pt_1_res = ",".join(list(map(str, self.output)))
+                pt_2_res = min(pt_2_res, rec_res)
+
+
+
             print(f'pt_1_res: {pt_1_res}')
-            print(f'pt_2_res: TODO')
+            print(f'pt_2_res: {pt_2_res}')
         
-        return (pt_1_res, 'TODO')
-
+        return (pt_1_res, str(pt_2_res))
 
 
 # Register A: 729
