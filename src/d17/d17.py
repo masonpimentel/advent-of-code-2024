@@ -3,6 +3,8 @@ from re import search, findall
 
 from typing import Literal
 
+from sys import maxsize
+
 from os.path import join
 
 class Day17:
@@ -36,8 +38,11 @@ class Day17:
                 self.b = res
             case 'C':
                 self.c = res
+
+    def get_output_str(self, output_arr: list[int]) -> str:
+        return ",".join(list(map(str, output_arr)))
     
-    def run_program(self, a: int, b: int, c: int) -> str:
+    def run_program(self, a: int, b: int, c: int) -> list[str]:
         self.a = a
         self.b = b
         self.c = c
@@ -69,12 +74,6 @@ class Day17:
                 case 2:
                     self.b = self.combo_operand(operand) % 8
                 case 3:
-                    # is this right??
-                    # opcode 3 | jnz
-                    # do nothing if register A is 0
-                    #  increment instruction pointer by 2 as usual
-                    # set instruction pointer to literal value
-                    #  dont increment instruction pointer
                     if self.a != 0:
                         new_ins_ptr = operand
                 case 4:
@@ -84,7 +83,7 @@ class Day17:
             
             ins_ptr = new_ins_ptr
 
-        return ",".join(list(map(str, output)))
+        return output
 
     def solve(self):
         with open(
@@ -105,31 +104,48 @@ class Day17:
             self.instructions = list(map(lambda v: int(v), findall(r'\d+', line)))
             self.num_instructions = len(self.instructions)
 
+            pt_1_res = self.get_output_str(self.run_program(orig_a, orig_b, orig_c))
+            pt_2_res = -1
+
+            a = 0
 
 
-            # print(f'self.a {self.a} self.b {self.b} self.c {self.c} self.instructions {self.instructions}')
+            def rec(instructions: int, a: int, ins_idx: int, ins_len: int, orig_b: int, orig_c: int) -> int:
+                output = self.run_program(a, orig_b, orig_c)
 
 
+                res = maxsize
 
-            
-            # print(f'self.a {self.a} self.b {self.b} self.c {self.c} ins_ptr {ins_ptr}')
+                if len(output) >= ins_idx and instructions[-ins_idx] == output[-ins_idx]:
+                    if ins_idx == ins_len:
+                        return a
+                    else:
+                        for inc in range(8):
+                            # When you have a match on this output index
+                            # there are 8 more possible values that a can be
+                            rec_res = rec(instructions, (a * 8) + inc, ins_idx + 1, ins_len, orig_b, orig_c)
+                            res = min(res, rec_res)
+                
+                return res
                     
 
-            
-            # print(f'output ---')
-            # print(self.output)
+            pt_2_res = maxsize
+            for try_a in range(8):
+                rec_res = rec(self.instructions, try_a, 1, len(self.instructions), orig_b, orig_c)
 
-            pt_1_res = self.run_program(orig_a, orig_b, orig_c)
-
+                pt_2_res = min(pt_2_res, rec_res)
 
 
 
             print(f'pt_1_res: {pt_1_res}')
-            print(f'pt_2_res: TODO')
+            print(f'pt_2_res: {pt_2_res}')
         
-        return (pt_1_res, 'TODO')
+        return (pt_1_res, str(pt_2_res))
 
 
+d = Day17()
+r = d.solve()
+print(r)
 
 # Register A: 729
 # Register B: 0
