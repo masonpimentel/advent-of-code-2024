@@ -143,10 +143,6 @@ class Day17:
         return (pt_1_res, str(pt_2_res))
 
 
-d = Day17()
-r = d.solve()
-print(r)
-
 # Register A: 729
 # Register B: 0
 # Register C: 0
