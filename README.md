@@ -1,18 +1,15 @@
+## Advent of Code 2024
+
+The purpose of this project is to provide Python solutions for Advent of Code 2024.
+
+https://adventofcode.com/2024
+
+Join my leaderboard! `4780152-1e037a8f`
+
 ## TODO
 
-### Infra
-
-* CI tests
-
-### Code quality
-
-* Refactor, clean code
-
-### Problems
-
-* Day 17 part 2
-* Day 24 part 2
-* Day 25 part 2
+* Refactor, clean code, improve code quality
+* Improve performance
 
 ### Install packages
 
