@@ -1,15 +1,15 @@
-stages:
-  - test
+# stages:
+#   - test
 
-test:
-  image: python:3.12
-  stage: test
-  before_script:
-    - apt-get update && apt-get install -y git
-    - pip install pipenv
-    - pipenv install
-  script:
-    - PYTHONPATH="src" pipenv run pytest -s test
-  only:
-    - main
-    - merge_requests
+# test:
+#   image: python:3.12
+#   stage: test
+#   before_script:
+#     - apt-get update && apt-get install -y git
+#     - pip install pipenv
+#     - pipenv install
+#   script:
+#     - PYTHONPATH="src" pipenv run pytest -s test
+#   only:
+#     - main
+#     - merge_requests

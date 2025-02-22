@@ -4,7 +4,7 @@ The purpose of this project is to provide Python solutions for Advent of Code 20
 
 https://adventofcode.com/2024
 
-Join my leaderboard! `4780152-1e037a8f`
+Join my leaderboard! https://adventofcode.com/2024/leaderboard/private: `4780152-1e037a8f`
 
 ## TODO
 
