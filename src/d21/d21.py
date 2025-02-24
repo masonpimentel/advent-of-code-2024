@@ -1,7 +1,8 @@
 from sys import maxsize
 from os.path import join
 
-class Day01:
+
+class Day21:
     def __init__(self):
         self.number_pad = [
             ['7', '8', '9'],
@@ -201,8 +202,7 @@ class Day01:
         codes: list[str] = []
 
         with open(
-            # join('src', 'd21', 'input.txt'), encoding="utf-8"
-            join('input.txt'), encoding="utf-8"
+            join('src', 'd21', 'input.txt'), encoding="utf-8"
         ) as f:
             line = f.readline()
 
@@ -229,11 +229,11 @@ class Day01:
         return str(res)
 
     def solve(self) -> str:
+        print(f'Runs in ~0.01 seconds')
         pt_1_res = self.get_complexity(3)
         print(f'pt_1_res: {pt_1_res}')
         pt_2_res = self.get_complexity(26)
         print(f'pt_2_res: {pt_2_res}')
 
-
-d = Day01()
-d.solve()    
+        return (pt_1_res, pt_2_res)
+ 

@@ -1,11 +1,13 @@
 from collections import defaultdict
 
-print(f'Runs in ~86.825 (!!) seconds')
+from os.path import join
 
-class Solution:
+class Day23:
     def solve(self):
+        print(f'Runs in ~86.825 (!!) seconds')
+
         with open(
-            'input.txt', encoding="utf-8"
+            join('src', 'd23', 'input.txt'), encoding="utf-8"
         ) as f:
             line = f.readline()
 
@@ -92,11 +94,10 @@ class Solution:
             
             self.best.sort()
             
-
+            pt_2_res = ",".join(self.best)
             
             print(f'pt_1_res: {pt_1_res}')
-            print(f'pt_2_res: {",".join(self.best)}')
+            print(f'pt_2_res: {pt_2_res}')
 
-s = Solution()
-s.solve()
+            return (str(pt_1_res), pt_2_res)
 
