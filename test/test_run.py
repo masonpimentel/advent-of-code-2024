@@ -12,7 +12,17 @@ from d11.d11 import Day11
 from d12.d12 import Day12
 from d13.d13 import Day13
 from d14.d14 import Day14
+from d15.d15 import Day15
+from d16.d16 import Day16
 from d17.d17 import Day17
+from d18.d18 import Day18
+from d19.d19 import Day19
+from d20.d20 import Day20
+from d21.d21 import Day21
+# from d22.d22 import Day22
+from d23.d23 import Day23
+from d24.d24 import Day24
+from d25.d25 import Day25
 
 import time
 
@@ -32,7 +42,7 @@ EXPECTED_RESULTS = {
     "13": ("26599", "106228669504887"),
     "14": ("211692000", "6587"),
     "15": ("1514353", "1533076"),
-    "16": ("1533076", "583"),
+    "16": ("135536", "583"),
     "17": ("4,6,1,4,2,1,3,1,6", '202366627359274'),
     "18": ("324", "46,23"),
     "19": ("283", "615388132411142"),
@@ -40,8 +50,8 @@ EXPECTED_RESULTS = {
     "21": ("164960", "205620604017764"),
     "22": ("14082561342", "1568"),
     "23": ("1476", "ca,dw,fo,if,ji,kg,ks,oe,ov,sb,ud,vr,xr"),
-    "24": ("57632654722854", "unknown"),
-    "25": ("3223", "unknown"),
+    "24": ("57632654722854", "ckj,dbp,fdv,kdf,rpp,z15,z23,z39"),
+    "25": ("3223", "NO_PT_2"),
 }
 
 # Expected to pass a class with a .solve method that returns a tuple of strings
@@ -129,7 +139,57 @@ def test_Day14():
     s = '14'
     runner(d, EXPECTED_RESULTS[s], s)
 
+def test_Day15():
+    d = Day15()
+    s = '15'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day16():
+    d = Day16()
+    s = '16'
+    runner(d, EXPECTED_RESULTS[s], s)
+
 def test_Day17():
     d = Day17()
     s = '17'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day18():
+    d = Day18()
+    s = '18'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day19():
+    d = Day19()
+    s = '19'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day20():
+    d = Day20()
+    s = '20'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day21():
+    d = Day21()
+    s = '21'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+# def test_Day22():
+#     d = Day22()
+#     s = '22'
+#     runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day23():
+    d = Day23()
+    s = '23'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day24():
+    d = Day24()
+    s = '24'
+    runner(d, EXPECTED_RESULTS[s], s)
+
+def test_Day25():
+    d = Day25()
+    s = '25'
     runner(d, EXPECTED_RESULTS[s], s)

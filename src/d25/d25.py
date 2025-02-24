@@ -1,8 +1,12 @@
 
-class Solution:
+from os.path import join
+
+class Day25:
     def solve(self):
+        print(f'Runs in ~0.031 seconds')
+
         with open(
-            'input.txt', encoding="utf-8"
+            join('src', 'd25', 'input.txt'), encoding="utf-8"
         ) as f:
             self.keys: list[list[int]] = []
             self.locks: list[list[int]] = []
@@ -70,17 +74,9 @@ class Solution:
                     pt_1_res += 1
         
         print(f'pt_1_res: {pt_1_res}')
+        print(f'pt_2_res: NO_PT_2')
 
-import time
-
-start = time.perf_counter()
-s = Solution()
-s.solve()
+        return (str(pt_1_res), 'NO_PT_2')
 
 
 
-print(f'pt_2_res: TODO')
-
-end = time.perf_counter()
-s = (end-start)
-print(f"Elapsed {s:.03f} seconds")
