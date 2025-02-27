@@ -19,7 +19,7 @@ from d18.d18 import Day18
 from d19.d19 import Day19
 from d20.d20 import Day20
 from d21.d21 import Day21
-# from d22.d22 import Day22
+from d22.d22 import Day22
 from d23.d23 import Day23
 from d24.d24 import Day24
 from d25.d25 import Day25
@@ -54,10 +54,38 @@ EXPECTED_RESULTS = {
     "25": ("3223", "NO_PT_2"),
 }
 
+RUNTIMES = {
+    "01": "0.009",
+    "02": "0.012",
+    "03": "0.034",
+    "04": "0.029",
+    "05": "0.080",
+    "06": "63.187 (!!)",
+    "07": "5.748 (!)",
+    "08": "0.116",
+    "09": "189.749 (!!!)",
+    "10": "0.038",
+    "11": "0.226",
+    "12": "0.066",
+    "13": "0.007",
+    "14": "14.272 (!!)",
+    "15": "0.084",
+    "16": "0.649",
+    "17": "0.082",
+    "18": "26.559 (!!)",
+    "19": "0.123",
+    "20": "5.135 (!)",
+    "21": "0.010",
+    "22": "48.310 (!!)",
+    "23": "86.825 (!!)",
+    "24": "0.004",
+    "25": "0.031",
+}
+
 # Expected to pass a class with a .solve method that returns a tuple of strings
-def runner(d, expected: tuple[str, str], day_str: str):
-    print()
-    print(f'Running Day {day_str}')
+def runner(d, day_str: str):
+    print(f'\nRunning Day {day_str}, expected runtime: {RUNTIMES[day_str]} seconds')
+    expected = EXPECTED_RESULTS[day_str]
     start = time.perf_counter()
 
     res = d.solve()
@@ -72,124 +100,124 @@ def runner(d, expected: tuple[str, str], day_str: str):
 def test_Day01():
     d = Day01()
     s = '01'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day02():
     d = Day02()
     s = '02'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day03():
     d = Day03()
     s = '03'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day04():
     d = Day04()
     s = '04'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day05():
     d = Day05()
     s = '05'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day06():
     d = Day06()
     s = '06'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day07():
     d = Day07()
     s = '07'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day08():
     d = Day08()
     s = '08'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day09():
     d = Day09()
     s = '09'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day10():
     d = Day10()
     s = '10'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day11():
     d = Day11()
     s = '11'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day12():
     d = Day12()
     s = '12'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day13():
     d = Day13()
     s = '13'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day14():
     d = Day14()
     s = '14'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day15():
     d = Day15()
     s = '15'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day16():
     d = Day16()
     s = '16'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day17():
     d = Day17()
     s = '17'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day18():
     d = Day18()
     s = '18'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day19():
     d = Day19()
     s = '19'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day20():
     d = Day20()
     s = '20'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day21():
     d = Day21()
     s = '21'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
-# def test_Day22():
-#     d = Day22()
-#     s = '22'
-#     runner(d, EXPECTED_RESULTS[s], s)
+def test_Day22():
+    d = Day22()
+    s = '22'
+    runner(d, s)
 
 def test_Day23():
     d = Day23()
     s = '23'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day24():
     d = Day24()
     s = '24'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)
 
 def test_Day25():
     d = Day25()
     s = '25'
-    runner(d, EXPECTED_RESULTS[s], s)
+    runner(d, s)

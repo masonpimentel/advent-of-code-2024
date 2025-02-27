@@ -15,8 +15,6 @@ from os.path import join
 
 class Day14:
     def solve(self):
-        print(f'Runs in ~14.272 (!!) seconds')
-
         pt_1_res = ''
         pt_2_res = ''
         

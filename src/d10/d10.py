@@ -2,8 +2,6 @@ from os.path import join
 
 class Day10:
     def solve(self):
-        print(f'Runs in ~0.038 seconds')
-
         with open(
             join('src', 'd10', 'input.txt'), encoding="utf-8"
         ) as f:

@@ -229,7 +229,6 @@ class Day21:
         return str(res)
 
     def solve(self) -> str:
-        print(f'Runs in ~0.01 seconds')
         pt_1_res = self.get_complexity(3)
         print(f'pt_1_res: {pt_1_res}')
         pt_2_res = self.get_complexity(26)

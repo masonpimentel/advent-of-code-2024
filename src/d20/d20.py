@@ -4,8 +4,6 @@ from os.path import join
 
 class Day20:
     def solve(self):
-        print(f'Runs in ~5.135 seconds')
-
         setrecursionlimit(10**6)
 
         with open(
