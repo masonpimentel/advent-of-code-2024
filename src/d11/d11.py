@@ -7,8 +7,6 @@ from os.path import join
 
 class Day11:
     def solve(self):
-        print(f'Runs in ~0.226 seconds')
-
         pt_1_res = ''
         pt_2_res = ''
 

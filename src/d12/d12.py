@@ -6,8 +6,6 @@ TOMBSTONE = '.'
 
 class Day12:
     def solve(self):
-        print(f'Runs in ~0.066 seconds')
-
         with open(
             join('src', 'd12', 'input.txt'), encoding="utf-8"
         ) as f:

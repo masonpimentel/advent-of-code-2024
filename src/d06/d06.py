@@ -3,8 +3,6 @@ from os.path import join
 
 class Day06:
     def solve(self):
-        print(f'Runs in ~63.187 (!!) seconds')
-
         with open(
             join('src', 'd06', 'input.txt'), encoding="utf-8"
         ) as f:
