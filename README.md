@@ -25,3 +25,9 @@ Join my leaderboard! https://adventofcode.com/2024/leaderboard/private: `4780152
 
 `$env:PYTHONPATH="src"; pipenv run pytest -s test`
 
+### Formatting
+
+CI will check that all files are formatted according to `black`
+
+To ensure CI will pass, run `pipenv run black --check .`
+

@@ -2,7 +2,6 @@ from re import search
 from sys import maxsize
 
 
-
 COLS = 101
 ROWS = 103
 
@@ -13,27 +12,33 @@ PT_2_UPPER = 10000
 
 from os.path import join
 
+
 class Day14:
     def solve(self):
-        pt_1_res = ''
-        pt_2_res = ''
-        
-        with open(
-            join('src', 'd14', 'input.txt'), encoding="utf-8"
-        ) as f:
+        pt_1_res = ""
+        pt_2_res = ""
+
+        with open(join("src", "d14", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
 
             robots: list[list[int, int, int, int]] = []
 
             while line:
                 # a = search(r'Button A: X\+(\d*), Y\+(\d*)', line)
-                vals = search(r'p=(\d*),(\d*) v=(-?\d*),(-?\d*)', line)
-                robots.append([int(vals.group(1)), int(vals.group(2)), int(vals.group(3)), int(vals.group(4))])
+                vals = search(r"p=(\d*),(\d*) v=(-?\d*),(-?\d*)", line)
+                robots.append(
+                    [
+                        int(vals.group(1)),
+                        int(vals.group(2)),
+                        int(vals.group(3)),
+                        int(vals.group(4)),
+                    ]
+                )
 
                 line = f.readline()
 
             # print(robots)
-            
+
             orig_robots = robots[:]
 
             l = len(robots)
@@ -71,29 +76,27 @@ class Day14:
                         # print(f'4 x {x} y {y} actual_x {actual_x} actual_y {actual_y}')
                         q4 += 1
 
-            
-
-                
-            
             # print(robots)
             # print(positions)
-            
+
             pt_1_res = str(q1 * q2 * q3 * q4)
 
-            
-
-
-        with open(
-            join('src', 'd14', 'input.txt'), encoding="utf-8"
-        ) as f:
+        with open(join("src", "d14", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
 
             robots: list[list[int, int, int, int]] = []
 
             while line:
                 # a = search(r'Button A: X\+(\d*), Y\+(\d*)', line)
-                vals = search(r'p=(\d*),(\d*) v=(-?\d*),(-?\d*)', line)
-                robots.append([int(vals.group(1)), int(vals.group(2)), int(vals.group(3)), int(vals.group(4))])
+                vals = search(r"p=(\d*),(\d*) v=(-?\d*),(-?\d*)", line)
+                robots.append(
+                    [
+                        int(vals.group(1)),
+                        int(vals.group(2)),
+                        int(vals.group(3)),
+                        int(vals.group(4)),
+                    ]
+                )
 
                 line = f.readline()
 
@@ -105,7 +108,7 @@ class Day14:
                 for i in range(l):
                     robots[i][0] = robots[i][0] + robots[i][2]
                     robots[i][1] = robots[i][1] + robots[i][3]
-                
+
                 # The assumption here is the picture looks like:
                 # ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●
                 # ●○○○○○○○○○○○○○○○○○○○○○○○○○○○○○●
@@ -143,29 +146,29 @@ class Day14:
                 # To keep things simple, this code just looks for a row of 30 ●'s
                 # (the top row of the frame)
 
-                locs: list[list[str]] = [['○'] * COLS for _ in range(ROWS)]
+                locs: list[list[str]] = [["○"] * COLS for _ in range(ROWS)]
                 for x, y, _, __ in robots:
                     col = x % COLS
                     row = y % ROWS
 
-                    locs[row][col] = '●'
-                    
+                    locs[row][col] = "●"
+
                 for row in range(ROWS):
                     count = 0
-                    
+
                     for col in range(COLS):
-                        if locs[row][col] == '●':
+                        if locs[row][col] == "●":
                             count += 1
                         else:
                             count = 0
-                    
+
                         if count == 30:
                             found_tree = True
                             break
-                    
+
                     if found_tree:
                         break
-                
+
                 if found_tree:
                     break
 
@@ -179,11 +182,9 @@ class Day14:
             if found_tree:
                 pt_2_res = str(time + 1)
             else:
-                pt_2_res = 'Tree is not expected shape - see code for explanation'
+                pt_2_res = "Tree is not expected shape - see code for explanation"
 
-
-        print(f'pt_1_res: {pt_1_res}')
-        print(f'pt_2_res: {pt_2_res}')
+        print(f"pt_1_res: {pt_1_res}")
+        print(f"pt_2_res: {pt_2_res}")
 
         return (pt_1_res, pt_2_res)
-            

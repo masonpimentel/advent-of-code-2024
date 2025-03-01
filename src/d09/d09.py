@@ -3,11 +3,10 @@ import sys
 
 from os.path import join
 
+
 class Day09:
     def solve(self):
-        with open(
-            join('src', 'd09', 'input.txt'), encoding="utf-8"
-        ) as f:
+        with open(join("src", "d09", "input.txt"), encoding="utf-8") as f:
             input = f.readline()
 
             q: list[str] = deque()
@@ -27,23 +26,22 @@ class Day09:
                         q.append(id)
                         pt_2.append(id)
                         ptr += 1
-                    
-                    for _ in range(gap):
-                        q.append('.')
-                        pt_2.append('.')
-                        ptr += 1
 
+                    for _ in range(gap):
+                        q.append(".")
+                        pt_2.append(".")
+                        ptr += 1
 
             pt_1: list[str] = []
             while len(q) > 0:
 
                 a_val = q.popleft()
-                if a_val != '.':
+                if a_val != ".":
                     pt_1.append(a_val)
                 else:
                     pt_1.append(q.pop())
-                
-                while len(q) > 0 and q[-1] == '.':
+
+                while len(q) > 0 and q[-1] == ".":
                     q.pop()
 
             checksum_pt_1 = 0
@@ -63,7 +61,7 @@ class Day09:
                 streak_start = -1
                 streak_count = 0
                 for i in range(first_idx):
-                    if pt_2[i] != '.':
+                    if pt_2[i] != ".":
                         streak_start = -1
                         streak_count = 0
                     else:
@@ -72,21 +70,23 @@ class Day09:
                         streak_count += 1
 
                         if streak_count == streak_needed:
-                            for set_i in range(streak_start, streak_start + streak_count):
+                            for set_i in range(
+                                streak_start, streak_start + streak_count
+                            ):
                                 pt_2[set_i] = id
-                                
+
                             for set_i in range(first_idx, last_idx + 1):
-                                pt_2[set_i] = '.'
-                            
+                                pt_2[set_i] = "."
+
                             break
 
             checksum_pt_2 = 0
             for i in range(len(pt_2)):
                 val = pt_2[i]
 
-                checksum_pt_2 += val * i if val != '.' else 0
-            
-            print(f'pt_1_res: {checksum_pt_1}')
-            print(f'pt_2_res: {checksum_pt_2}')
+                checksum_pt_2 += val * i if val != "." else 0
+
+            print(f"pt_1_res: {checksum_pt_1}")
+            print(f"pt_2_res: {checksum_pt_2}")
 
             return (str(checksum_pt_1), str(checksum_pt_2))

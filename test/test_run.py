@@ -43,7 +43,7 @@ EXPECTED_RESULTS = {
     "14": ("211692000", "6587"),
     "15": ("1514353", "1533076"),
     "16": ("135536", "583"),
-    "17": ("4,6,1,4,2,1,3,1,6", '202366627359274'),
+    "17": ("4,6,1,4,2,1,3,1,6", "202366627359274"),
     "18": ("324", "46,23"),
     "19": ("283", "615388132411142"),
     "20": ("1426", "1000697"),
@@ -82,9 +82,10 @@ RUNTIMES = {
     "25": "0.031",
 }
 
+
 # Expected to pass a class with a .solve method that returns a tuple of strings
 def runner(d, day_str: str):
-    print(f'\nRunning Day {day_str}, expected runtime: {RUNTIMES[day_str]} seconds')
+    print(f"\nRunning Day {day_str}, expected runtime: {RUNTIMES[day_str]} seconds")
     expected = EXPECTED_RESULTS[day_str]
     start = time.perf_counter()
 
@@ -93,131 +94,155 @@ def runner(d, day_str: str):
     assert res[1] == expected[1]
 
     end = time.perf_counter()
-    s = (end-start)
+    s = end - start
     print(f"Elapsed {s:.03f} seconds")
 
 
 def test_Day01():
     d = Day01()
-    s = '01'
+    s = "01"
     runner(d, s)
+
 
 def test_Day02():
     d = Day02()
-    s = '02'
+    s = "02"
     runner(d, s)
+
 
 def test_Day03():
     d = Day03()
-    s = '03'
+    s = "03"
     runner(d, s)
+
 
 def test_Day04():
     d = Day04()
-    s = '04'
+    s = "04"
     runner(d, s)
+
 
 def test_Day05():
     d = Day05()
-    s = '05'
+    s = "05"
     runner(d, s)
+
 
 def test_Day06():
     d = Day06()
-    s = '06'
+    s = "06"
     runner(d, s)
+
 
 def test_Day07():
     d = Day07()
-    s = '07'
+    s = "07"
     runner(d, s)
+
 
 def test_Day08():
     d = Day08()
-    s = '08'
+    s = "08"
     runner(d, s)
+
 
 def test_Day09():
     d = Day09()
-    s = '09'
+    s = "09"
     runner(d, s)
+
 
 def test_Day10():
     d = Day10()
-    s = '10'
+    s = "10"
     runner(d, s)
+
 
 def test_Day11():
     d = Day11()
-    s = '11'
+    s = "11"
     runner(d, s)
+
 
 def test_Day12():
     d = Day12()
-    s = '12'
+    s = "12"
     runner(d, s)
+
 
 def test_Day13():
     d = Day13()
-    s = '13'
+    s = "13"
     runner(d, s)
+
 
 def test_Day14():
     d = Day14()
-    s = '14'
+    s = "14"
     runner(d, s)
+
 
 def test_Day15():
     d = Day15()
-    s = '15'
+    s = "15"
     runner(d, s)
+
 
 def test_Day16():
     d = Day16()
-    s = '16'
+    s = "16"
     runner(d, s)
+
 
 def test_Day17():
     d = Day17()
-    s = '17'
+    s = "17"
     runner(d, s)
+
 
 def test_Day18():
     d = Day18()
-    s = '18'
+    s = "18"
     runner(d, s)
+
 
 def test_Day19():
     d = Day19()
-    s = '19'
+    s = "19"
     runner(d, s)
+
 
 def test_Day20():
     d = Day20()
-    s = '20'
+    s = "20"
     runner(d, s)
+
 
 def test_Day21():
     d = Day21()
-    s = '21'
+    s = "21"
     runner(d, s)
+
 
 def test_Day22():
     d = Day22()
-    s = '22'
+    s = "22"
     runner(d, s)
+
 
 def test_Day23():
     d = Day23()
-    s = '23'
+    s = "23"
     runner(d, s)
+
 
 def test_Day24():
     d = Day24()
-    s = '24'
+    s = "24"
     runner(d, s)
+
 
 def test_Day25():
     d = Day25()
-    s = '25'
+    s = "25"
     runner(d, s)
