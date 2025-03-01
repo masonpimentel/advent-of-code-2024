@@ -1,6 +1,7 @@
 from os.path import join
 from collections import deque
 
+
 class Day22:
 
     def mix(self, secret: int, val: int) -> int:
@@ -22,16 +23,16 @@ class Day22:
         secret = self.mix(secret, mul_2048)
 
         return self.prune(secret)
-    
+
     def ith_secret(self, secret: int, iterations: int) -> int:
         for _ in range(iterations):
             secret = self.generate_new_secret(secret)
-        
+
         return secret
 
     def get_price_from_secret(self, secret: int) -> int:
         return secret % 10
-    
+
     def get_bananas_from_buyer(self, buyer: dict[str, int], seq: str) -> int:
         if seq in buyer:
             return buyer[seq]
@@ -54,38 +55,35 @@ class Day22:
 
             if len(cur_seq) > 4:
                 cur_seq.popleft()
-            
+
             if len(cur_seq) == 4:
                 seq_str = str(cur_seq)
 
                 if seq_str not in res:
                     res[seq_str] = new_price
-            
+
             cur_price = new_price
 
         return res
 
-
     def solve(self):
 
-        with open(
-            join('src', 'd22', 'input.txt'), encoding="utf-8"
-        ) as f:
+        with open(join("src", "d22", "input.txt"), encoding="utf-8") as f:
             seeds: list[str] = []
 
             line = f.readline()
 
             while line:
-                seeds.append(line[:-1] if line[-1] == '\n' else line)
+                seeds.append(line[:-1] if line[-1] == "\n" else line)
 
                 line = f.readline()
-            
+
             pt_1_res = 0
 
             for seed in seeds:
                 r = self.ith_secret(int(seed), 2000)
                 pt_1_res += r
-            
+
             buyers: list[dict[str, int]] = []
             all_seqs: set[str] = set()
             for seed in seeds:
@@ -93,9 +91,9 @@ class Day22:
 
                 for buyer_seq in buyer:
                     all_seqs.add(buyer_seq)
-                
+
                 buyers.append(buyer)
-            
+
             pt_2_res = 0
 
             for seq in all_seqs:
@@ -103,9 +101,9 @@ class Day22:
 
                 for buyer in buyers:
                     this_seq_res += self.get_bananas_from_buyer(buyer, seq)
-                
+
                 pt_2_res = max(pt_2_res, this_seq_res)
 
+            print(f"pt_1_res: {pt_1_res}")
+            print(f"pt_2_res: {pt_2_res}")
             return (str(pt_1_res), str(pt_2_res))
-
-

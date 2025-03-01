@@ -1,4 +1,3 @@
-
 from re import search, findall
 
 from typing import Literal
@@ -7,6 +6,7 @@ from sys import maxsize
 
 from os.path import join
 
+
 class Day17:
     def __init__(self):
         self.a = 0
@@ -14,7 +14,7 @@ class Day17:
         self.c = 0
         self.instructions = []
         self.num_instructions = 0
-    
+
     def combo_operand(self, combo: int) -> int:
         match combo:
             case 0 | 1 | 2 | 3:
@@ -25,35 +25,36 @@ class Day17:
                 return self.b
             case 6:
                 return self.c
-            
-    
-    def dv(self, operand: int, target: Literal['A', 'B', 'C']):
+
+    def dv(self, operand: int, target: Literal["A", "B", "C"]):
         divisor = 2 ** self.combo_operand(operand)
         res = int(self.a / divisor)
-        
+
         match target:
-            case 'A':
+            case "A":
                 self.a = res
-            case 'B':
+            case "B":
                 self.b = res
-            case 'C':
+            case "C":
                 self.c = res
 
     def get_output_str(self, output_arr: list[int]) -> str:
         return ",".join(list(map(str, output_arr)))
-    
+
     def run_program(self, a: int, b: int, c: int) -> list[str]:
         self.a = a
         self.b = b
         self.c = c
-        
+
         ins_ptr = 0
         output = []
-        
+
         while ins_ptr < self.num_instructions:
             if ins_ptr == self.num_instructions - 1:
-                print(f'Problem: cannot get operand because ins_ptr is at last instruction')
-                return ''
+                print(
+                    f"Problem: cannot get operand because ins_ptr is at last instruction"
+                )
+                return ""
 
             # print(f'self.a {self.a} self.b {self.b} self.c {self.c} ins_ptr {ins_ptr} output {self.output}')
 
@@ -64,11 +65,11 @@ class Day17:
 
             match instruction:
                 case 0:
-                    self.dv(operand, 'A')
+                    self.dv(operand, "A")
                 case 6:
-                    self.dv(operand, 'B')
+                    self.dv(operand, "B")
                 case 7:
-                    self.dv(operand, 'C')
+                    self.dv(operand, "C")
                 case 1:
                     self.b = self.b ^ operand
                 case 2:
@@ -80,28 +81,26 @@ class Day17:
                     self.b = self.b ^ self.c
                 case 5:
                     output.append(self.combo_operand(operand) % 8)
-            
+
             ins_ptr = new_ins_ptr
 
         return output
 
     def solve(self):
-        with open(
-            join('src', 'd17', 'input.txt'), encoding="utf-8"
-        ) as f:
+        with open(join("src", "d17", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
-            orig_a = int(search(r'\d+', line).group())
+            orig_a = int(search(r"\d+", line).group())
 
             line = f.readline()
-            orig_b = int(search(r'\d+', line).group())
+            orig_b = int(search(r"\d+", line).group())
 
             line = f.readline()
-            orig_c = int(search(r'\d+', line).group())
+            orig_c = int(search(r"\d+", line).group())
 
             line = f.readline()
             line = f.readline()
 
-            self.instructions = list(map(lambda v: int(v), findall(r'\d+', line)))
+            self.instructions = list(map(lambda v: int(v), findall(r"\d+", line)))
             self.num_instructions = len(self.instructions)
 
             pt_1_res = self.get_output_str(self.run_program(orig_a, orig_b, orig_c))
@@ -109,37 +108,51 @@ class Day17:
 
             a = 0
 
-
-            def rec(instructions: int, a: int, ins_idx: int, ins_len: int, orig_b: int, orig_c: int) -> int:
+            def rec(
+                instructions: int,
+                a: int,
+                ins_idx: int,
+                ins_len: int,
+                orig_b: int,
+                orig_c: int,
+            ) -> int:
                 output = self.run_program(a, orig_b, orig_c)
-
 
                 res = maxsize
 
-                if len(output) >= ins_idx and instructions[-ins_idx] == output[-ins_idx]:
+                if (
+                    len(output) >= ins_idx
+                    and instructions[-ins_idx] == output[-ins_idx]
+                ):
                     if ins_idx == ins_len:
                         return a
                     else:
                         for inc in range(8):
                             # When you have a match on this output index
                             # there are 8 more possible values that a can be
-                            rec_res = rec(instructions, (a * 8) + inc, ins_idx + 1, ins_len, orig_b, orig_c)
+                            rec_res = rec(
+                                instructions,
+                                (a * 8) + inc,
+                                ins_idx + 1,
+                                ins_len,
+                                orig_b,
+                                orig_c,
+                            )
                             res = min(res, rec_res)
-                
+
                 return res
-                    
 
             pt_2_res = maxsize
             for try_a in range(8):
-                rec_res = rec(self.instructions, try_a, 1, len(self.instructions), orig_b, orig_c)
+                rec_res = rec(
+                    self.instructions, try_a, 1, len(self.instructions), orig_b, orig_c
+                )
 
                 pt_2_res = min(pt_2_res, rec_res)
 
+            print(f"pt_1_res: {pt_1_res}")
+            print(f"pt_2_res: {pt_2_res}")
 
-
-            print(f'pt_1_res: {pt_1_res}')
-            print(f'pt_2_res: {pt_2_res}')
-        
         return (pt_1_res, str(pt_2_res))
 
 
@@ -154,7 +167,6 @@ class Day17:
 # Register C: 0
 
 # Program: 0,1,5,4,3,0
-
 
 
 # Combo operands 0 through 3 represent literal values 0 through 3.
@@ -200,5 +212,3 @@ class Day17:
 # opcode 7 | cdv
 # do the same as opcode 0
 # except write to C register
-
-
