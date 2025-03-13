@@ -1,50 +1,53 @@
+"""Day 2"""
+
 from os.path import join
+from base.day import Day
 
+class Day02(Day):
+    """Day 2 solver"""
 
-class Day02:
-    def solve(self):
-        def check_line(vals: list[int]) -> bool:
-            is_safe = True
+    def check_level(self, vals: list[int]) -> bool:
+        is_safe = True
 
-            is_increase = vals[1] > vals[0]
-            for i in range(len(vals) - 1):
-                diff = abs(vals[i + 1] - vals[i])
-                if diff < 1 or diff > 3:
-                    is_safe = False
-                    break
+        is_increase = vals[1] > vals[0]
+        for i in range(len(vals) - 1):
+            diff = abs(vals[i + 1] - vals[i])
+            if diff < 1 or diff > 3:
+                is_safe = False
+                break
 
-                if is_increase and vals[i + 1] <= vals[i]:
-                    is_safe = False
-                    break
-                if not is_increase and vals[i + 1] >= vals[i]:
-                    is_safe = False
-                    break
+            if is_increase and vals[i + 1] <= vals[i]:
+                is_safe = False
+                break
+            if not is_increase and vals[i + 1] >= vals[i]:
+                is_safe = False
+                break
 
-            return is_safe
+        return is_safe
+
+    def solve(self) -> tuple[str, str]:
+        levels: list[list[int]] = []
 
         with open(join("src", "d02", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
 
-            safe_no_dampener = 0
-            safe_with_dampener = 0
             while line:
-                vals = list(map(lambda v: int(v), line.split(" ")))
-
-                orig_result = check_line(vals)
-
-                if orig_result:
-                    safe_no_dampener += 1
-                    safe_with_dampener += 1
-                else:
-                    for i in range(len(vals)):
-                        line_with_i_removed = check_line(vals[:i] + vals[i + 1 :])
-                        if line_with_i_removed:
-                            safe_with_dampener += 1
-                            break
-
+                levels.append([int(v) for v in line.split(" ")])
                 line = f.readline()
 
-            print(f"pt_1_res: {safe_no_dampener}")
-            print(f"pt_2_res: {safe_with_dampener}")
+        pt_1_res = 0
+        pt_2_res = 0
+        for level in levels:
+            orig_result = self.check_level(level)
 
-        return (str(safe_no_dampener), str(safe_with_dampener))
+            if orig_result:
+                pt_1_res += 1
+                pt_2_res += 1
+            else:
+                for i in range(len(level)):
+                    line_with_i_removed = self.check_level(level[:i] + level[i + 1 :])
+                    if line_with_i_removed:
+                        pt_2_res += 1
+                        break
+
+        return (str(pt_1_res), str(pt_2_res))

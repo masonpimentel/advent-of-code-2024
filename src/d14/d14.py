@@ -1,6 +1,5 @@
 from re import search
-from sys import maxsize
-
+from base.day import Day
 
 COLS = 101
 ROWS = 103
@@ -13,7 +12,7 @@ PT_2_UPPER = 10000
 from os.path import join
 
 
-class Day14:
+class Day14(Day):
     def solve(self):
         pt_1_res = ""
         pt_2_res = ""
@@ -183,8 +182,5 @@ class Day14:
                 pt_2_res = str(time + 1)
             else:
                 pt_2_res = "Tree is not expected shape - see code for explanation"
-
-        print(f"pt_1_res: {pt_1_res}")
-        print(f"pt_2_res: {pt_2_res}")
 
         return (pt_1_res, pt_2_res)

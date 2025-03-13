@@ -1,10 +1,9 @@
 from collections import defaultdict, deque
 from re import search
-
 from os.path import join
+from base.day import Day
 
-
-class Day24:
+class Day24(Day):
     def solve(self):
         with open(join("src", "d24", "input.txt"), encoding="utf-8") as f:
             wire_tuples: list[tuple[str, int]] = []
@@ -211,7 +210,5 @@ class Day24:
 
             pt_2_res = ",".join([str(v) for v in sorted(list(pt_2_set))])
 
-            print(f"pt_1_res: {z}")
-            print(f"pt_2_res: {pt_2_res}")
 
             return (str(z), pt_2_res)

@@ -1,7 +1,7 @@
 from os.path import join
+from base.day import Day
 
-
-class Day04:
+class Day04(Day):
     def solve(self):
         with open(join("src", "d04", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
@@ -93,7 +93,6 @@ class Day04:
                     for col in range(cols):
                         res += count_words(row, col)
 
-                print(f"pt_1_res: {res}")
                 return str(res)
 
             def part_two() -> str:
@@ -135,7 +134,6 @@ class Day04:
                             ):
                                 res += 1
 
-                print(f"pt_2_res: {res}")
                 return str(res)
 
             pt1 = part_one()

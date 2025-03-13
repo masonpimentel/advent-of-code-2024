@@ -92,6 +92,8 @@ def runner(d, day_str: str):
     res = d.solve()
     assert res[0] == expected[0]
     assert res[1] == expected[1]
+    print(f"pt_1_res: {res[0]}")
+    print(f"pt_2_res: {res[1]}")
 
     end = time.perf_counter()
     s = end - start

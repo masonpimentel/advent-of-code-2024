@@ -2,11 +2,10 @@ PT_1_BLINKS = 25
 PT_2_BLINKS = 75
 
 from collections import defaultdict
-
 from os.path import join
+from base.day import Day
 
-
-class Day11:
+class Day11(Day):
     def solve(self):
         pt_1_res = ""
         pt_2_res = ""
@@ -45,6 +44,4 @@ class Day11:
 
             pt_2_res = str(sum(vals.values()))
 
-        print(f"pt_1_res: {pt_1_res}")
-        print(f"pt_2_res: {pt_2_res}")
         return (pt_1_res, pt_2_res)

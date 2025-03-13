@@ -1,8 +1,8 @@
 from os.path import join
 from collections import deque
+from base.day import Day
 
-
-class Day22:
+class Day22(Day):
 
     def mix(self, secret: int, val: int) -> int:
         return secret ^ val
@@ -104,6 +104,4 @@ class Day22:
 
                 pt_2_res = max(pt_2_res, this_seq_res)
 
-            print(f"pt_1_res: {pt_1_res}")
-            print(f"pt_2_res: {pt_2_res}")
             return (str(pt_1_res), str(pt_2_res))

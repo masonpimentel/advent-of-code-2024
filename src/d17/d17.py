@@ -1,13 +1,11 @@
 from re import search, findall
-
 from typing import Literal
-
 from sys import maxsize
-
 from os.path import join
+from base.day import Day
 
 
-class Day17:
+class Day17(Day):
     def __init__(self):
         self.a = 0
         self.b = 0
@@ -150,8 +148,6 @@ class Day17:
 
                 pt_2_res = min(pt_2_res, rec_res)
 
-            print(f"pt_1_res: {pt_1_res}")
-            print(f"pt_2_res: {pt_2_res}")
 
         return (pt_1_res, str(pt_2_res))
 

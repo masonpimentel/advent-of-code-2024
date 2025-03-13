@@ -1,9 +1,7 @@
-import sys
-
 from os.path import join
+from base.day import Day
 
-
-class Day15:
+class Day15(Day):
     def solve(self):
         with open(join("src", "d15", "input.txt"), encoding="utf-8") as f:
             grid_pt_1: list[list[str]] = []
@@ -336,8 +334,6 @@ class Day15:
                         inc = (100 * row) + col
                         pt_2_res += inc
 
-            print(f"pt_1_res: {pt_1_res}")
-            print(f"pt_2_res: {pt_2_res}")
 
         return (str(pt_1_res), str(pt_2_res))
 

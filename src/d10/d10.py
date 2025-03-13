@@ -1,7 +1,7 @@
 from os.path import join
+from base.day import Day
 
-
-class Day10:
+class Day10(Day):
     def solve(self):
         with open(join("src", "d10", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
@@ -84,7 +84,5 @@ class Day10:
                         pt_1_res += trails
                         pt_2_res += dfs_pt_2(row, col, 0, set())
 
-            print(f"pt_1_res: {pt_1_res}")
-            print(f"pt_2_res: {pt_2_res}")
 
             return (str(pt_1_res), str(pt_2_res))

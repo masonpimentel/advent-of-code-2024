@@ -1,9 +1,8 @@
 from collections import defaultdict, Counter
-
 from os.path import join
+from base.day import Day
 
-
-class Day05:
+class Day05(Day):
     def solve(self):
         with open(join("src", "d05", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
@@ -66,7 +65,5 @@ class Day05:
 
                     part_2 += new_order[mid_idx]
 
-            print(f"pt_1_res: {part_1}")
-            print(f"pt_2_res: {part_2}")
 
             return (str(part_1), str(part_2))

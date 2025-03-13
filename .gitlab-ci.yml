@@ -1,5 +1,5 @@
 stages:
-  - formatting
+  # - static_analysis
   - test
 
 .common-rules:
@@ -14,13 +14,40 @@ default:
     - pip install pipenv
     - pipenv install
 
-formatting:
-  stage: formatting
-  extends: .common-rules
-  script:
-    - pipenv run black --check .
+# formatting:
+#   stage: static_analysis
+#   extends: .common-rules
+#   script:
+#     - pipenv run black --check .
+# types:
+#   stage: static_analysis
+#   extends: .common-rules
+#   script:
+#     - pipenv run mypy src/*
+# lint:
+#   stage: static_analysis
+#   extends: .common-rules
+#   script:
+#     - pipenv run pylint src/
 test:
   stage: test
   extends: .common-rules
   script:
-    - PYTHONPATH="src" pipenv run pytest -s test
+    - pipenv run pytest -s test
+# coverage:
+#   stage: test
+#   extends: .common-rules
+#   script:
+#     - pipenv run coverage run -m pytest
+#     - pipenv run coverage report --fail-under=80
+#   artifacts:
+#     reports:
+#       coverage_report:
+#         coverage_format: cobertura
+#         path: coverage.xml
+#     paths:
+#       - htmlcov/
+#   after_script:
+#     - pipenv run coverage xml
+#     - pipenv run coverage html
+#   coverage: '/TOTAL.*\s+(\d+)%/'

@@ -1,7 +1,7 @@
 from os.path import join
+from base.day import Day
 
-
-class Day08:
+class Day08(Day):
     def solve(self):
         with open(join("src", "d08", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
@@ -75,7 +75,5 @@ class Day08:
                 for v in row:
                     pt_2_res += 1 if v else 0
 
-            print(f"pt_1_res: {pt_1_res}")
-            print(f"pt_2_res: {pt_2_res}")
 
             return (str(pt_1_res), str(pt_2_res))
