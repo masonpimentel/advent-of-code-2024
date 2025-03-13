@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 pytest = "*"
 black = "*"
+pylint = "*"
+mypy = "*"
+coverage = "*"
 
 [dev-packages]
 

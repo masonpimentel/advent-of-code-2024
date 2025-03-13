@@ -1,10 +1,10 @@
 from collections import deque
 import sys
-
 from os.path import join
+from base.day import Day
 
 
-class Day09:
+class Day09(Day):
     def solve(self):
         with open(join("src", "d09", "input.txt"), encoding="utf-8") as f:
             input = f.readline()
@@ -85,8 +85,5 @@ class Day09:
                 val = pt_2[i]
 
                 checksum_pt_2 += val * i if val != "." else 0
-
-            print(f"pt_1_res: {checksum_pt_1}")
-            print(f"pt_2_res: {checksum_pt_2}")
 
             return (str(checksum_pt_1), str(checksum_pt_2))

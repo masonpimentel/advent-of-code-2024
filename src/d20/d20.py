@@ -1,9 +1,8 @@
 from sys import setrecursionlimit, maxsize
-
 from os.path import join
+from base.day import Day
 
-
-class Day20:
+class Day20(Day):
     def solve(self):
         setrecursionlimit(10**6)
 
@@ -130,8 +129,5 @@ class Day20:
 
                             if cheat_adv >= THRESHOLD:
                                 pt_2_res += 1
-
-            print(f"pt_1_res: {pt_1_res}")
-            print(f"pt_2_res: {pt_2_res}")
 
             return (str(pt_1_res), str(pt_2_res))

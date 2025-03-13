@@ -19,15 +19,27 @@ Join my leaderboard! https://adventofcode.com/2024/leaderboard/private: `4780152
 
 #### Mac
 
-`PYTHONPATH="src" pipenv run pytest -s test`
+Use `run-all.sh`
 
 #### Windows
 
-`$env:PYTHONPATH="src"; pipenv run pytest -s test`
+Use `run-all.ps1`
 
 ### Formatting
 
 CI will check that all files are formatted according to `black`
 
 To ensure CI will pass, run `pipenv run black --check .`
+
+### MyPy
+
+`pipenv run mypy src/d01`
+
+### Pylint
+
+`pipenv run pylint src/d01/d01.py`
+
+### Coverage
+
+`pipenv run coverage report`
 

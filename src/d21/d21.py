@@ -1,8 +1,8 @@
 from sys import maxsize
 from os.path import join
+from base.day import Day
 
-
-class Day21:
+class Day21(Day):
     def __init__(self):
         self.number_pad = [
             ["7", "8", "9"],
@@ -277,8 +277,6 @@ class Day21:
 
     def solve(self) -> str:
         pt_1_res = self.get_complexity(3)
-        print(f"pt_1_res: {pt_1_res}")
         pt_2_res = self.get_complexity(26)
-        print(f"pt_2_res: {pt_2_res}")
 
         return (pt_1_res, pt_2_res)

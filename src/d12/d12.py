@@ -1,11 +1,11 @@
 from collections import deque
-
 from os.path import join
+from base.day import Day
 
 TOMBSTONE = "."
 
 
-class Day12:
+class Day12(Day):
     def solve(self):
         with open(join("src", "d12", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
@@ -206,8 +206,5 @@ class Day12:
                         res = explore_region_pt_2(row, col, v, rows, cols)
 
                         pt_2_res += res
-
-            print(f"pt_1_res: {pt_1_res}")
-            print(f"pt_2_res: {pt_2_res}")
 
             return (str(pt_1_res), str(pt_2_res))

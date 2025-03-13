@@ -1,7 +1,7 @@
 from os.path import join
+from base.day import Day
 
-
-class Day07:
+class Day07(Day):
     def __init__(self):
         self.pt_1_res = ""
         self.pt_2_res = ""
@@ -38,7 +38,6 @@ class Day07:
                 i += 1
 
             self.pt_1_res = str(pt_1_res)
-            print(f"pt_1_res: {pt_1_res}")
 
         with open(join("src", "d07", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
@@ -74,6 +73,5 @@ class Day07:
                 i += 1
 
             self.pt_2_res = str(pt_2_res)
-            print(f"pt_2_res: {pt_2_res}")
 
         return (self.pt_1_res, self.pt_2_res)

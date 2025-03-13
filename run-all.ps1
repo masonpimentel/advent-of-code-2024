@@ -1,1 +1,1 @@
-$env:PYTHONPATH="src"; pipenv run pytest -s test
+pipenv run pytest -s test

@@ -1,10 +1,9 @@
 from re import search
 from sys import maxsize
-
 from os.path import join
+from base.day import Day
 
-
-class Day13:
+class Day13(Day):
     def solve(self):
         with open(join("src", "d13", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
@@ -87,7 +86,5 @@ class Day13:
                 res_pt_2 = cost(a_x, a_y, b_x, b_y, t_x, t_y, True)
                 pt_2_res += res_pt_2 if res_pt_2 < maxsize else 0
 
-            print(f"pt_1_res: {pt_1_res}")
-            print(f"pt_2_res: {pt_2_res}")
 
             return (str(pt_1_res), str(pt_2_res))

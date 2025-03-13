@@ -1,7 +1,7 @@
 from os.path import join
+from base.day import Day
 
-
-class Day25:
+class Day25(Day):
     def solve(self):
         with open(join("src", "d25", "input.txt"), encoding="utf-8") as f:
             self.keys: list[list[int]] = []
@@ -66,8 +66,5 @@ class Day25:
 
                 if fits:
                     pt_1_res += 1
-
-        print(f"pt_1_res: {pt_1_res}")
-        print(f"pt_2_res: NO_PT_2")
 
         return (str(pt_1_res), "NO_PT_2")

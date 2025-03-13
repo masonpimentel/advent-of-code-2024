@@ -1,9 +1,8 @@
 from collections import deque
-
 from os.path import join
+from base.day import Day
 
-
-class Day18:
+class Day18(Day):
     def solve(self):
         with open(join("src", "d18", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
@@ -49,7 +48,6 @@ class Day18:
                     seen.add(seen_tpl)
 
                     if grid_row == rows - 1 and grid_col == cols - 1:
-                        print(f"pt_1_res: {dis}")
                         return dis
 
                     for row_diff, col_diff in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
@@ -98,7 +96,6 @@ class Day18:
 
                     if trapped:
                         r = f"{row},{col}"
-                        print(f"pt_2_res: {r}")
                         return r
 
             pt_1_res = part_1(71, 71, 1024)
