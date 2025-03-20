@@ -18,8 +18,8 @@ class Day03(Day):
         return str(res)
 
     def solve(self) -> tuple[str, str]:
-        full_input = ""
-        disabling_input = ""
+        pt_1_res = ""
+        pt_2_res = ""
         is_add = True
         seq: list[str] = []
 
@@ -28,7 +28,7 @@ class Day03(Day):
 
             while line:
                 for i, c in enumerate(line):
-                    full_input += c
+                    pt_1_res += c
 
                     if line[i : i + 7] == "don't()":
                         is_add = False
@@ -38,10 +38,10 @@ class Day03(Day):
                         seq = seq[:-4]
 
                     if is_add:
-                        disabling_input += c
+                        pt_2_res += c
 
                     seq.append(c)
 
                 line = f.readline()
 
-        return (str(self.get_res(full_input)), str(self.get_res(disabling_input)))
+        return (str(self.get_res(pt_1_res)), str(self.get_res(pt_2_res)))

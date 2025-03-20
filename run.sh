@@ -12,7 +12,12 @@ Options:
   -h, --help        Show this help message and exit.
 
 Example:
-  ${0##*/} 04
+  ${0##*/}
+  Runs all days
+
+Example:
+  ${0##*/} 04 
+  Runs Day 04
 EOF
 }
 
