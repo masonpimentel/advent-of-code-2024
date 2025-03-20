@@ -1,158 +1,143 @@
+"""Day 4"""
+
 from os.path import join
+from enum import Enum
 from base.day import Day
+from helpers import get_grid
+
+
+class DIRECTION(Enum):
+    """8 possible directions"""
+
+    UP = 0
+    UP_RIGHT = 1
+    RIGHT = 2
+    DOWN_RIGHT = 3
+    DOWN = 4
+    DOWN_LEFT = 5
+    LEFT = 6
+    UP_LEFT = 7
+
 
 class Day04(Day):
-    def solve(self):
-        with open(join("src", "d04", "input.txt"), encoding="utf-8") as f:
-            line = f.readline()
+    """Day 4 solver"""
 
-            mat: list[list[str]] = []
+    def __init__(self) -> None:
+        self.mat: list[list[str]] = []
+        self.rows = 0
+        self.cols = 0
 
-            while line:
-                mat.append([c for c in line])
+    def new_row_and_col(self, row: int, col: int, d: DIRECTION) -> tuple[int, int]:
+        new_row = row
+        new_col = col
+        match d:
+            case DIRECTION.UP:
+                new_row = row - 1
+            case DIRECTION.UP_RIGHT:
+                new_row = row - 1
+                new_col = col + 1
+            case DIRECTION.RIGHT:
+                new_col = col + 1
+            case DIRECTION.DOWN_RIGHT:
+                new_row = row + 1
+                new_col = col + 1
+            case DIRECTION.DOWN:
+                new_row = row + 1
+            case DIRECTION.DOWN_LEFT:
+                new_row = row + 1
+                new_col = col - 1
+            case DIRECTION.LEFT:
+                new_col = col - 1
+            case DIRECTION.UP_LEFT:
+                new_row = row - 1
+                new_col = col - 1
 
-                line = f.readline()
+        return (new_row, new_col)
 
-                if line:
-                    mat[-1] = mat[-1][:-1]
+    def search(self, row: int, col: int, looking_for: str, d: DIRECTION) -> bool:
+        if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
+            return False
 
-            rows = len(mat)
-            cols = len(mat[0])
+        if self.mat[row][col] != looking_for:
+            return False
 
-            def new_row_and_col(row: int, col: int, d: int) -> tuple[int, int]:
-                new_row = row
-                new_col = col
-                match d:
-                    case 0:
-                        new_row = row - 1
-                    case 1:
-                        new_row = row - 1
-                        new_col = col + 1
-                    case 2:
-                        new_col = col + 1
-                    case 3:
-                        new_row = row + 1
-                        new_col = col + 1
-                    case 4:
-                        new_row = row + 1
-                    case 5:
-                        new_row = row + 1
-                        new_col = col - 1
-                    case 6:
-                        new_col = col - 1
-                    case 7:
-                        new_row = row - 1
-                        new_col = col - 1
+        new_row, new_col = self.new_row_and_col(row, col, d)
 
-                return (new_row, new_col)
+        if looking_for == "M":
+            return self.search(new_row, new_col, "A", d)
+        if looking_for == "A":
+            return self.search(new_row, new_col, "S", d)
 
-            # dir
-            # 0 = up
-            # 1 = up-right
-            # 2 = right
-            # 3 = down-right
-            # 4 = down
-            # 5 = down-left
-            # 6 = left
-            # 7 = up-left
-            def search(row: int, col: int, looking_for: str, dir: int) -> bool:
-                if row < 0 or row >= rows or col < 0 or col >= cols:
-                    return False
+        return True
 
-                if mat[row][col] != looking_for:
-                    return False
+    def count_words(self, row: int, col: int) -> int:
+        if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
+            return 0
 
-                new_row, new_col = new_row_and_col(row, col, dir)
+        if self.mat[row][col] != "X":
+            return 0
 
-                if looking_for == "M":
-                    return search(new_row, new_col, "A", dir)
-                elif looking_for == "A":
-                    return search(new_row, new_col, "S", dir)
-                else:
-                    return True
+        res = 0
+        for d in DIRECTION:
+            new_row, new_col = self.new_row_and_col(row, col, d)
 
-            def count_words(row: int, col: int) -> int:
-                if row < 0 or row >= rows or col < 0 or col >= cols:
-                    return 0
+            if self.search(new_row, new_col, "M", d):
+                res += 1
 
-                if mat[row][col] != "X":
-                    return 0
+        return res
 
-                res = 0
-                for d in range(8):
-                    new_row, new_col = new_row_and_col(row, col, d)
+    def check_pattern(
+        self, row: int, col: int, pattern: tuple[str, str, str, str]
+    ) -> bool:
+        return (
+            self.mat[row][col] == pattern[0]
+            and self.mat[row][col + 2] == pattern[1]
+            and self.mat[row + 2][col] == pattern[2]
+            and self.mat[row + 2][col + 2] == pattern[3]
+        )
 
-                    if search(new_row, new_col, "M", d):
+    def part_one(self) -> str:
+        res = 0
+        for row in range(self.rows):
+            for col in range(self.cols):
+                res += self.count_words(row, col)
+
+        return str(res)
+
+    def part_two(self) -> str:
+        patterns = [
+            # M S
+            #  A
+            # M S
+            ("M", "S", "M", "S"),
+            # M M
+            #  A
+            # S S
+            ("M", "M", "S", "S"),
+            # S M
+            #  A
+            # S M
+            ("S", "M", "S", "M"),
+            # S S
+            #  A
+            # M M
+            ("S", "S", "M", "M"),
+        ]
+
+        res = 0
+        for row in range(self.rows - 2):
+            for col in range(self.cols - 2):
+                if self.mat[row + 1][col + 1] == "A":
+                    if any(self.check_pattern(row, col, p) for p in patterns):
                         res += 1
 
-                return res
+        return str(res)
 
-            def part_one() -> str:
-                res = 0
-                for row in range(rows):
-                    for col in range(cols):
-                        res += count_words(row, col)
+    def solve(self) -> tuple[str, str]:
+        with open(join("src", "d04", "input.txt"), encoding="utf-8") as f:
+            self.mat, self.rows, self.cols = get_grid(f)
 
-                return str(res)
+        pt_1_res = self.part_one()
+        pt_2_res = self.part_two()
 
-            def part_two() -> str:
-                # MMMSXXMASM
-
-                res = 0
-                for row in range(rows - 2):
-                    for col in range(cols - 2):
-                        if mat[row + 1][col + 1] == "A":
-                            if (
-                                (
-                                    mat[row][col] == "M"
-                                    and mat[row][col + 2] == "S"
-                                    and mat[row + 2][col] == "M"
-                                    and mat[row + 2][col + 2] == "S"
-                                )
-                                or (
-                                    (
-                                        mat[row][col] == "M"
-                                        and mat[row][col + 2] == "M"
-                                        and mat[row + 2][col] == "S"
-                                        and mat[row + 2][col + 2] == "S"
-                                    )
-                                )
-                                or (
-                                    (
-                                        mat[row][col] == "S"
-                                        and mat[row][col + 2] == "M"
-                                        and mat[row + 2][col] == "S"
-                                        and mat[row + 2][col + 2] == "M"
-                                    )
-                                )
-                                or (
-                                    mat[row][col] == "S"
-                                    and mat[row][col + 2] == "S"
-                                    and mat[row + 2][col] == "M"
-                                    and mat[row + 2][col + 2] == "M"
-                                )
-                            ):
-                                res += 1
-
-                return str(res)
-
-            pt1 = part_one()
-            pt2 = part_two()
-
-            return (pt1, pt2)
-
-        # M S
-        #  A
-        # M S
-
-        # M M
-        #  A
-        # S S
-
-        # S M
-        #  A
-        # S M
-
-        # S S
-        #  A
-        # M M
+        return (pt_1_res, pt_2_res)
