@@ -1,124 +1,140 @@
+"""Day 6"""
+
 from os.path import join
+from multiprocessing import Pool
 from base.day import Day
+from helpers import get_grid
+
 
 class Day06(Day):
-    def solve(self):
+    """Day 6 solver"""
+
+    def __init__(self) -> None:
+        self.grid: list[list[str]] = []
+        self.pt_1_positions: list[list[str]] = []
+        self.rows = -1
+        self.cols = -1
+        self.start_row = -1
+        self.start_col = -1
+
+    def make_move(
+        self, row_pos: int, col_pos: int, direc: str
+    ) -> tuple[bool, int, int, str]:
+        breakout = (True, -1, -1, "")
+        new_row = row_pos
+        new_col = col_pos
+        new_direc = direc
+
+        match direc:
+            case "up":
+                if row_pos == 0:
+                    return breakout
+
+                if self.grid[row_pos - 1][col_pos] == "#":
+                    new_direc = "right"
+                else:
+                    new_row -= 1
+            case "right":
+                if col_pos == self.cols - 1:
+                    return breakout
+
+                if self.grid[row_pos][col_pos + 1] == "#":
+                    new_direc = "down"
+                else:
+                    new_col += 1
+            case "down":
+                if row_pos == self.rows - 1:
+                    return breakout
+
+                if self.grid[row_pos + 1][col_pos] == "#":
+                    new_direc = "left"
+                else:
+                    new_row += 1
+            case "left":
+                if col_pos == 0:
+                    return breakout
+
+                if self.grid[row_pos][col_pos - 1] == "#":
+                    new_direc = "up"
+                else:
+                    new_col -= 1
+
+        return (False, new_row, new_col, new_direc)
+
+    def run_simulation(
+        self, row_pos: int, col_pos: int, direc: str, set_positions: bool
+    ) -> bool:
+        seen: dict[int, dict[int, set[str]]] = {}
+
+        while True:
+            if (
+                row_pos in seen
+                and col_pos in seen[row_pos]
+                and direc in seen[row_pos][col_pos]
+            ):
+                return True
+
+            if set_positions:
+                self.pt_1_positions[row_pos][col_pos] = "V"
+
+            is_breakout, new_row, new_col, new_direc = self.make_move(
+                row_pos, col_pos, direc
+            )
+
+            if is_breakout:
+                break
+
+            if row_pos not in seen:
+                seen[row_pos] = {}
+            if col_pos not in seen[row_pos]:
+                seen[row_pos][col_pos] = set()
+            seen[row_pos][col_pos].add(direc)
+
+            row_pos = new_row
+            col_pos = new_col
+            direc = new_direc
+
+        return False
+
+    def process_cell(self, args: tuple[int, int, str]) -> int:
+        row, col, direc = args
+        if self.grid[row][col] == "." and (
+            row != self.start_row or col != self.start_col
+        ):
+            self.grid[row][col] = "#"
+            res = self.run_simulation(self.start_row, self.start_col, direc, False)
+            self.grid[row][col] = "."
+            return 1 if res else 0
+        return 0
+
+    def solve(self) -> tuple[str, str]:
         with open(join("src", "d06", "input.txt"), encoding="utf-8") as f:
-            line = f.readline()
+            self.grid, self.rows, self.cols = get_grid(f)
 
-            grid: list[list[str]] = []
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if self.grid[row][col] == "^":
+                    self.start_row = row
+                    self.start_col = col
 
-            while line:
-                row = [c for c in line]
+        direc = "up"
 
-                if row[-1] == "\n":
-                    row = row[:-1]
+        self.pt_1_positions = [["."] * self.cols for _ in range(self.rows)]
+        self.run_simulation(self.start_row, self.start_col, direc, True)
+        pt_1_res = 0
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if self.pt_1_positions[row][col] == "V":
+                    pt_1_res += 1
 
-                grid.append(row)
+        with Pool() as pool:
+            indices = [
+                (row, col, direc)
+                for row in range(self.rows)
+                for col in range(self.cols)
+            ]
+            results = pool.map(self.process_cell, indices)
 
-                line = f.readline()
+        pt_2_res = sum(results)
 
-            rows = len(grid)
-            cols = len(grid[0])
-
-            orig_grid: list[list[str]] = []
-            for row in range(rows):
-                orig_grid.append(grid[row][:])
-
-            row_pos = -1
-            col_pos = -1
-            for row in range(rows):
-                for col in range(cols):
-                    if grid[row][col] == "^":
-                        row_pos = row
-                        col_pos = col
-
-            row_cannot = row_pos
-            col_cannot = col_pos
-            direc = "up"
-
-            positions: list[list[str]] = [["."] * cols for _ in range(rows)]
-
-            def run_simulation(
-                row_pos: int, col_pos: int, direc: str, set_positions: bool
-            ) -> bool:
-                seen = {}
-
-                while True:
-                    if (
-                        row_pos in seen
-                        and col_pos in seen[row_pos]
-                        and direc in seen[row_pos][col_pos]
-                    ):
-                        return True
-
-                    if set_positions:
-                        positions[row_pos][col_pos] = "V"
-                    new_row = row_pos
-                    new_col = col_pos
-                    new_direc = direc
-                    match direc:
-                        case "up":
-                            if row_pos == 0:
-                                break
-
-                            if grid[row_pos - 1][col_pos] == "#":
-                                new_direc = "right"
-                            else:
-                                new_row -= 1
-                        case "right":
-                            if col_pos == cols - 1:
-                                break
-
-                            if grid[row_pos][col_pos + 1] == "#":
-                                new_direc = "down"
-                            else:
-                                new_col += 1
-                        case "down":
-                            if row_pos == rows - 1:
-                                break
-
-                            if grid[row_pos + 1][col_pos] == "#":
-                                new_direc = "left"
-                            else:
-                                new_row += 1
-                        case "left":
-                            if col_pos == 0:
-                                break
-
-                            if grid[row_pos][col_pos - 1] == "#":
-                                new_direc = "up"
-                            else:
-                                new_col -= 1
-
-                    if row_pos not in seen:
-                        seen[row_pos] = {}
-                    if col_pos not in seen[row_pos]:
-                        seen[row_pos][col_pos] = set()
-                    seen[row_pos][col_pos].add(direc)
-
-                    row_pos = new_row
-                    col_pos = new_col
-                    direc = new_direc
-
-                return False
-
-            run_simulation(row_pos, col_pos, direc, True)
-            pt_1_res = 0
-            pt_2_res = 0
-            for row in range(rows):
-                for col in range(cols):
-                    if positions[row][col] == "V":
-                        pt_1_res += 1
-
-                    if grid[row][col] == "." and (
-                        row != row_cannot or col != col_cannot
-                    ):
-                        grid[row][col] = "#"
-                        res = run_simulation(row_pos, col_pos, direc, False)
-                        if res:
-                            pt_2_res += 1
-                        grid[row][col] = "."
-
-
-            return (str(pt_1_res), str(pt_2_res))
+        return (str(pt_1_res), str(pt_2_res))
