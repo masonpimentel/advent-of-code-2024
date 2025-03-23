@@ -1,77 +1,47 @@
+"""Day 7"""
+
 from os.path import join
 from base.day import Day
 
+
 class Day07(Day):
-    def __init__(self):
-        self.pt_1_res = ""
-        self.pt_2_res = ""
+    """Day 7 solver"""
 
-    def solve(self):
-        with open(join("src", "d07", "input.txt"), encoding="utf-8") as f:
-            line = f.readline()
+    def rec(self, tot: int, cur: int, vals: list[int], combine: bool) -> bool:
+        if len(vals) == 0:
+            return tot == cur
 
-            def rec(tot: int, cur: int, vals: list[int]) -> bool:
-                if len(vals) == 0:
-                    return tot == cur
+        # add
+        if self.rec(tot, cur + vals[0], vals[1:], combine):
+            return True
+        # mul
+        if self.rec(tot, cur * vals[0], vals[1:], combine):
+            return True
+        # combine
+        if combine and self.rec(tot, int(str(cur) + str(vals[0])), vals[1:], combine):
+            return True
 
-                # add
-                if rec(tot, cur + vals[0], vals[1:]):
-                    return True
-                # mul
-                if rec(tot, cur * vals[0], vals[1:]):
-                    return True
+        return False
 
-                return False
-
-            pt_1_res = 0
-            i = 0
-            while line:
-                tot, vals = line.split(": ")
-
-                tot = int(tot)
-                vals = list(map(lambda x: int(x), vals.split(" ")))
-
-                if rec(tot, vals[0], vals[1:]):
-                    pt_1_res += tot
-
-                line = f.readline()
-                i += 1
-
-            self.pt_1_res = str(pt_1_res)
+    def solve(self) -> tuple[str, str]:
+        calibrations: list[tuple[int, list[int]]] = []
 
         with open(join("src", "d07", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
 
-            def rec(tot: int, cur: int, vals: list[int]) -> bool:
-                if len(vals) == 0:
-                    return tot == cur
-
-                # add
-                if rec(tot, cur + vals[0], vals[1:]):
-                    return True
-                # mul
-                if rec(tot, cur * vals[0], vals[1:]):
-                    return True
-                # combine
-                if rec(tot, int(str(cur) + str(vals[0])), vals[1:]):
-                    return True
-
-                return False
-
-            pt_2_res = 0
-            i = 0
             while line:
                 tot, vals = line.split(": ")
-
-                tot = int(tot)
-                vals = list(map(lambda x: int(x), vals.split(" ")))
-
-                if rec(tot, vals[0], vals[1:]):
-                    pt_2_res += tot
+                calibrations.append((int(tot), [int(x) for x in vals.split(" ")]))
 
                 line = f.readline()
-                i += 1
 
-            self.pt_2_res = str(pt_2_res)
+        pt_1_res = 0
+        pt_2_res = 0
+        for calib_tot, calib_vals in calibrations:
+            if self.rec(calib_tot, calib_vals[0], calib_vals[1:], False):
+                pt_1_res += calib_tot
 
-        return (self.pt_1_res, self.pt_2_res)
+            if self.rec(calib_tot, calib_vals[0], calib_vals[1:], True):
+                pt_2_res += calib_tot
+
+        return (str(pt_1_res), str(pt_2_res))
