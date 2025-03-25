@@ -1,89 +1,119 @@
+"""Day 9"""
+
 from collections import deque
-import sys
 from os.path import join
 from base.day import Day
 
 
+# pylint: disable=R0903
+class Block:
+    """Part 2: Blocks which can be within Slots"""
+
+    def __init__(self, block_id: int, size: int) -> None:
+        self.id = block_id
+        self.size = size
+
+
+class Slot:
+    """Part 2: Slots of memory"""
+
+    def __init__(self, free: int = 0, block: Block | None = None) -> None:
+        self._free = free
+        self._blocks: list[Block] = [block] if block else []
+
+    @property
+    def free(self) -> int:
+        return self._free
+
+    @property
+    def blocks(self) -> list[Block]:
+        return self._blocks
+
+    def has_free(self, size: int) -> bool:
+        return self._free >= size
+
+    def fill(self, block: Block) -> None:
+        self._free -= block.size
+        self._blocks.append(block)
+
+    def clear(self) -> None:
+        if self._blocks:
+            self._free += self._blocks[0].size
+            self._blocks.clear()
+
+
 class Day09(Day):
-    def solve(self):
+    """Day 9 solver"""
+
+    def get_pt1_res(self, dq: deque[str]) -> str:
+        blocks: list[str] = []
+
+        while len(dq) > 0:
+            a_val = dq.popleft()
+            if a_val != ".":
+                blocks.append(a_val)
+            else:
+                blocks.append(dq.pop())
+
+            while len(dq) > 0 and dq[-1] == ".":
+                dq.pop()
+
+        res = 0
+        for i, block in enumerate(blocks):
+            res += int(block) * i
+
+        return str(res)
+
+    def get_pt2_res(self, slots: list[Slot]) -> str:
+        l = len(slots)
+        for id_idx in range(l - 2, -1, -2):
+            block_slot = slots[id_idx]
+            block = block_slot.blocks[0]
+            for space_idx in range(1, id_idx, 2):
+                space_slot = slots[space_idx]
+                if space_slot.has_free(block.size):
+                    space_slot.fill(block)
+                    block_slot.clear()
+                    break
+
+        res = 0
+        ptr = 0
+        for slot in slots:
+            for block in slot.blocks:
+                for _ in range(block.size):
+                    to_add = block.id * ptr
+                    res += to_add
+                    ptr += 1
+
+            for _ in range(slot.free):
+                ptr += 1
+
+        return str(res)
+
+    def solve(self) -> tuple[str, str]:
         with open(join("src", "d09", "input.txt"), encoding="utf-8") as f:
-            input = f.readline()
+            line = f.readline()
 
-            q: list[str] = deque()
-            pt_2: list[int] = []
+            pt_1_dq: deque[str] = deque()
+            pt_2_slots: list[Slot] = []
 
-            ptr = 0
-            max_id = 0
-            for i, c in enumerate(input):
+            for i, c in enumerate(line):
                 if i % 2 == 0:
-                    id = int(i) // 2
-                    max_id = max(max_id, id)
+                    block_id = int(i) // 2
 
                     repeat = int(c)
-                    gap = int(input[i + 1]) if i < len(input) - 1 else 0
+                    gap = int(line[i + 1]) if i < len(line) - 1 else 0
 
                     for _ in range(repeat):
-                        q.append(id)
-                        pt_2.append(id)
-                        ptr += 1
+                        pt_1_dq.append(str(block_id))
 
                     for _ in range(gap):
-                        q.append(".")
-                        pt_2.append(".")
-                        ptr += 1
+                        pt_1_dq.append(".")
 
-            pt_1: list[str] = []
-            while len(q) > 0:
+                    pt_2_slots.append(Slot(0, Block(block_id, repeat)))
+                    pt_2_slots.append(Slot(gap))
 
-                a_val = q.popleft()
-                if a_val != ".":
-                    pt_1.append(a_val)
-                else:
-                    pt_1.append(q.pop())
+        pt_1_res = self.get_pt1_res(pt_1_dq)
+        pt_2_res = self.get_pt2_res(pt_2_slots)
 
-                while len(q) > 0 and q[-1] == ".":
-                    q.pop()
-
-            checksum_pt_1 = 0
-            for i in range(len(pt_1)):
-                checksum_pt_1 += pt_1[i] * i
-
-            for id in range(max_id, -1, -1):
-                first_idx = sys.maxsize
-                last_idx = -sys.maxsize
-
-                for i in range(len(pt_2)):
-                    if pt_2[i] == id:
-                        first_idx = min(first_idx, i)
-                        last_idx = max(last_idx, i)
-
-                streak_needed = last_idx - first_idx + 1
-                streak_start = -1
-                streak_count = 0
-                for i in range(first_idx):
-                    if pt_2[i] != ".":
-                        streak_start = -1
-                        streak_count = 0
-                    else:
-                        if streak_start == -1:
-                            streak_start = i
-                        streak_count += 1
-
-                        if streak_count == streak_needed:
-                            for set_i in range(
-                                streak_start, streak_start + streak_count
-                            ):
-                                pt_2[set_i] = id
-
-                            for set_i in range(first_idx, last_idx + 1):
-                                pt_2[set_i] = "."
-
-                            break
-
-            checksum_pt_2 = 0
-            for i in range(len(pt_2)):
-                val = pt_2[i]
-
-                checksum_pt_2 += val * i if val != "." else 0
-
-            return (str(checksum_pt_1), str(checksum_pt_2))
+        return (str(pt_1_res), str(pt_2_res))
