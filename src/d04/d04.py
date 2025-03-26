@@ -20,7 +20,7 @@ class DIRECTION(Enum):
 
 
 class Day04(Day):
-    """Day 4 solver"""
+    """Ceres Search"""
 
     def __init__(self) -> None:
         self.mat: list[list[str]] = []

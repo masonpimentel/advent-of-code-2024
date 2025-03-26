@@ -43,7 +43,7 @@ class Slot:
 
 
 class Day09(Day):
-    """Day 9 solver"""
+    """Disk Fragmenter"""
 
     def get_pt1_res(self, dq: deque[str]) -> str:
         blocks: list[str] = []

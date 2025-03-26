@@ -4,7 +4,7 @@ from os.path import join
 from base.day import Day
 
 class Day02(Day):
-    """Day 2 solver"""
+    """Red-Nosed Reports"""
 
     def check_level(self, vals: list[int]) -> bool:
         is_safe = True

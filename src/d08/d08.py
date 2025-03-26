@@ -6,7 +6,7 @@ from helpers import get_grid
 
 
 class Day08(Day):
-    """Day 8 solver"""
+    """Resonant Collinearity"""
 
     def __init__(self) -> None:
         self.grid: list[list[str]] = []

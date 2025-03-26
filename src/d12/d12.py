@@ -1,210 +1,181 @@
+"""Day 12"""
+
 from collections import deque
+from enum import Enum
 from os.path import join
 from base.day import Day
+from helpers import get_grid
 
-TOMBSTONE = "."
+
+class DIRECTION(Enum):
+    """4 possible directions"""
+
+    UP = 0
+    RIGHT = 1
+    DOWN = 2
+    LEFT = 3
 
 
 class Day12(Day):
-    def solve(self):
-        with open(join("src", "d12", "input.txt"), encoding="utf-8") as f:
-            line = f.readline()
+    """Garden Groups"""
 
-            untouched_grid: list[list[str]] = []
-            grid: list[list[str]] = []
-            grid_pt_2: list[list[str]] = []
+    TOMBSTONE = "."
 
-            while line:
-                row = [c for c in line]
+    def __init__(self) -> None:
+        self.pt_1_grid: list[list[str]] = []
+        self.pt_2_grid: list[list[str]] = []
+        self.orig_grid: list[list[str]] = []
+        self.rows = -1
+        self.cols = -1
 
-                if row[-1] == "\n":
-                    row = row[:-1]
+    def explore_pt_1(self, row: int, col: int, plant: str) -> int:
+        q: deque[tuple[int, int]] = deque([(row, col)])
 
-                grid.append(row)
-                grid_pt_2.append(row[:])
-                untouched_grid.append(row[:])
+        area = 0
+        perim = 0
 
-                line = f.readline()
+        while len(q) > 0:
+            check_row, check_col = q.popleft()
 
-            rows = len(grid)
-            cols = len(grid[0])
+            if self.pt_1_grid[check_row][check_col] != plant:
+                continue
 
-            def explore_region(
-                row: int, col: int, type: str, rows: int, cols: int
-            ) -> int:
+            self.pt_1_grid[check_row][check_col] = self.TOMBSTONE
+            area += 1
 
-                q: list[tuple[int, int]] = deque([(row, col)])
+            perim += 4
+            for row_diff, col_diff in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+                add_row = check_row + row_diff
+                add_col = check_col + col_diff
 
-                area = 0
-                perim = 0
+                if self.rows > add_row >= 0 and self.cols > add_col >= 0:
+                    if self.orig_grid[add_row][add_col] == plant:
+                        perim -= 1
 
-                while len(q) > 0:
-                    check_row, check_col = q.popleft()
+                    q.append((add_row, add_col))
 
-                    if grid[check_row][check_col] != type:
-                        continue
+        return area * perim
 
-                    grid[check_row][check_col] = TOMBSTONE
-                    area += 1
+    def explore_pt_2(self, row: int, col: int, plant: str) -> int:
+        q: deque[tuple[int, int]] = deque([(row, col)])
 
-                    perim += 4
-                    for row_diff, col_diff in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-                        add_row = check_row + row_diff
-                        add_col = check_col + col_diff
+        area = 0
+        sides = 0
 
-                        if (
-                            add_row >= 0
-                            and add_row < rows
-                            and add_col >= 0
-                            and add_col < cols
-                        ):
-                            if untouched_grid[add_row][add_col] == type:
-                                perim -= 1
+        seen: set[tuple[int, int, DIRECTION]] = set()
 
-                            q.append((add_row, add_col))
-
-                return area * perim
-
-            def explore_region_pt_2(
-                row: int, col: int, type: str, rows: int, cols: int
-            ) -> int:
-                q: list[tuple[int, int]] = deque([(row, col)])
-
-                area = 0
-                sides = 0
-
-                seen: set[tuple[int, str]] = set()
-
-                while len(q) > 0:
-                    check_row, check_col = q.popleft()
-
-                    if (
-                        check_row < 0
-                        or check_row >= rows
-                        or check_col < 0
-                        or check_col >= cols
+        def mark_horizontal(
+            boundary: int, check: bool, direc: DIRECTION, check_row: int, check_col: int
+        ) -> int:
+            if (check or self.orig_grid[boundary][check_col] != plant) and (
+                check_row,
+                check_col,
+                direc,
+            ) not in seen:
+                for seen_col in range(check_col - 1, -1, -1):
+                    if self.orig_grid[check_row][seen_col] == plant and (
+                        check or self.orig_grid[boundary][seen_col] != plant
                     ):
-                        continue
+                        seen.add((check_row, seen_col, direc))
+                    else:
+                        break
+                for seen_col in range(check_col + 1, self.cols):
+                    if self.orig_grid[check_row][seen_col] == plant and (
+                        check or self.orig_grid[boundary][seen_col] != plant
+                    ):
+                        seen.add((check_row, seen_col, direc))
+                    else:
+                        break
+                return 1
 
-                    if grid_pt_2[check_row][check_col] != type:
-                        continue
+            return 0
 
-                    grid_pt_2[check_row][check_col] = TOMBSTONE
-                    area += 1
+        def mark_vertical(
+            boundary: int, check: bool, direc: DIRECTION, check_row: int, check_col: int
+        ) -> int:
+            if (check or self.orig_grid[check_row][boundary] != plant) and (
+                check_row,
+                check_col,
+                direc,
+            ) not in seen:
+                for seen_row in range(check_row - 1, -1, -1):
+                    if self.orig_grid[seen_row][check_col] == plant and (
+                        check or self.orig_grid[seen_row][boundary] != plant
+                    ):
+                        seen.add((seen_row, check_col, direc))
+                    else:
+                        break
+                for seen_row in range(check_row + 1, self.rows):
+                    if self.orig_grid[seen_row][check_col] == plant and (
+                        check or self.orig_grid[seen_row][boundary] != plant
+                    ):
+                        seen.add((seen_row, check_col, direc))
+                    else:
+                        break
+                return 1
 
-                    for row_diff, col_diff in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-                        q.append((check_row + row_diff, check_col + col_diff))
+            return 0
 
-                    # up
-                    up_row = check_row - 1
-                    no_up_row = up_row < 0
-                    if (no_up_row or untouched_grid[up_row][check_col] != type) and (
-                        check_row,
-                        check_col,
-                        "up",
-                    ) not in seen:
-                        for seen_col in range(check_col - 1, -1, -1):
-                            if untouched_grid[check_row][seen_col] == type and (
-                                no_up_row or untouched_grid[up_row][seen_col] != type
-                            ):
-                                seen.add((check_row, seen_col, "up"))
-                            else:
-                                break
-                        for seen_col in range(check_col + 1, cols):
-                            if untouched_grid[check_row][seen_col] == type and (
-                                no_up_row or untouched_grid[up_row][seen_col] != type
-                            ):
-                                seen.add((check_row, seen_col, "up"))
-                            else:
-                                break
-                        sides += 1
+        while len(q) > 0:
+            check_row, check_col = q.popleft()
 
-                    # right
-                    right_col = check_col + 1
-                    no_right_col = right_col >= cols
-                    if (
-                        no_right_col or untouched_grid[check_row][right_col] != type
-                    ) and (check_row, check_col, "right") not in seen:
-                        for seen_row in range(check_row - 1, -1, -1):
-                            if untouched_grid[seen_row][check_col] == type and (
-                                no_right_col
-                                or untouched_grid[seen_row][right_col] != type
-                            ):
-                                seen.add((seen_row, check_col, "right"))
-                            else:
-                                break
-                        for seen_row in range(check_row + 1, rows):
-                            if untouched_grid[seen_row][check_col] == type and (
-                                no_right_col
-                                or untouched_grid[seen_row][right_col] != type
-                            ):
-                                seen.add((seen_row, check_col, "right"))
-                            else:
-                                break
-                        sides += 1
+            if (
+                check_row < 0
+                or check_row >= self.rows
+                or check_col < 0
+                or check_col >= self.cols
+            ):
+                continue
 
-                    # down
-                    down_row = check_row + 1
-                    no_down_row = down_row >= rows
-                    if (
-                        no_down_row or untouched_grid[down_row][check_col] != type
-                    ) and (check_row, check_col, "down") not in seen:
-                        for seen_col in range(check_col - 1, -1, -1):
-                            if untouched_grid[check_row][seen_col] == type and (
-                                no_down_row
-                                or untouched_grid[down_row][seen_col] != type
-                            ):
-                                seen.add((check_row, seen_col, "down"))
-                            else:
-                                break
-                        for seen_col in range(check_col + 1, cols):
-                            if untouched_grid[check_row][seen_col] == type and (
-                                no_down_row
-                                or untouched_grid[down_row][seen_col] != type
-                            ):
-                                seen.add((check_row, seen_col, "down"))
-                            else:
-                                break
-                        sides += 1
+            if self.pt_2_grid[check_row][check_col] != plant:
+                continue
 
-                    # left
-                    left_col = check_col - 1
-                    no_left_col = left_col < 0
-                    if (
-                        no_left_col or untouched_grid[check_row][left_col] != type
-                    ) and (check_row, check_col, "left") not in seen:
-                        for seen_row in range(check_row - 1, -1, -1):
-                            if untouched_grid[seen_row][check_col] == type and (
-                                no_left_col
-                                or untouched_grid[seen_row][left_col] != type
-                            ):
-                                seen.add((seen_row, check_col, "left"))
-                            else:
-                                break
-                        for seen_row in range(check_row + 1, rows):
-                            if untouched_grid[seen_row][check_col] == type and (
-                                no_left_col
-                                or untouched_grid[seen_row][left_col] != type
-                            ):
-                                seen.add((seen_row, check_col, "left"))
-                            else:
-                                break
-                        sides += 1
+            self.pt_2_grid[check_row][check_col] = self.TOMBSTONE
+            area += 1
 
-                return area * sides
+            for row_diff, col_diff in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+                q.append((check_row + row_diff, check_col + col_diff))
 
-            pt_1_res = 0
-            pt_2_res = 0
-            for row in range(rows):
-                for col in range(cols):
-                    v = grid[row][col]
+            boundary = check_row - 1
+            sides += mark_horizontal(
+                boundary, boundary < 0, DIRECTION.UP, check_row, check_col
+            )
 
-                    if v != TOMBSTONE:
-                        res = explore_region(row, col, v, rows, cols)
-                        pt_1_res += res
+            boundary = check_row + 1
+            sides += mark_horizontal(
+                boundary, boundary >= self.rows, DIRECTION.DOWN, check_row, check_col
+            )
 
-                        res = explore_region_pt_2(row, col, v, rows, cols)
+            boundary = check_col + 1
+            sides += mark_vertical(
+                boundary, boundary >= self.cols, DIRECTION.RIGHT, check_row, check_col
+            )
 
-                        pt_2_res += res
+            boundary = check_col - 1
+            sides += mark_vertical(
+                boundary, boundary < 0, DIRECTION.LEFT, check_row, check_col
+            )
 
-            return (str(pt_1_res), str(pt_2_res))
+        return area * sides
+
+    def solve(self) -> tuple[str, str]:
+        with open(join("src", "d12", "input.txt"), encoding="utf-8") as f:
+            self.orig_grid, self.rows, self.cols = get_grid(f)
+
+        self.pt_1_grid = [list(row) for row in self.orig_grid]
+        self.pt_2_grid = [list(row) for row in self.orig_grid]
+
+        pt_1_res = 0
+        pt_2_res = 0
+        for row in range(self.rows):
+            for col in range(self.cols):
+                v = self.orig_grid[row][col]
+
+                if v != self.TOMBSTONE:
+                    res = self.explore_pt_1(row, col, v)
+                    pt_1_res += res
+
+                    res = self.explore_pt_2(row, col, v)
+                    pt_2_res += res
+
+        return (str(pt_1_res), str(pt_2_res))
