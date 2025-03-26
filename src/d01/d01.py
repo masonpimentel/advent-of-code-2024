@@ -6,7 +6,7 @@ from base.day import Day
 
 # pylint: disable=R0903
 class Day01(Day):
-    """Day 1 solver"""
+    """Historian Hysteria"""
 
     def solve(self) -> tuple[str, str]:
         left: list[int] = []

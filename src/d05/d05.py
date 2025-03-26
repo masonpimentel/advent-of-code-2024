@@ -6,7 +6,7 @@ from base.day import Day
 
 
 class Day05(Day):
-    """Day 5 solver"""
+    """Print Queue"""
 
     def get_pt2_add(
         self, page_list: list[int], banned_lookup: dict[int, list[int]], mid_idx: int

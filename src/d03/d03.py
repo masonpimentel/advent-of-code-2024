@@ -6,7 +6,7 @@ from base.day import Day
 
 # pylint: disable=R0903
 class Day03(Day):
-    """Day 3 solver"""
+    """Mull It Over"""
 
     def get_res(self, input_str: str) -> str:
         res = 0

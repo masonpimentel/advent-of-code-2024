@@ -5,7 +5,7 @@ from base.day import Day
 
 
 class Day07(Day):
-    """Day 7 solver"""
+    """Bridge Repair"""
 
     def rec(self, tot: int, cur: int, vals: list[int], combine: bool) -> bool:
         if len(vals) == 0:
