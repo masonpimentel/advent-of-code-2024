@@ -45,7 +45,7 @@ class Slot:
 class Day09(Day):
     """Disk Fragmenter"""
 
-    def get_pt1_res(self, dq: deque[str]) -> str:
+    def get_pt_1_res(self, dq: deque[str]) -> str:
         blocks: list[str] = []
 
         while len(dq) > 0:
@@ -64,7 +64,7 @@ class Day09(Day):
 
         return str(res)
 
-    def get_pt2_res(self, slots: list[Slot]) -> str:
+    def get_pt_2_res(self, slots: list[Slot]) -> str:
         l = len(slots)
         for id_idx in range(l - 2, -1, -2):
             block_slot = slots[id_idx]
@@ -113,7 +113,7 @@ class Day09(Day):
                     pt_2_slots.append(Slot(0, Block(block_id, repeat)))
                     pt_2_slots.append(Slot(gap))
 
-        pt_1_res = self.get_pt1_res(pt_1_dq)
-        pt_2_res = self.get_pt2_res(pt_2_slots)
+        pt_1_res = self.get_pt_1_res(pt_1_dq)
+        pt_2_res = self.get_pt_2_res(pt_2_slots)
 
         return (str(pt_1_res), str(pt_2_res))
