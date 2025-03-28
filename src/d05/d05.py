@@ -8,7 +8,7 @@ from base.day import Day
 class Day05(Day):
     """Print Queue"""
 
-    def get_pt2_add(
+    def get_pt_2_add(
         self, page_list: list[int], banned_lookup: dict[int, list[int]], mid_idx: int
     ) -> int:
         count = Counter(page_list)
@@ -33,7 +33,7 @@ class Day05(Day):
 
         return new_order[mid_idx]
 
-    def get_pt1_pt2_res(
+    def get_pt_1_pt_2_res(
         self, page_list: list[int], banned_lookup: dict[int, list[int]]
     ) -> tuple[int, int]:
         pt_1_add = 0
@@ -54,7 +54,7 @@ class Day05(Day):
         if is_valid:
             pt_1_add += page_list[mid_idx]
         else:
-            pt_2_add += self.get_pt2_add(page_list, banned_lookup, mid_idx)
+            pt_2_add += self.get_pt_2_add(page_list, banned_lookup, mid_idx)
 
         return (pt_1_add, pt_2_add)
 
@@ -80,7 +80,7 @@ class Day05(Day):
         pt_1_res = 0
         pt_2_res = 0
         for page_list in page_lists:
-            adds = self.get_pt1_pt2_res(page_list, banned_lookup)
+            adds = self.get_pt_1_pt_2_res(page_list, banned_lookup)
             pt_1_res += adds[0]
             pt_2_res += adds[1]
 
