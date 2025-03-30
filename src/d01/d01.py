@@ -2,13 +2,14 @@
 
 from collections import Counter
 from os.path import join
-from base.day import Day
+from base.day import Day, SolveInfo
+
 
 # pylint: disable=R0903
 class Day01(Day):
     """Historian Hysteria"""
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         left: list[int] = []
         right: list[int] = []
 
@@ -37,4 +38,4 @@ class Day01(Day):
             if val in right_counts:
                 pt_2_res += val * right_counts[val]
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))

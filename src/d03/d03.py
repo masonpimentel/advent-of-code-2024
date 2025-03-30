@@ -2,7 +2,8 @@
 
 from re import findall
 from os.path import join
-from base.day import Day
+from base.day import Day, SolveInfo
+
 
 # pylint: disable=R0903
 class Day03(Day):
@@ -17,7 +18,7 @@ class Day03(Day):
 
         return str(res)
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         pt_1_res = ""
         pt_2_res = ""
         is_add = True
@@ -44,4 +45,4 @@ class Day03(Day):
 
                 line = f.readline()
 
-        return (str(self.get_res(pt_1_res)), str(self.get_res(pt_2_res)))
+        return SolveInfo(str(self.get_res(pt_1_res)), str(self.get_res(pt_2_res)))

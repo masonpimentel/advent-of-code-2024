@@ -2,7 +2,7 @@
 
 from collections import defaultdict, Counter
 from os.path import join
-from base.day import Day
+from base.day import Day, SolveInfo
 
 
 class Day05(Day):
@@ -58,7 +58,7 @@ class Day05(Day):
 
         return (pt_1_add, pt_2_add)
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         with open(join("src", "d05", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
 
@@ -84,4 +84,4 @@ class Day05(Day):
             pt_1_res += adds[0]
             pt_2_res += adds[1]
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))
