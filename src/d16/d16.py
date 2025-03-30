@@ -1,120 +1,184 @@
+"""Day 16"""
+
 from heapq import heappop, heappush
 from os.path import join
+from typing import NamedTuple
+from enum import Enum
+from collections import defaultdict
 from base.day import Day
+from helpers import get_grid
+
+
+class DIRECTION(Enum):
+    """4 possible directions"""
+
+    NORTH = 0
+    EAST = 1
+    SOUTH = 2
+    WEST = 3
+
+
+class NewPosition(NamedTuple):
+    """Components of a new position"""
+
+    point_cost: int
+    row_diff: int
+    col_diff: int
+    new_direction: int
+
 
 class Day16(Day):
-    def solve(self):
+    """Reindeer Maze"""
+
+    NEW_POSITIONS: dict[int, list[NewPosition]] = {
+        DIRECTION.NORTH.value: [
+            NewPosition(1, -1, 0, DIRECTION.NORTH.value),
+            NewPosition(1000, 0, 0, DIRECTION.EAST.value),
+            NewPosition(2000, 0, 0, DIRECTION.SOUTH.value),
+            NewPosition(1000, 0, 0, DIRECTION.WEST.value),
+        ],
+        DIRECTION.EAST.value: [
+            NewPosition(1000, 0, 0, DIRECTION.NORTH.value),
+            NewPosition(1, 0, 1, DIRECTION.EAST.value),
+            NewPosition(1000, 0, 0, DIRECTION.SOUTH.value),
+            NewPosition(2000, 0, 0, DIRECTION.WEST.value),
+        ],
+        DIRECTION.SOUTH.value: [
+            NewPosition(2000, 0, 0, DIRECTION.NORTH.value),
+            NewPosition(1000, 0, 0, DIRECTION.EAST.value),
+            NewPosition(1, 1, 0, DIRECTION.SOUTH.value),
+            NewPosition(1000, 0, 0, DIRECTION.WEST.value),
+        ],
+        DIRECTION.WEST.value: [
+            NewPosition(1000, 0, 0, DIRECTION.NORTH.value),
+            NewPosition(2000, 0, 0, DIRECTION.EAST.value),
+            NewPosition(1000, 0, 0, DIRECTION.SOUTH.value),
+            NewPosition(1, 0, -1, DIRECTION.WEST.value),
+        ],
+    }
+
+    def __init__(self) -> None:
+        self.grid: list[list[str]] = []
+        self.rows = -1
+        self.cols = -1
+
+    def get_distance_from_start(
+        self, start_tpl: tuple[int, int]
+    ) -> list[list[defaultdict[int, int]]]:
+        res: list[list[defaultdict[int, int]]] = [
+            [defaultdict(lambda: -1) for _ in range(self.cols)]
+            for _ in range(self.rows)
+        ]
+
+        h: list[NewPosition] = [
+            NewPosition(0, start_tpl[0], start_tpl[1], DIRECTION.EAST.value)
+        ]
+
+        while len(h) > 0:
+            dist, cur_row, cur_col, d = heappop(h)
+
+            if (
+                cur_row < 0
+                or cur_row >= self.rows
+                or cur_col < 0
+                or cur_col >= self.cols
+            ):
+                continue
+
+            if res[cur_row][cur_col][d] > -1 or self.grid[cur_row][cur_col] == "#":
+                continue
+
+            res[cur_row][cur_col][d] = dist
+
+            for cost, row_diff, col_diff, new_dir in self.NEW_POSITIONS[d]:
+                heappush(
+                    h,
+                    NewPosition(
+                        dist + cost, cur_row + row_diff, cur_col + col_diff, new_dir
+                    ),
+                )
+
+        return res
+
+    def get_distance_from_end(
+        self, end_tpl: tuple[int, int]
+    ) -> list[list[defaultdict[int, int]]]:
+        res: list[list[defaultdict[int, int]]] = [
+            [defaultdict(lambda: -1) for _ in range(self.cols)]
+            for _ in range(self.rows)
+        ]
+
+        h: list[NewPosition] = [
+            NewPosition(0, end_tpl[0], end_tpl[1], start_d.value)
+            for start_d in DIRECTION
+        ]
+
+        while len(h) > 0:
+            dist, cur_row, cur_col, d = heappop(h)
+
+            if (
+                cur_row < 0
+                or cur_row >= self.rows
+                or cur_col < 0
+                or cur_col >= self.cols
+            ):
+                continue
+
+            if res[cur_row][cur_col][d] > -1 or self.grid[cur_row][cur_col] == "#":
+                continue
+
+            res[cur_row][cur_col][d] = dist
+
+            for cost, row_diff, col_diff, new_dir in self.NEW_POSITIONS[d]:
+                heappush(
+                    h,
+                    NewPosition(
+                        dist + cost, cur_row + row_diff, cur_col + col_diff, new_dir
+                    ),
+                )
+
+        return res
+
+    def solve(self) -> tuple[str, str]:
         with open(join("src", "d16", "input.txt"), encoding="utf-8") as f:
-            line = f.readline()
+            self.grid, self.rows, self.cols = get_grid(f)
 
-            grid: list[list[str]] = []
+        start_tpl = (-1, -1)
+        end_tpl = (-1, -1)
 
-            while line:
-                row = [c for c in line]
-                grid.append(row[:-1] if row[-1] == "\n" else row)
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if self.grid[row][col] == "S":
+                    start_tpl = (row, col)
+                elif self.grid[row][col] == "E":
+                    end_tpl = (row, col)
 
-                line = f.readline()
+        flip: dict[int, int] = {
+            DIRECTION.NORTH.value: DIRECTION.SOUTH.value,
+            DIRECTION.EAST.value: DIRECTION.WEST.value,
+            DIRECTION.SOUTH.value: DIRECTION.NORTH.value,
+            DIRECTION.WEST.value: DIRECTION.EAST.value,
+        }
 
-            rows = len(grid)
-            cols = len(grid[0])
+        from_start = self.get_distance_from_start(start_tpl)
+        from_end = self.get_distance_from_end(end_tpl)
 
-            start_tpl = None
-            end_tpl = None
+        path: list[list[int]] = [[0] * self.cols for _ in range(self.rows)]
 
-            for row in range(rows):
-                if start_tpl != None and end_tpl != None:
-                    break
-
-                for col in range(cols):
-                    if grid[row][col] == "S":
-                        start_tpl = (row, col)
-                    elif grid[row][col] == "E":
-                        end_tpl = (row, col)
-
-                    if start_tpl != None and end_tpl != None:
+        print(f"end_tpl {end_tpl}")
+        pt_1_res = min(from_start[end_tpl[0]][end_tpl[1]].values())
+        for row in range(self.rows):
+            for col in range(self.cols):
+                for d in DIRECTION:
+                    if (
+                        from_end[row][col][d.value]
+                        == pt_1_res - from_start[row][col][flip[d.value]]
+                    ):
+                        path[row][col] = 1
                         break
 
-            from_start: list[list[list[int]]] = [
-                [[-1] * 4 for _ in range(cols)] for _ in range(rows)
-            ]
+        pt_2_res = 0
+        for path_row in path:
+            pt_2_res += sum(path_row)
 
-            # (point cost, row_diff, col_diff, new direction)
-            # 0 = North, 1 = East, 2 = South, 3 = West
-            new_positions: dict[str, list[tuple[int, int, int, int]]] = {
-                0: [(1, -1, 0, 0), (1000, 0, 0, 1), (2000, 0, 0, 2), (1000, 0, 0, 3)],
-                1: [(1000, 0, 0, 0), (1, 0, 1, 1), (1000, 0, 0, 2), (2000, 0, 0, 3)],
-                2: [(2000, 0, 0, 0), (1000, 0, 0, 1), (1, 1, 0, 2), (1000, 0, 0, 3)],
-                3: [(1000, 0, 0, 0), (2000, 0, 0, 1), (1000, 0, 0, 2), (1, 0, -1, 3)],
-            }
-
-            flip: dict[int, int] = {0: 2, 1: 3, 2: 0, 3: 1}
-
-            start_row, start_col = start_tpl[0], start_tpl[1]
-            end_row, end_col = end_tpl[0], end_tpl[1]
-
-            h: list[tuple[int, int, int, int]] = [(0, start_row, start_col, 1)]
-
-            while len(h) > 0:
-                dist, cur_row, cur_col, d = heappop(h)
-
-                if cur_row < 0 or cur_row >= rows or cur_col < 0 or cur_col >= cols:
-                    continue
-
-                if (
-                    from_start[cur_row][cur_col][d] > -1
-                    or grid[cur_row][cur_col] == "#"
-                ):
-                    continue
-
-                from_start[cur_row][cur_col][d] = dist
-
-                for cost, row_diff, col_diff, new_dir in new_positions[d]:
-                    heappush(
-                        h,
-                        (dist + cost, cur_row + row_diff, cur_col + col_diff, new_dir),
-                    )
-
-            from_back_h: list[tuple[int, int, int, str]] = [
-                (0, end_row, end_col, start_d) for start_d in [0, 1, 2, 3]
-            ]
-            from_back: list[list[list[int]]] = [
-                [[-1] * 4 for _ in range(cols)] for _ in range(rows)
-            ]
-            path: list[list[int]] = [[0] * cols for _ in range(rows)]
-
-            while len(from_back_h) > 0:
-                dist, cur_row, cur_col, d = heappop(from_back_h)
-
-                if cur_row < 0 or cur_row >= rows or cur_col < 0 or cur_col >= cols:
-                    continue
-
-                if from_back[cur_row][cur_col][d] > -1 or grid[cur_row][cur_col] == "#":
-                    continue
-
-                from_back[cur_row][cur_col][d] = dist
-
-                for cost, row_diff, col_diff, new_dir in new_positions[d]:
-                    heappush(
-                        from_back_h,
-                        (dist + cost, cur_row + row_diff, cur_col + col_diff, new_dir),
-                    )
-
-            from_start_total = min(from_start[end_row][end_col])
-            for row in range(rows):
-                for col in range(cols):
-                    for d in [0, 1, 2, 3]:
-                        if (
-                            from_back[row][col][d]
-                            == from_start_total - from_start[row][col][flip[d]]
-                        ):
-                            path[row][col] = 1
-                            break
-
-            pt_2_res = 0
-            for row in path:
-                pt_2_res += sum(row)
-
-            pt_1_res = min(from_start[end_tpl[0]][end_tpl[1]])
-
-
-            return (str(pt_1_res), str(pt_2_res))
+        return (str(pt_1_res), str(pt_2_res))
