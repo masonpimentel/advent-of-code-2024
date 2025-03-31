@@ -1,7 +1,8 @@
 """Day 2"""
 
 from os.path import join
-from base.day import Day
+from base.day import Day, SolveInfo
+
 
 class Day02(Day):
     """Red-Nosed Reports"""
@@ -25,7 +26,7 @@ class Day02(Day):
 
         return is_safe
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         levels: list[list[int]] = []
 
         with open(join("src", "d02", "input.txt"), encoding="utf-8") as f:
@@ -50,4 +51,4 @@ class Day02(Day):
                         pt_2_res += 1
                         break
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))

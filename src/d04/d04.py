@@ -2,8 +2,18 @@
 
 from os.path import join
 from enum import Enum
-from base.day import Day
+from typing import NamedTuple
+from base.day import Day, SolveInfo
 from helpers import get_grid
+
+
+class Pattern(NamedTuple):
+    """Cross pattern"""
+
+    top_left: str
+    top_right: str
+    bottom_left: str
+    bottom_right: str
 
 
 class DIRECTION(Enum):
@@ -87,13 +97,13 @@ class Day04(Day):
         return res
 
     def check_pattern(
-        self, row: int, col: int, pattern: tuple[str, str, str, str]
+        self, row: int, col: int, pattern: Pattern
     ) -> bool:
         return (
-            self.mat[row][col] == pattern[0]
-            and self.mat[row][col + 2] == pattern[1]
-            and self.mat[row + 2][col] == pattern[2]
-            and self.mat[row + 2][col + 2] == pattern[3]
+            self.mat[row][col] == pattern.top_left
+            and self.mat[row][col + 2] == pattern.top_right
+            and self.mat[row + 2][col] == pattern.bottom_left
+            and self.mat[row + 2][col + 2] == pattern.bottom_right
         )
 
     def part_one(self) -> str:
@@ -105,23 +115,11 @@ class Day04(Day):
         return str(res)
 
     def part_two(self) -> str:
-        patterns = [
-            # M S
-            #  A
-            # M S
-            ("M", "S", "M", "S"),
-            # M M
-            #  A
-            # S S
-            ("M", "M", "S", "S"),
-            # S M
-            #  A
-            # S M
-            ("S", "M", "S", "M"),
-            # S S
-            #  A
-            # M M
-            ("S", "S", "M", "M"),
+        patterns: list[Pattern] = [
+            Pattern("M", "S", "M", "S"),
+            Pattern("M", "M", "S", "S"),
+            Pattern("S", "M", "S", "M"),
+            Pattern("S", "S", "M", "M"),
         ]
 
         res = 0
@@ -133,11 +131,11 @@ class Day04(Day):
 
         return str(res)
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         with open(join("src", "d04", "input.txt"), encoding="utf-8") as f:
             self.mat, self.rows, self.cols = get_grid(f)
 
         pt_1_res = self.part_one()
         pt_2_res = self.part_two()
 
-        return (pt_1_res, pt_2_res)
+        return SolveInfo(pt_1_res, pt_2_res)
