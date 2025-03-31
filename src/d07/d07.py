@@ -1,6 +1,7 @@
 """Day 7"""
 
 from os.path import join
+from concurrent.futures import ProcessPoolExecutor
 from base.day import Day
 
 
@@ -37,11 +38,22 @@ class Day07(Day):
 
         pt_1_res = 0
         pt_2_res = 0
-        for calib_tot, calib_vals in calibrations:
-            if self.rec(calib_tot, calib_vals[0], calib_vals[1:], False):
-                pt_1_res += calib_tot
 
-            if self.rec(calib_tot, calib_vals[0], calib_vals[1:], True):
-                pt_2_res += calib_tot
+        tasks = [
+            (calib_tot, calib_vals[0], calib_vals[1:], is_pt_2)
+            for calib_tot, calib_vals in calibrations
+            for is_pt_2 in [True, False]
+        ]
+        with ProcessPoolExecutor() as executor:
+            futures = [executor.submit(self.rec, *args) for args in tasks]
+            results = [future.result() for future in futures]
+            
+
+        for (calib_tot, _, __, is_pt_2), r in zip(tasks, results):
+            if r:
+                if is_pt_2:
+                    pt_2_res += calib_tot
+                else:
+                    pt_1_res += calib_tot
 
         return (str(pt_1_res), str(pt_2_res))

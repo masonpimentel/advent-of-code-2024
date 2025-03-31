@@ -1,13 +1,15 @@
 """Day 6"""
 
 from os.path import join
-from multiprocessing import Pool
+from concurrent.futures import ProcessPoolExecutor
 from base.day import Day
 from helpers import get_grid
 
 
 class Day06(Day):
     """Guard Gallivant"""
+
+    PARALLEL_CHUNK_SIZE = 50
 
     def __init__(self) -> None:
         self.grid: list[list[str]] = []
@@ -127,13 +129,13 @@ class Day06(Day):
                 if self.pt_1_positions[row][col] == "V":
                     pt_1_res += 1
 
-        with Pool() as pool:
+        with ProcessPoolExecutor() as executor:
             indices = [
                 (row, col, direc)
                 for row in range(self.rows)
                 for col in range(self.cols)
             ]
-            results = pool.map(self.process_cell, indices)
+            results = executor.map(self.process_cell, indices, chunksize=self.PARALLEL_CHUNK_SIZE)
 
         pt_2_res = sum(results)
 
