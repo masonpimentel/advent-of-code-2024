@@ -1,133 +1,156 @@
+"""Day 20"""
+
 from sys import setrecursionlimit, maxsize
 from os.path import join
-from base.day import Day
+from base.day import Day, SolveInfo
+from helpers import get_grid
+
 
 class Day20(Day):
-    def solve(self):
+    """Race Condition"""
+
+    PT_1_JUMP = 2
+    PT_2_JUMP = 20
+    THRESHOLD = 100
+
+    def __init__(self) -> None:
+        self.grid: list[list[str]] = []
+        self.rows = -1
+        self.cols = -1
+        self.dp: list[list[int]] = []
+        self.seen: list[list[bool]] = []
+
+    def move(self, row: int, col: int, seen: list[list[bool]]) -> int:
+        if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
+            return maxsize
+
+        if self.grid[row][col] == "#":
+            return maxsize
+
+        if seen[row][col]:
+            return maxsize
+
+        if self.grid[row][col] == "E":
+            self.dp[row][col] = 0
+            return 0
+
+        if self.dp[row][col] != -1:
+            return self.dp[row][col]
+
+        res = maxsize
+
+        seen[row][col] = True
+        for row_diff, col_diff in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+            check_row = row + row_diff
+            check_col = col + col_diff
+
+            rec_res = self.move(check_row, check_col, seen)
+
+            res = min(res, 1 + rec_res)
+
+        seen[row][col] = False
+        self.dp[row][col] = res
+
+        return res
+
+    def get_pt_1_slots(self) -> set[tuple[int, int]]:
+        res: set[tuple[int, int]] = set()
+
+        for row in range(-self.PT_1_JUMP, self.PT_1_JUMP + 1):
+            for col in range(-self.PT_1_JUMP, self.PT_1_JUMP + 1):
+                dist = abs(row) + abs(col)
+
+                if dist == self.PT_1_JUMP:
+                    res.add((row, col))
+
+        return res
+
+    def get_pt_2_slots(self) -> set[tuple[int, int, int]]:
+        res: set[tuple[int, int, int]] = set()
+
+        for row in range(-self.PT_2_JUMP, self.PT_2_JUMP + 1):
+            for col in range(-self.PT_2_JUMP, self.PT_2_JUMP + 1):
+                dist = abs(row) + abs(col)
+
+                if dist <= self.PT_2_JUMP:
+                    res.add((row, col, dist))
+
+        return res
+
+    def check_pt_1_slots(self, row: int, col: int) -> int:
+        slots = self.get_pt_1_slots()
+
+        res = 0
+        for row_diff, col_diff in slots:
+            check_row = row + row_diff
+            check_col = col + col_diff
+
+            if (
+                check_row < 0
+                or check_row >= self.rows
+                or check_col < 0
+                or check_col >= self.cols
+            ):
+                continue
+
+            if self.dp[check_row][check_col] == -1:
+                continue
+
+            cheat_adv = (
+                self.dp[row][col] - self.dp[check_row][check_col] - self.PT_1_JUMP
+            )
+
+            if cheat_adv >= self.THRESHOLD:
+                res += 1
+
+        return res
+
+    def check_pt_2_slots(self, row: int, col: int) -> int:
+        slots = self.get_pt_2_slots()
+
+        res = 0
+        for row_diff, col_diff, jump in slots:
+            check_row = row + row_diff
+            check_col = col + col_diff
+
+            if (
+                check_row < 0
+                or check_row >= self.rows
+                or check_col < 0
+                or check_col >= self.cols
+            ):
+                continue
+
+            if self.dp[check_row][check_col] == -1:
+                continue
+
+            cheat_adv = self.dp[row][col] - self.dp[check_row][check_col] - jump
+
+            if cheat_adv >= self.THRESHOLD:
+                res += 1
+
+        return res
+
+    def solve(self) -> SolveInfo:
         setrecursionlimit(10**6)
 
         with open(join("src", "d20", "input.txt"), encoding="utf-8") as f:
-            grid: list[list[str]] = []
+            self.grid, self.rows, self.cols = get_grid(f)
 
-            line = f.readline()
-            while line:
-                row = [c for c in line]
+        self.dp = [[-1] * self.cols for _ in range(self.rows)]
+        self.seen = [[False] * self.cols for _ in range(self.rows)]
 
-                row = row[:-1] if row[-1] == "\n" else row[:]
-                grid.append(row)
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if self.grid[row][col] == "S":
+                    self.move(row, col, self.seen)
 
-                line = f.readline()
+        pt_1_res = 0
+        pt_2_res = 0
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if self.dp[row][col] != -1:
+                    pt_1_res += self.check_pt_1_slots(row, col)
+                    pt_2_res += self.check_pt_2_slots(row, col)
 
-            rows = len(grid)
-            cols = len(grid[0])
-
-            dp: list[list[int]] = [[-1] * cols for _ in range(rows)]
-            seen: list[list[bool]] = [[False] * cols for _ in range(rows)]
-
-            def move(
-                row: int, col: int, seen: list[tuple[int, int]], rows: int, cols: int
-            ) -> int:
-                if row < 0 or row >= rows or col < 0 or col >= cols:
-                    return maxsize
-
-                if grid[row][col] == "#":
-                    return maxsize
-
-                if seen[row][col]:
-                    return maxsize
-
-                if grid[row][col] == "E":
-                    dp[row][col] = 0
-                    return 0
-
-                if dp[row][col] != -1:
-                    return dp[row][col]
-
-                res = maxsize
-
-                seen[row][col] = True
-                for row_diff, col_diff in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-                    check_row = row + row_diff
-                    check_col = col + col_diff
-
-                    rec_res = move(check_row, check_col, seen, rows, cols)
-
-                    res = min(res, 1 + rec_res)
-
-                seen[row][col] = False
-                dp[row][col] = res
-
-                return res
-
-            for row in range(rows):
-                for col in range(cols):
-                    if grid[row][col] == "S":
-                        move(row, col, seen, rows, cols)
-
-            pt_1_slots: set[tuple[int, int]] = set()
-            PT_1_JUMP = 2
-            for row in range(-PT_1_JUMP, PT_1_JUMP + 1):
-                for col in range(-PT_1_JUMP, PT_1_JUMP + 1):
-                    dist = abs(row) + abs(col)
-
-                    if dist == PT_1_JUMP:
-                        pt_1_slots.add((row, col))
-
-            pt_2_slots: set[tuple[int, int, int]] = set()
-            PT_2_JUMP = 20
-            for row in range(-PT_2_JUMP, PT_2_JUMP + 1):
-                for col in range(-PT_2_JUMP, PT_2_JUMP + 1):
-                    dist = abs(row) + abs(col)
-
-                    if dist <= PT_2_JUMP:
-                        pt_2_slots.add((row, col, dist))
-
-            THRESHOLD = 100
-            pt_1_res = 0
-            pt_2_res = 0
-            for row in range(rows):
-                for col in range(cols):
-                    if dp[row][col] != -1:
-                        for row_diff, col_diff in pt_1_slots:
-                            check_row = row + row_diff
-                            check_col = col + col_diff
-
-                            if (
-                                check_row < 0
-                                or check_row >= rows
-                                or check_col < 0
-                                or check_col >= cols
-                            ):
-                                continue
-
-                            if dp[check_row][check_col] == -1:
-                                continue
-
-                            cheat_adv = (
-                                dp[row][col] - dp[check_row][check_col] - PT_1_JUMP
-                            )
-
-                            if cheat_adv >= THRESHOLD:
-                                pt_1_res += 1
-
-                        for row_diff, col_diff, jump in pt_2_slots:
-                            check_row = row + row_diff
-                            check_col = col + col_diff
-
-                            if (
-                                check_row < 0
-                                or check_row >= rows
-                                or check_col < 0
-                                or check_col >= cols
-                            ):
-                                continue
-
-                            if dp[check_row][check_col] == -1:
-                                continue
-
-                            cheat_adv = dp[row][col] - dp[check_row][check_col] - jump
-
-                            if cheat_adv >= THRESHOLD:
-                                pt_2_res += 1
-
-            return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))
