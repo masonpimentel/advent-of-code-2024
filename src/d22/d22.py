@@ -1,8 +1,19 @@
+"""Day 22"""
+
 from os.path import join
-from collections import deque
-from base.day import Day
+from collections import deque, defaultdict
+from typing import NamedTuple
+from base.day import Day, SolveInfo
+
+
+# pylint: disable=C0115
+class SequenceInfo(NamedTuple):
+    final_secret: int
+    sequence_prices: defaultdict[str, int]
+
 
 class Day22(Day):
+    """Monkey Market"""
 
     def mix(self, secret: int, val: int) -> int:
         return secret ^ val
@@ -24,33 +35,21 @@ class Day22(Day):
 
         return self.prune(secret)
 
-    def ith_secret(self, secret: int, iterations: int) -> int:
-        for _ in range(iterations):
-            secret = self.generate_new_secret(secret)
-
-        return secret
-
     def get_price_from_secret(self, secret: int) -> int:
         return secret % 10
 
-    def get_bananas_from_buyer(self, buyer: dict[str, int], seq: str) -> int:
-        if seq in buyer:
-            return buyer[seq]
-        else:
-            return 0
-
-    def sequence_prices(self, secret: int, iterations: int) -> dict[str, int]:
-        res: dict[str, int] = {}
+    def sequence_prices(self, secret: int, iterations: int) -> SequenceInfo:
         cur_price = self.get_price_from_secret(secret)
         cur_seq: deque[int] = deque([])
+        seen_seqs_this_buyer: set[str] = set()
+        seq_prices: defaultdict[str, int] = defaultdict(int)
 
-        # iterations - 1 because original secret counts as one
+        # iterations - 1 for the sequence because original secret counts as one
         for _ in range(iterations - 1):
             secret = self.generate_new_secret(secret)
             new_price = self.get_price_from_secret(secret)
 
             this_diff = new_price - cur_price
-
             cur_seq.append(this_diff)
 
             if len(cur_seq) > 4:
@@ -59,49 +58,37 @@ class Day22(Day):
             if len(cur_seq) == 4:
                 seq_str = str(cur_seq)
 
-                if seq_str not in res:
-                    res[seq_str] = new_price
+                if seq_str not in seen_seqs_this_buyer:
+                    seq_prices[seq_str] += new_price
+                    seen_seqs_this_buyer.add(seq_str)
 
             cur_price = new_price
 
-        return res
+        # get one more for the iterations-ith secret
+        final_secret = self.generate_new_secret(secret)
 
-    def solve(self):
+        return SequenceInfo(final_secret, seq_prices)
+
+    def solve(self) -> SolveInfo:
+        pt_1_res = 0
 
         with open(join("src", "d22", "input.txt"), encoding="utf-8") as f:
             seeds: list[str] = []
 
             line = f.readline()
-
             while line:
                 seeds.append(line[:-1] if line[-1] == "\n" else line)
-
                 line = f.readline()
 
-            pt_1_res = 0
+        all_seqs: defaultdict[str, int] = defaultdict(int)
+        for seed in seeds:
+            secret, seq_prices = self.sequence_prices(int(seed), 2000)
 
-            for seed in seeds:
-                r = self.ith_secret(int(seed), 2000)
-                pt_1_res += r
+            pt_1_res += secret
 
-            buyers: list[dict[str, int]] = []
-            all_seqs: set[str] = set()
-            for seed in seeds:
-                buyer = self.sequence_prices(int(seed), 2000)
+            for seq, price in seq_prices.items():
+                all_seqs[seq] += price
 
-                for buyer_seq in buyer:
-                    all_seqs.add(buyer_seq)
+        pt_2_res = max(all_seqs.values())
 
-                buyers.append(buyer)
-
-            pt_2_res = 0
-
-            for seq in all_seqs:
-                this_seq_res = 0
-
-                for buyer in buyers:
-                    this_seq_res += self.get_bananas_from_buyer(buyer, seq)
-
-                pt_2_res = max(pt_2_res, this_seq_res)
-
-            return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))
