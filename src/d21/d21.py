@@ -1,40 +1,51 @@
+"""Day 21"""
+
 from sys import maxsize
 from os.path import join
-from base.day import Day
+from base.day import Day, SolveInfo
+
 
 class Day21(Day):
-    def __init__(self):
-        self.number_pad = [
-            ["7", "8", "9"],
-            ["4", "5", "6"],
-            ["1", "2", "3"],
-            ["X", "0", "A"],
-        ]
+    """Keypad Conundrum"""
 
-        self.NUMBER_PAD_ROWS = len(self.number_pad)
-        self.NUMBER_PAD_COLS = len(self.number_pad[0])
+    NUMBER_PAD = [
+        ["7", "8", "9"],
+        ["4", "5", "6"],
+        ["1", "2", "3"],
+        ["X", "0", "A"],
+    ]
+    NUMBER_PAD_ROWS = len(NUMBER_PAD)
+    NUMBER_PAD_COLS = len(NUMBER_PAD[0])
 
-        self.row_col_from_num_pad: dict[str, tuple[int, int]] = {
-            self.number_pad[row][col]: (row, col)
-            for row in range(self.NUMBER_PAD_ROWS)
-            for col in range(self.NUMBER_PAD_COLS)
-        }
+    DIRECTION_PAD = [["X", "^", "A"], ["<", "v", ">"]]
 
-        self.direction_pad = [["X", "^", "A"], ["<", "v", ">"]]
+    DIRECTION_PAD_ROWS = len(DIRECTION_PAD)
+    DIRECTION_PAD_COLS = len(DIRECTION_PAD[0])
 
-        self.DIRECTION_PAD_ROWS = len(self.direction_pad)
-        self.DIRECTION_PAD_COLS = len(self.direction_pad[0])
+    MOVE_DELTAS = [
+        (-1, 0, "^"),
+        (0, 1, ">"),
+        (1, 0, "v"),
+        (0, -1, "<"),
+    ]
 
-        self.row_col_from_dir_pad: dict[str, tuple[int, int]] = {
-            self.direction_pad[row][col]: (row, col)
-            for row in range(self.DIRECTION_PAD_ROWS)
-            for col in range(self.DIRECTION_PAD_COLS)
-        }
-
+    def __init__(self) -> None:
         self.dp: dict[str, dict[str, int]] = {}
         self.dir_pad_dp: dict[int, dict[str, dict[str, tuple[str, int]]]] = {}
         self.dir_pad_same_level_dp: dict[str, dict[str, list[tuple[str, int]]]] = {}
 
+        self.row_col_from_num_pad = {
+            self.NUMBER_PAD[row][col]: (row, col)
+            for row in range(self.NUMBER_PAD_ROWS)
+            for col in range(self.NUMBER_PAD_COLS)
+        }
+        self.row_col_from_dir_pad = {
+            self.DIRECTION_PAD[row][col]: (row, col)
+            for row in range(self.DIRECTION_PAD_ROWS)
+            for col in range(self.DIRECTION_PAD_COLS)
+        }
+
+    # pylint: disable=R0914
     def dir_pad_same_level(
         self, src: str, dst: str, seen: set[str]
     ) -> list[tuple[str, int]]:
@@ -50,12 +61,7 @@ class Day21(Day):
 
         possible_this_level: list[tuple[str, int]] = []
 
-        for row_diff, col_diff, input in [
-            (-1, 0, "^"),
-            (0, 1, ">"),
-            (1, 0, "v"),
-            (0, -1, "<"),
-        ]:
+        for row_diff, col_diff, pad_input in self.MOVE_DELTAS:
             check_row = src_row + row_diff
             check_col = src_col + col_diff
 
@@ -67,20 +73,21 @@ class Day21(Day):
             ):
                 continue
 
-            this_move_dst = self.direction_pad[check_row][check_col]
+            this_move_dst = self.DIRECTION_PAD[check_row][check_col]
 
             this_layer_res = self.dir_pad_same_level(this_move_dst, dst, seen)
 
             for this_layer_seq, this_layer_dist in this_layer_res:
                 if this_layer_dist < maxsize:
                     possible_this_level.append(
-                        (input + this_layer_seq, 1 + this_layer_dist)
+                        (pad_input + this_layer_seq, 1 + this_layer_dist)
                     )
 
         seen.remove(src)
 
         return possible_this_level
 
+    # pylint: disable=R0914,R0912
     def dir_pad_all_levels(
         self, src: str, dst: str, level: int, human_level: int
     ) -> tuple[str, int]:
@@ -115,8 +122,7 @@ class Day21(Day):
             lower_layers_seq = ""
             lower_layers_dist = 0
 
-            for i in range(len(this_layer_seq)):
-                lower_dst = this_layer_seq[i]
+            for i, lower_dst in enumerate(this_layer_seq):
                 lower_level = level + 1
 
                 if i == 0:
@@ -153,6 +159,7 @@ class Day21(Day):
         self.dir_pad_dp[level][src][dst] = r
         return r
 
+    # pylint: disable=R0914
     def number_pad_possible(
         self, src: str, dst: str, seen: set[str]
     ) -> list[tuple[str, int]]:
@@ -168,12 +175,7 @@ class Day21(Day):
 
         possible_this_level: list[tuple[str, int]] = []
 
-        for row_diff, col_diff, input in [
-            (-1, 0, "^"),
-            (0, 1, ">"),
-            (1, 0, "v"),
-            (0, -1, "<"),
-        ]:
+        for row_diff, col_diff, pad_input in self.MOVE_DELTAS:
             check_row = src_row + row_diff
             check_col = src_col + col_diff
 
@@ -185,14 +187,14 @@ class Day21(Day):
             ):
                 continue
 
-            this_move_dst = self.number_pad[check_row][check_col]
+            this_move_dst = self.NUMBER_PAD[check_row][check_col]
 
             this_layer_res = self.number_pad_possible(this_move_dst, dst, seen)
 
             for this_layer_seq, this_layer_dist in this_layer_res:
                 if this_layer_dist < maxsize:
                     possible_this_level.append(
-                        (input + this_layer_seq, 1 + this_layer_dist)
+                        (pad_input + this_layer_seq, 1 + this_layer_dist)
                     )
 
         seen.remove(src)
@@ -208,14 +210,12 @@ class Day21(Day):
         possible_ways = self.number_pad_possible(src, dst, set())
 
         best_distance = maxsize
-        seq = ""
 
         for this_layer_seq, _ in possible_ways:
             lower_layers_seq = ""
             lower_layers_dist = 0
 
-            for i in range(len(this_layer_seq)):
-                lower_dst = this_layer_seq[i]
+            for i, lower_dst in enumerate(this_layer_seq):
                 if i == 0:
                     lower_src = "A"
                 else:
@@ -237,13 +237,12 @@ class Day21(Day):
                     lower_layers_dist + lower_layers_res[1],
                 )
 
-            if lower_layers_dist < best_distance:
-                best_distance = lower_layers_dist
+            best_distance = min(best_distance, lower_layers_dist)
 
         self.dp[src][dst] = best_distance
         return best_distance
 
-    def get_complexity(self, direction_keypad_count: int) -> str:
+    def get_for_complexity(self, direction_keypad_count: int) -> str:
         self.dp = {}
         self.dir_pad_dp = {}
         self.dir_pad_same_level_dp = {}
@@ -253,21 +252,19 @@ class Day21(Day):
             line = f.readline()
 
             while line:
-                code = [c for c in line]
-
-                codes.append(code[:-1] if code[-1] == "\n" else code)
+                codes.append(line[:-1] if line[-1] == "\n" else line)
 
                 line = f.readline()
 
         res = 0
         for code in codes:
             l = 0
-            for i in range(len(code)):
+            for i, cur_c in enumerate(code):
                 if i == 0:
                     l += self.number_pad_press("A", code[i], direction_keypad_count)
                 else:
                     l += self.number_pad_press(
-                        code[i - 1], code[i], direction_keypad_count
+                        code[i - 1], cur_c, direction_keypad_count
                     )
 
             numeric_of_code = int("".join(code[:-1]))
@@ -275,8 +272,8 @@ class Day21(Day):
 
         return str(res)
 
-    def solve(self) -> str:
-        pt_1_res = self.get_complexity(3)
-        pt_2_res = self.get_complexity(26)
+    def solve(self) -> SolveInfo:
+        pt_1_res = self.get_for_complexity(3)
+        pt_2_res = self.get_for_complexity(26)
 
-        return (pt_1_res, pt_2_res)
+        return SolveInfo(pt_1_res, pt_2_res)
