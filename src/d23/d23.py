@@ -1,17 +1,80 @@
+"""Day 23"""
+
 from collections import defaultdict
 from os.path import join
-from base.day import Day
+from base.day import Day, SolveInfo
+
 
 class Day23(Day):
-    def solve(self):
+    """LAN Party"""
+
+    def __init__(self) -> None:
+        self.adj: dict[str, list[str]] = defaultdict(list)
+        self.edges: set[tuple[str, str]] = set()
+
+    def find_third(self, first: str, second: str, thirds: list[str]) -> list[str]:
+        res: list[str] = []
+
+        for third in thirds:
+            third_adj = self.adj[third]
+
+            if first in third_adj and second in third_adj:
+                res.append(third)
+
+        return res
+
+    def get_pt_1(self) -> str:
+        tuples: list[list[str]] = []
+        seen: set[str] = set()
+
+        for first in self.adj:
+            first_adj = self.adj[first]
+            for i, second in enumerate(first_adj):
+                for third in self.find_third(
+                    first, second, first_adj[:i] + first_adj[i + 1 :]
+                ):
+                    tpl_l = [first, second, third]
+                    tpl_l.sort()
+                    tpl_s = str(tpl_l)
+                    if tpl_s not in seen:
+                        seen.add(tpl_s)
+                        tuples.append(tpl_l)
+
+        res = 0
+        for tpl in tuples:
+            for comp in tpl:
+                if comp[0] == "t":
+                    res += 1
+                    break
+
+        return str(res)
+
+    def get_pt_2(self) -> str:
+        best: list[str] = []
+        all_computers = set(self.adj.keys())
+
+        for first in self.adj:
+            network = set([first])
+
+            for new_computer in all_computers:
+                is_all_connected = True
+
+                for current_computer in network:
+                    if (new_computer, current_computer) not in self.edges:
+                        is_all_connected = False
+                        break
+
+                if is_all_connected:
+                    network.add(new_computer)
+
+            if len(network) > len(best):
+                best = list(network)
+
+        return ",".join(sorted(best))
+
+    def solve(self) -> SolveInfo:
         with open(join("src", "d23", "input.txt"), encoding="utf-8") as f:
             line = f.readline()
-
-            # aq: yn, vc, cg, wq
-            # cg: de, tb, yn, aq
-            # yn: aq, cg, wh, td
-
-            adj: dict[str, list[str]] = defaultdict(list)
 
             while line:
                 entry = line[:-1] if line[-1] == "\n" else line[:]
@@ -19,81 +82,12 @@ class Day23(Day):
                 s = entry.split("-")
                 l, r = s[0], s[1]
 
-                adj[l].append(r)
-                adj[r].append(l)
+                self.adj[l].append(r)
+                self.adj[r].append(l)
+
+                self.edges.add((l, r))
+                self.edges.add((r, l))
 
                 line = f.readline()
 
-            def find_third(first: str, second: str, thirds: str) -> list[str]:
-                res: list[str] = []
-
-                for third in thirds:
-                    third_adj = adj[third]
-
-                    if first in third_adj and second in third_adj:
-                        res.append(third)
-
-                return res
-
-            tuples: list[list[str]] = []
-            seen: set[str] = set()
-            for first in adj:
-                first_adj = adj[first]
-                for i in range(len(first_adj)):
-                    second = first_adj[i]
-
-                    for third in find_third(
-                        first, second, first_adj[:i] + first_adj[i + 1 :]
-                    ):
-                        tpl_l = [first, second, third]
-                        tpl_l.sort()
-                        tpl_s = str(tpl_l)
-                        if tpl_s not in seen:
-                            seen.add(tpl_s)
-                            tuples.append(tpl_l)
-
-            pt_1_res = 0
-            for tpl in tuples:
-                for comp in tpl:
-                    if comp[0] == "t":
-                        pt_1_res += 1
-                        break
-
-            self.best: list[str] = []
-            self.dp: dict[str, set[str]] = defaultdict(set)
-
-            def rec(so_far: list[str], rem: list[str]):
-                # print(f'so_far {so_far} rem {rem}')
-
-                if len(so_far) > len(self.best):
-                    self.best = so_far[:]
-
-                sf = sorted(so_far)
-                sf = str(sf)
-                r = sorted(rem)
-                r = str(r)
-
-                if r in self.dp[sf]:
-                    return
-                self.dp[sf].add(r)
-
-                for i, r in enumerate(rem):
-                    add_r = True
-                    for to_check in so_far:
-                        if r not in adj[to_check]:
-                            add_r = False
-                            break
-
-                    if add_r:
-                        rec(so_far + [r], rem[:i] + rem[i + 1 :])
-
-            l = len(adj)
-            for i, first in enumerate(adj):
-                rec([first], adj[first])
-
-            self.best.sort()
-
-            pt_2_res = ",".join(self.best)
-
-
-            return (str(pt_1_res), pt_2_res)
+        return SolveInfo(self.get_pt_1(), self.get_pt_2())
