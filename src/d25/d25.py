@@ -1,55 +1,65 @@
+"""Day 25"""
+
 from os.path import join
-from base.day import Day
+from base.day import Day, SolveInfo
+
 
 class Day25(Day):
-    def solve(self):
+    """Code Chronicle"""
+
+    def __init__(self) -> None:
+        self.keys: list[list[int]] = []
+        self.locks: list[list[int]] = []
+
+    def add(self, key_or_lock: list[list[str]]) -> None:
+        if len(key_or_lock) != 7:
+            print("Found an ob with height != 7")
+
+        is_lock = True
+        for c in key_or_lock[0]:
+            if c != "#":
+                is_lock = False
+                break
+
+        width = len(key_or_lock[0])
+        if is_lock:
+            new_lock = [0] * width
+            for row in key_or_lock:
+                for i, c in enumerate(row):
+                    if c == "#":
+                        new_lock[i] += 1
+
+            self.locks.append(list(map(lambda x: x - 1, new_lock)))
+        else:
+            new_key = [0] * width
+            for row in key_or_lock[::-1]:
+                for i, c in enumerate(row):
+                    if c == "#":
+                        new_key[i] += 1
+
+            self.keys.append(list(map(lambda x: x - 1, new_key)))
+
+    def solve(self) -> SolveInfo:
+        key_or_locks: list[list[list[str]]] = []
+        cur_key_or_lock: list[list[str]] = []
+
         with open(join("src", "d25", "input.txt"), encoding="utf-8") as f:
-            self.keys: list[list[int]] = []
-            self.locks: list[list[int]] = []
-
-            self.cur_ob: list[list[str]] = []
-
-            def add_ob():
-                if len(self.cur_ob) != 7:
-                    print("Found an ob with height != 7")
-
-                is_lock = True
-                for c in self.cur_ob[0]:
-                    if c != "#":
-                        is_lock = False
-                        break
-
-                width = len(self.cur_ob[0])
-                if is_lock:
-                    new_lock = [0] * width
-                    for row in self.cur_ob:
-                        for i, c in enumerate(row):
-                            if c == "#":
-                                new_lock[i] += 1
-
-                    self.locks.append(list(map(lambda x: x - 1, new_lock)))
-                else:
-                    new_key = [0] * width
-                    for row in self.cur_ob[::-1]:
-                        for i, c in enumerate(row):
-                            if c == "#":
-                                new_key[i] += 1
-
-                    self.keys.append(list(map(lambda x: x - 1, new_key)))
-
-                self.cur_ob = []
-
             line = f.readline()
+
             while line:
                 if line == "\n":
-                    add_ob()
+                    key_or_locks.append(cur_key_or_lock)
+                    cur_key_or_lock = []
                 else:
                     row = line[:-1] if line[-1] == "\n" else line[:]
-                    self.cur_ob.append(row)
+                    cur_key_or_lock.append(list(row))
 
                 line = f.readline()
 
-            add_ob()
+            key_or_locks.append(cur_key_or_lock)
+
+        for key_or_lock in key_or_locks:
+            self.add(key_or_lock)
 
         pt_1_res = 0
         for key in self.keys:
@@ -57,14 +67,14 @@ class Day25(Day):
                 fits = True
 
                 if len(key) != len(lock):
-                    print(f"Key and lock with mismatching lengths")
+                    print("Key and lock with mismatching lengths")
 
-                for i in range(len(lock)):
-                    if lock[i] + key[i] > 5:
+                for i, lock_row in enumerate(lock):
+                    if lock_row + key[i] > 5:
                         fits = False
                         break
 
                 if fits:
                     pt_1_res += 1
 
-        return (str(pt_1_res), "NO_PT_2")
+        return SolveInfo(str(pt_1_res), "NO_PT_2")
