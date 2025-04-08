@@ -4,12 +4,15 @@ from collections import Counter
 from os.path import join
 from base.day import Day, SolveInfo
 
+import os
 
 # pylint: disable=R0903
 class Day01(Day):
     """Historian Hysteria"""
 
     def solve(self) -> SolveInfo:
+        print(f'os.cpu_count() {os.cpu_count()}')
+
         left: list[int] = []
         right: list[int] = []
 

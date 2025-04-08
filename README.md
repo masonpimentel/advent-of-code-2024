@@ -17,7 +17,7 @@ Machines:
 | PC (local) | Intel Core i5 12600K (local machine)   | 16 |
 | Mac (local) | Intel Core i5 8210Y (local machine) | 4 |
 | Gitlab runner | saas-linux-small-amd64   | 2 |
-| Github runner | ?  | ? |
+| Github runner | ubuntu-24.04  | ? |
 
 Runtime (seconds):
 
