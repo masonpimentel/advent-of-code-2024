@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          sudo apt-get update && sudo apt-get install -y git
+          pip install pipenv
+          pipenv install
+
+  # static-analysis:
+  #   needs: setup
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       task:
+  #         - pipenv run black --check .
+  #         - pipenv run mypy src/*
+  #         - pipenv run pylint src/
+  #   name: ${{ matrix.task }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.12'
+  #     - run: |
+  #         pip install pipenv
+  #         pipenv install
+  #         ${{ matrix.task }}
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install pipenv
+          pipenv install
+          pipenv run pytest -s test
