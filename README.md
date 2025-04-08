@@ -1,29 +1,69 @@
 ## Advent of Code 2024
 
-The purpose of this project is to provide Python solutions for Advent of Code 2024.
+Python solutions for Advent of Code 2024 with code quality managed by these tools:
 
-https://adventofcode.com/2024
+* Linting: pylint https://pylint.readthedocs.io/en/stable/
+* Typing: mypy https://mypy-lang.org/
+* Formatting: black https://black.readthedocs.io/en/stable/
 
 Join my leaderboard! https://adventofcode.com/2024/leaderboard/private: `4780152-1e037a8f`
 
-## TODO
+### Performance
 
-* Refactor, clean code, improve code quality
-* Improve performance
+Machines:
+
+| Name | Description   | os.cpu_count() |
+| --- | --- | --- |
+| PC (local) | Intel Core i5 12600K (local machine)   | 16 |
+| Mac (local) | Intel Core i5 8210Y (local machine) | 4 |
+| Gitlab runner | saas-linux-small-amd64   | 2 |
+| Github runner | ?  | ? |
+
+Runtime (seconds):
+
+|   | PC | Mac | Gitlab runner | Github runner | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Day 1 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | 
+| Day 2 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | 
+| Day 3 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | 
+| Day 4 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | 
+| Day 5 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | 
+| Day 6 🟠 | ~ 5 | ~ 50 | ~ 53 | ? | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
+| Day 7 🟡 | ~ 1 | ~ 6 | ~ 5 | ? | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
+| Day 8 🟢 | < 0.1 | < 0.1 | < 0.1 | ? |
+| Day 9 🟡 | ~ 2 | ~ 3 | ~ 3 | ? |
+| Day 10 🟢 | < 0.1 | < 0.1 | < 0.1 | ? |
+| Day 11 🔵 | < 0.1 | ~ 1 | ~ 1 | ? |
+| Day 12 🔵 | < 0.1 | ~ 1 | < 0.1 | ? |
+| Day 13 🟢 | < 0.1 | < 0.1 | < 0.1 | ? |
+| Day 14 🟡 | ~ 4 | ~ 9 | ~ 7 | ? |
+| Day 15 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | ? |
+| Day 16 🔵 | ~ 1 | ~ 1 | ~ 1 | ? | ? |
+| Day 17 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | ? |
+| Day 18 🟠 | ~ 8 | ~ 16 | ~ 12 | ? | This uses Python concurrent.futures.ProcessPoolExecutor, needs at least 2 cores |
+| Day 19 🔵 | < 0.1 | ~ 1 | < 0.1 | ? | ? |
+| Day 20 🟡 | ~ 3 | ~ 5 | ~ 4 | ? | ? |
+| Day 21 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | ? |
+| Day 22 🟠 | ~ 5 | ~ 12 | ~ 9 | ? | ? |
+| Day 23 🔵 | < 0.1 | ~ 1 | ~ 1 | ? | ? |
+| Day 24 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | ? |
+| Day 25 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | ? |
 
 ### Install packages
 
-`pipenv run sync`
+`pipenv install`
 
 ### Running
 
+Run using `pytest`
+
 #### Mac
 
-Use `run-all.sh`
+Use `./run-all.sh`
 
 #### Windows
 
-Use `run-all.ps1`
+Use `.\run-all.ps1`
 
 ### Formatting
 
@@ -33,13 +73,13 @@ To ensure CI will pass, run `pipenv run black --check .`
 
 ### MyPy
 
-`pipenv run mypy src/d01`
+`pipenv run mypy src`
 
 ### Pylint
 
-`pipenv run pylint src/d01/d01.py`
+`pipenv run pylint src`
 
 ### Coverage
 
+`pipenv run coverage run -m pytest`
 `pipenv run coverage report`
-
