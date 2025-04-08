@@ -165,7 +165,6 @@ class Day16(Day):
 
         path: list[list[int]] = [[0] * self.cols for _ in range(self.rows)]
 
-        print(f"end_tpl {end_tpl}")
         pt_1_res = min(from_start[end_tpl[0]][end_tpl[1]].values())
         for row in range(self.rows):
             for col in range(self.cols):
