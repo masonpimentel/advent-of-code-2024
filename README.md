@@ -23,31 +23,31 @@ Runtime (seconds):
 
 |   | PC | Mac | Gitlab runner | Github runner | Notes |
 | --- | --- | --- | --- | --- | --- |
-| Day 1 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | 
-| Day 2 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | 
-| Day 3 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | 
-| Day 4 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | 
-| Day 5 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | 
-| Day 6 🟠 | ~ 5 | ~ 50 | ~ 53 | ? | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
-| Day 7 🟡 | ~ 1 | ~ 6 | ~ 5 | ? | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
-| Day 8 🟢 | < 0.1 | < 0.1 | < 0.1 | ? |
-| Day 9 🟡 | ~ 2 | ~ 3 | ~ 3 | ? |
-| Day 10 🟢 | < 0.1 | < 0.1 | < 0.1 | ? |
-| Day 11 🔵 | < 0.1 | ~ 1 | ~ 1 | ? |
-| Day 12 🔵 | < 0.1 | ~ 1 | < 0.1 | ? |
-| Day 13 🟢 | < 0.1 | < 0.1 | < 0.1 | ? |
-| Day 14 🟡 | ~ 4 | ~ 9 | ~ 7 | ? |
-| Day 15 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | ? |
-| Day 16 🔵 | ~ 1 | ~ 1 | ~ 1 | ? | ? |
-| Day 17 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | ? |
-| Day 18 🟠 | ~ 8 | ~ 16 | ~ 12 | ? | This uses Python concurrent.futures.ProcessPoolExecutor, needs at least 2 cores |
-| Day 19 🔵 | < 0.1 | ~ 1 | < 0.1 | ? | ? |
-| Day 20 🟡 | ~ 3 | ~ 5 | ~ 4 | ? | ? |
-| Day 21 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | ? |
-| Day 22 🟠 | ~ 5 | ~ 12 | ~ 9 | ? | ? |
-| Day 23 🔵 | < 0.1 | ~ 1 | ~ 1 | ? | ? |
-| Day 24 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | ? |
-| Day 25 🟢 | < 0.1 | < 0.1 | < 0.1 | ? | ? |
+| Day 1 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
+| Day 2 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
+| Day 3 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
+| Day 4 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
+| Day 5 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
+| Day 6 🟠 | ~ 5 | ~ 50 | ~ 53 | ~ 49 | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
+| Day 7 🟡 | ~ 1 | ~ 6 | ~ 5 | ~ 6 | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
+| Day 8 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
+| Day 9 🟡 | ~ 2 | ~ 3 | ~ 3 | ~ 2 |
+| Day 10 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
+| Day 11 🔵 | < 0.1 | ~ 1 | ~ 1 | ~ 1 |
+| Day 12 🔵 | < 0.1 | ~ 1 | < 0.1 | < 0.1 |
+| Day 13 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
+| Day 14 🟡 | ~ 4 | ~ 9 | ~ 7 | ~ 6 | |
+| Day 15 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
+| Day 16 🔵 | ~ 1 | ~ 1 | ~ 1 | ~ 1 | ? |
+| Day 17 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
+| Day 18 🟠 | ~ 8 | ~ 16 | ~ 12 | ~ 12 | This uses Python concurrent.futures.ProcessPoolExecutor, needs at least 2 cores |
+| Day 19 🔵 | < 0.1 | ~ 1 | < 0.1 | < 0.1 | |
+| Day 20 🟡 | ~ 3 | ~ 5 | ~ 4 | ~ 4 | |
+| Day 21 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
+| Day 22 🟠 | ~ 5 | ~ 12 | ~ 9 | ~ 8 | |
+| Day 23 🔵 | < 0.1 | ~ 1 | ~ 1 | ? | |
+| Day 24 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
+| Day 25 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
 
 ### Install packages
 
