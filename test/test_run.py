@@ -54,6 +54,7 @@ EXPECTED_RESULTS = {
     "25": ("3223", "NO_PT_2"),
 }
 
+
 def runner(d, day_str: str):
     print(f"\nRunning Day {day_str}")
     expected = EXPECTED_RESULTS[day_str]

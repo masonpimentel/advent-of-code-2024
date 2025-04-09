@@ -5,11 +5,13 @@ from concurrent.futures import ProcessPoolExecutor
 from typing import NamedTuple
 from base.day import Day
 
+
 class RecurseArgs(NamedTuple):
     tot: int
     cur: int
     vals: list[int]
     combine: bool
+
 
 class Day07(Day):
     """Bridge Repair"""
@@ -47,7 +49,6 @@ class Day07(Day):
         pt_1_res = 0
         pt_2_res = 0
 
-
         with ProcessPoolExecutor() as executor:
             tasks = [
                 RecurseArgs(calib_tot, calib_vals[0], calib_vals[1:], is_pt_2)
@@ -55,7 +56,6 @@ class Day07(Day):
                 for is_pt_2 in [True, False]
             ]
             results = executor.map(self.rec, tasks)
-            
 
         for (calib_tot, _, __, is_pt_2), r in zip(tasks, results):
             if r:
