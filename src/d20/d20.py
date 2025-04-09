@@ -85,6 +85,7 @@ class Day20(Day):
             check_row = row + row_diff
             check_col = col + col_diff
 
+            # pylint: disable=R0801
             if (
                 check_row < 0
                 or check_row >= self.rows

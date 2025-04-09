@@ -6,6 +6,7 @@ from typing import NamedTuple
 from base.day import Day
 
 
+# pylint: disable=C0115
 class RecurseArgs(NamedTuple):
     tot: int
     cur: int

@@ -119,6 +119,7 @@ class Day12(Day):
         while len(q) > 0:
             check_row, check_col = q.popleft()
 
+            # pylint: disable=R0801
             if (
                 check_row < 0
                 or check_row >= self.rows

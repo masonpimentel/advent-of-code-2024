@@ -7,6 +7,7 @@ from base.day import Day
 from helpers import get_grid
 
 
+# pylint: disable=C0115
 class ProcessCellArgs(NamedTuple):
     row: int
     col: int
