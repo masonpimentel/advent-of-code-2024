@@ -1,0 +1,43 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  static-analysis:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: Format check (black)
+            command: pipenv run black --check .
+          - name: Type check (mypy)
+            command: pipenv run mypy src/*
+          - name: Lint check (pylint)
+            command: pipenv run pylint src/
+    name: ${{ matrix.name }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install pipenv
+          pipenv install
+          ${{ matrix.command }}
+
+  test:
+    runs-on: ubuntu-latest
+    name: Run with pytest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: |
+          pip install pipenv
+          pipenv install
+      - run: |
+          PYTHONPATH="src" pipenv run pytest -s test

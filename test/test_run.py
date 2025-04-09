@@ -54,38 +54,8 @@ EXPECTED_RESULTS = {
     "25": ("3223", "NO_PT_2"),
 }
 
-RUNTIMES = {
-    "01": "< 0.1",
-    "02": "< 0.1",
-    "03": "< 0.1",
-    "04": "< 0.1",
-    "05": "< 0.1",
-    "06": "< 10 (on 16 cores)",
-    "07": "< 1 (on 16 cores)",
-    "08": "< 0.1",
-    "09": "< 5 (!)",
-    "10": "< 0.1",
-    "11": "< 0.1",
-    "12": "< 0.1",
-    "13": "< 0.1",
-    "14": "< 5",
-    "15": "< 0.1",
-    "16": "< 0.1",
-    "17": "< 0.1",
-    "18": "< 10 (on 2 cores)",
-    "19": "< 1",
-    "20": "< 10",
-    "21": "0.010",
-    "22": "< 5",
-    "23": "86.825 (!!)",
-    "24": "0.004",
-    "25": "0.031",
-}
-
-
-# Expected to pass a class with a .solve method that returns a tuple of strings
 def runner(d, day_str: str):
-    print(f"\nRunning Day {day_str}, expected runtime: {RUNTIMES[day_str]} seconds")
+    print(f"\nRunning Day {day_str}")
     expected = EXPECTED_RESULTS[day_str]
     start = time.perf_counter()
 
