@@ -14,9 +14,9 @@ jobs:
           - name: Format check (black)
             command: pipenv run black --check .
           - name: Type check (mypy)
-            command: pipenv run mypy src/*
+            command: pipenv run mypy src
           - name: Lint check (pylint)
-            command: pipenv run pylint src/
+            command: pipenv run pylint src
     name: ${{ matrix.name }}
     steps:
       - uses: actions/checkout@v3
@@ -40,4 +40,4 @@ jobs:
           pip install pipenv
           pipenv install
       - run: |
-          PYTHONPATH="src" pipenv run pytest -s test
+          pipenv run pytest -s test
