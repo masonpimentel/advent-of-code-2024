@@ -2,7 +2,8 @@
 
 from re import findall
 from os.path import join
-from base.day import Day, SolveInfo
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 # pylint: disable=R0903
@@ -24,7 +25,7 @@ class Day03(Day):
         is_add = True
         seq: list[str] = []
 
-        with open(join("src", "d03", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("02"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

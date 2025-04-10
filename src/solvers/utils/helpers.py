@@ -1,6 +1,7 @@
 """Helper functions"""
 
 from typing import TextIO, NamedTuple
+from os.path import join
 
 
 class GridInfo(NamedTuple):
@@ -22,3 +23,6 @@ def get_grid(f: TextIO) -> GridInfo:
         line = f.readline()
 
     return GridInfo(grid, len(grid), len(grid[0]))
+
+def get_path(day: str) -> int:
+    return join("src", "solvers", f"d{day}", "input.txt")

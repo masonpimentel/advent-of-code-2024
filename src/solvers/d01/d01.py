@@ -1,19 +1,19 @@
 """Day 1"""
 
 from collections import Counter
-from os.path import join
-from base.day import Day, SolveInfo
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 # pylint: disable=R0903
 class Day01(Day):
     """Historian Hysteria"""
 
-    def solve(self) -> SolveInfo:
+    def solve(self) -> str:
         left: list[int] = []
         right: list[int] = []
 
-        with open(join("src", "d01", "input.txt"), encoding="utf-8") as f:
+        with open(get_path('01'), encoding="utf-8") as f:
             line = f.readline()
             while line:
                 left_val, right_val = line.split("   ")
@@ -22,7 +22,7 @@ class Day01(Day):
                 right.append(int(right_val))
 
                 line = f.readline()
-
+    
         left.sort()
         right.sort()
 

@@ -1,7 +1,8 @@
 """Day 2"""
 
 from os.path import join
-from base.day import Day, SolveInfo
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 class Day02(Day):
@@ -29,7 +30,7 @@ class Day02(Day):
     def solve(self) -> SolveInfo:
         levels: list[list[int]] = []
 
-        with open(join("src", "d02", "input.txt"), encoding="utf-8") as f:
+        with open(get_path('02'), encoding="utf-8") as f:
             line = f.readline()
 
             while line:
