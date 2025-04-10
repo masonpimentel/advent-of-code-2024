@@ -6,10 +6,13 @@ from typing import NamedTuple
 from base.day import Day
 from helpers import get_grid
 
+
+# pylint: disable=C0115
 class ProcessCellArgs(NamedTuple):
     row: int
     col: int
     direc: str
+
 
 class Day06(Day):
     """Guard Gallivant"""
@@ -140,7 +143,9 @@ class Day06(Day):
                 for row in range(self.rows)
                 for col in range(self.cols)
             ]
-            results = executor.map(self.process_cell, tasks, chunksize=self.PARALLEL_CHUNK_SIZE)
+            results = executor.map(
+                self.process_cell, tasks, chunksize=self.PARALLEL_CHUNK_SIZE
+            )
 
         pt_2_res = sum(results)
 

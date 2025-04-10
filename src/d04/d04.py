@@ -96,9 +96,7 @@ class Day04(Day):
 
         return res
 
-    def check_pattern(
-        self, row: int, col: int, pattern: Pattern
-    ) -> bool:
+    def check_pattern(self, row: int, col: int, pattern: Pattern) -> bool:
         return (
             self.mat[row][col] == pattern.top_left
             and self.mat[row][col + 2] == pattern.top_right
