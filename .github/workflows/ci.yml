@@ -25,7 +25,7 @@ jobs:
           python-version: '3.12'
       - run: |
           pip install pipenv
-          pipenv install
+          pipenv install --dev
           ${{ matrix.command }}
 
   test:
@@ -38,6 +38,6 @@ jobs:
           python-version: "3.12"
       - run: |
           pip install pipenv
-          pipenv install
+          pipenv install --dev
       - run: |
           pipenv run pytest -s test
