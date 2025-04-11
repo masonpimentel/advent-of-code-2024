@@ -51,7 +51,9 @@ Runtime (seconds):
 
 ### Install packages
 
-`pipenv install`
+Only dev packages are needed so use `--dev`
+
+`pipenv install --dev`
 
 ### Running
 
