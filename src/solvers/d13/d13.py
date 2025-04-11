@@ -1,9 +1,9 @@
 """Day 13"""
 
 from re import search
-from os.path import join
 from typing import NamedTuple
-from base.day import Day
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 class EquationParts(NamedTuple):
@@ -75,7 +75,7 @@ class Day13(Day):
         return int((a * 3) + b) if a % 1 == 0 and b % 1 == 0 else 0
 
     def solve(self) -> tuple[str, str]:
-        with open(join("src", "d13", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d13"), encoding="utf-8") as f:
             line = f.readline()
 
             pt_1_res = 0

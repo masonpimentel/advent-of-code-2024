@@ -1,9 +1,9 @@
 """Day 7"""
 
-from os.path import join
 from concurrent.futures import ProcessPoolExecutor
 from typing import NamedTuple
-from base.day import Day
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 # pylint: disable=C0115
@@ -38,7 +38,7 @@ class Day07(Day):
     def solve(self) -> tuple[str, str]:
         calibrations: list[tuple[int, list[int]]] = []
 
-        with open(join("src", "d07", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("07"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

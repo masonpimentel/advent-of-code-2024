@@ -1,8 +1,7 @@
 """Day 8"""
 
-from os.path import join
-from base.day import Day
-from helpers import get_grid
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path, get_grid
 
 
 class Day08(Day):
@@ -50,7 +49,7 @@ class Day08(Day):
                         anti_col_pt2 += col_diff
 
     def solve(self) -> tuple[str, str]:
-        with open(join("src", "d08", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("08"), encoding="utf-8") as f:
             self.grid, self.rows, self.cols = get_grid(f)
 
         res_pt_1: list[list[int]] = [[False] * self.cols for _ in range(self.rows)]

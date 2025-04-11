@@ -1,8 +1,8 @@
 """Day 21"""
 
 from sys import maxsize
-from os.path import join
-from base.day import Day, SolveInfo
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 class Day21(Day):
@@ -248,7 +248,7 @@ class Day21(Day):
         self.dir_pad_same_level_dp = {}
         codes: list[str] = []
 
-        with open(join("src", "d21", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d21"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

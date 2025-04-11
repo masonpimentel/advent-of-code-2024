@@ -1,12 +1,11 @@
 """Day 16"""
 
 from heapq import heappop, heappush
-from os.path import join
 from typing import NamedTuple
 from enum import Enum
 from collections import defaultdict
-from base.day import Day
-from helpers import get_grid
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path, get_grid
 
 
 class DIRECTION(Enum):
@@ -140,7 +139,7 @@ class Day16(Day):
         return res
 
     def solve(self) -> tuple[str, str]:
-        with open(join("src", "d16", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d16"), encoding="utf-8") as f:
             self.grid, self.rows, self.cols = get_grid(f)
 
         start_tpl = (-1, -1)

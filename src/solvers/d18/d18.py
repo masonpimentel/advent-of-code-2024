@@ -1,9 +1,9 @@
 """Day 18"""
 
 from collections import deque
-from os.path import join
 from concurrent.futures import ProcessPoolExecutor
-from base.day import Day, SolveInfo
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 class Day18(Day):
@@ -83,7 +83,7 @@ class Day18(Day):
         return ""
 
     def solve(self) -> SolveInfo:
-        with open(join("src", "d18", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d18"), encoding="utf-8") as f:
             line = f.readline()
 
             bytes_l: list[tuple[int, int]] = []

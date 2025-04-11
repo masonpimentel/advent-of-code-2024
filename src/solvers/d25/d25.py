@@ -1,7 +1,7 @@
 """Day 25"""
 
-from os.path import join
-from base.day import Day, SolveInfo
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 class Day25(Day):
@@ -43,7 +43,7 @@ class Day25(Day):
         key_or_locks: list[list[list[str]]] = []
         cur_key_or_lock: list[list[str]] = []
 
-        with open(join("src", "d25", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d25"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

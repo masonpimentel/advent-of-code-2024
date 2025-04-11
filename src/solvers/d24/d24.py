@@ -2,9 +2,9 @@
 
 from collections import defaultdict, deque
 from re import search
-from os.path import join
 from typing import NamedTuple
-from base.day import Day, SolveInfo
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 class GateEquation(NamedTuple):
@@ -199,7 +199,7 @@ class Day24(Day):
         return ",".join([str(v) for v in sorted(list(issues))])
 
     def solve(self) -> SolveInfo:
-        with open(join("src", "d24", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d24"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

@@ -1,7 +1,7 @@
 """Day 15"""
 
-from os.path import join
-from base.day import Day
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 class Day15(Day):
@@ -268,7 +268,7 @@ class Day15(Day):
         return str(res)
 
     def solve(self) -> tuple[str, str]:
-        with open(join("src", "d15", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d15"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

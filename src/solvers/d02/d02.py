@@ -30,7 +30,7 @@ class Day02(Day):
     def solve(self) -> SolveInfo:
         levels: list[list[int]] = []
 
-        with open(get_path('02'), encoding="utf-8") as f:
+        with open(get_path("02"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

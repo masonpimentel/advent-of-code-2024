@@ -1,8 +1,8 @@
 """Day 5"""
 
 from collections import defaultdict, Counter
-from os.path import join
-from base.day import Day, SolveInfo
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 class Day05(Day):
@@ -59,7 +59,7 @@ class Day05(Day):
         return (pt_1_add, pt_2_add)
 
     def solve(self) -> SolveInfo:
-        with open(join("src", "d05", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("05"), encoding="utf-8") as f:
             line = f.readline()
 
             banned_lookup: dict[int, list[int]] = defaultdict(list)

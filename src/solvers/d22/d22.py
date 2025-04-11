@@ -3,7 +3,8 @@
 from os.path import join
 from collections import deque, defaultdict
 from typing import NamedTuple
-from base.day import Day, SolveInfo
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 # pylint: disable=C0115
@@ -72,7 +73,7 @@ class Day22(Day):
     def solve(self) -> SolveInfo:
         pt_1_res = 0
 
-        with open(join("src", "d22", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d22"), encoding="utf-8") as f:
             seeds: list[str] = []
 
             line = f.readline()

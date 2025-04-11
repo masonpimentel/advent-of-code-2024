@@ -1,8 +1,8 @@
 """Day 10"""
 
 from os.path import join
-from base.day import Day
-from helpers import get_grid
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path, get_grid
 
 
 class Day10(Day):
@@ -60,7 +60,7 @@ class Day10(Day):
         return res
 
     def solve(self) -> tuple[str, str]:
-        with open(join("src", "d10", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("10"), encoding="utf-8") as f:
             grid, self.rows, self.cols = get_grid(f)
 
         self.int_grid = [[int(value) for value in row] for row in grid]

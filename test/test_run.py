@@ -1,28 +1,29 @@
 from solvers.d01.d01 import Day01
 from solvers.d02.d02 import Day02
 from solvers.d03.d03 import Day03
-# from d04.d04 import Day04
-# from d05.d05 import Day05
-# from d06.d06 import Day06
-# from d07.d07 import Day07
-# from d08.d08 import Day08
-# from d09.d09 import Day09
-# from d10.d10 import Day10
-# from d11.d11 import Day11
-# from d12.d12 import Day12
-# from d13.d13 import Day13
-# from d14.d14 import Day14
-# from d15.d15 import Day15
-# from d16.d16 import Day16
-# from d17.d17 import Day17
-# from d18.d18 import Day18
-# from d19.d19 import Day19
-# from d20.d20 import Day20
-# from d21.d21 import Day21
-# from d22.d22 import Day22
-# from d23.d23 import Day23
-# from d24.d24 import Day24
-# from d25.d25 import Day25
+from solvers.d04.d04 import Day04
+from solvers.d05.d05 import Day05
+
+# from solvers.d06.d06 import Day06
+# from solvers.d07.d07 import Day07
+# from solvers.d08.d08 import Day08
+# from solvers.d09.d09 import Day09
+# from solvers.d10.d10 import Day10
+# from solvers.d11.d11 import Day11
+# from solvers.d12.d12 import Day12
+# from solvers.d13.d13 import Day13
+# from solvers.d14.d14 import Day14
+# from solvers.d15.d15 import Day15
+# from solvers.d16.d16 import Day16
+# from solvers.d17.d17 import Day17
+# from solvers.d18.d18 import Day18
+# from solvers.d19.d19 import Day19
+# from solvers.d20.d20 import Day20
+# from solvers.d21.d21 import Day21
+# from solvers.d22.d22 import Day22
+# from solvers.d23.d23 import Day23
+# from solvers.d24.d24 import Day24
+# from solvers.d25.d25 import Day25
 
 import time
 
@@ -89,16 +90,16 @@ def test_Day03():
     runner(d, s)
 
 
-# def test_Day04():
-#     d = Day04()
-#     s = "04"
-#     runner(d, s)
+def test_Day04():
+    d = Day04()
+    s = "04"
+    runner(d, s)
 
 
-# def test_Day05():
-#     d = Day05()
-#     s = "05"
-#     runner(d, s)
+def test_Day05():
+    d = Day05()
+    s = "05"
+    runner(d, s)
 
 
 # def test_Day06():

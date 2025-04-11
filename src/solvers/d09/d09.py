@@ -2,7 +2,8 @@
 
 from collections import deque
 from os.path import join
-from base.day import Day
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 # pylint: disable=R0903
@@ -91,7 +92,7 @@ class Day09(Day):
         return str(res)
 
     def solve(self) -> tuple[str, str]:
-        with open(join("src", "d09", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("09"), encoding="utf-8") as f:
             line = f.readline()
 
             pt_1_dq: deque[str] = deque()

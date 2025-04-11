@@ -1,8 +1,8 @@
 """Day 23"""
 
 from collections import defaultdict
-from os.path import join
-from base.day import Day, SolveInfo
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 class Day23(Day):
@@ -73,7 +73,7 @@ class Day23(Day):
         return ",".join(sorted(best))
 
     def solve(self) -> SolveInfo:
-        with open(join("src", "d23", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d23"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

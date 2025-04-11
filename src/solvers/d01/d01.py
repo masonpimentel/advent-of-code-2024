@@ -13,7 +13,7 @@ class Day01(Day):
         left: list[int] = []
         right: list[int] = []
 
-        with open(get_path('01'), encoding="utf-8") as f:
+        with open(get_path("01"), encoding="utf-8") as f:
             line = f.readline()
             while line:
                 left_val, right_val = line.split("   ")
@@ -22,7 +22,7 @@ class Day01(Day):
                 right.append(int(right_val))
 
                 line = f.readline()
-    
+
         left.sort()
         right.sort()
 

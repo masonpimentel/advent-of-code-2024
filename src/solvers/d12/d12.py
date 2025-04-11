@@ -2,9 +2,8 @@
 
 from collections import deque
 from enum import Enum
-from os.path import join
-from base.day import Day
-from helpers import get_grid
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path, get_grid
 
 
 class DIRECTION(Enum):
@@ -160,7 +159,7 @@ class Day12(Day):
         return area * sides
 
     def solve(self) -> tuple[str, str]:
-        with open(join("src", "d12", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("12"), encoding="utf-8") as f:
             self.orig_grid, self.rows, self.cols = get_grid(f)
 
         self.pt_1_grid = [list(row) for row in self.orig_grid]

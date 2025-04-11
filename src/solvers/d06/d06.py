@@ -1,10 +1,9 @@
 """Day 6"""
 
-from os.path import join
 from concurrent.futures import ProcessPoolExecutor
 from typing import NamedTuple
-from base.day import Day
-from helpers import get_grid
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_grid, get_path
 
 
 # pylint: disable=C0115
@@ -118,7 +117,7 @@ class Day06(Day):
         return 0
 
     def solve(self) -> tuple[str, str]:
-        with open(join("src", "d06", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("06"), encoding="utf-8") as f:
             self.grid, self.rows, self.cols = get_grid(f)
 
         for row in range(self.rows):

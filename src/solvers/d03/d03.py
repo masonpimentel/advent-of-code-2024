@@ -25,7 +25,7 @@ class Day03(Day):
         is_add = True
         seq: list[str] = []
 
-        with open(get_path("02"), encoding="utf-8") as f:
+        with open(get_path("03"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

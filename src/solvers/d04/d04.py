@@ -1,10 +1,9 @@
 """Day 4"""
 
-from os.path import join
 from enum import Enum
 from typing import NamedTuple
-from base.day import Day, SolveInfo
-from helpers import get_grid
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_grid, get_path
 
 
 class Pattern(NamedTuple):
@@ -130,7 +129,7 @@ class Day04(Day):
         return str(res)
 
     def solve(self) -> SolveInfo:
-        with open(join("src", "d04", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("04"), encoding="utf-8") as f:
             self.mat, self.rows, self.cols = get_grid(f)
 
         pt_1_res = self.part_one()

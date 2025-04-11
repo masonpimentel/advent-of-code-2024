@@ -3,8 +3,8 @@
 from re import search, findall
 from typing import Literal, NamedTuple
 from sys import maxsize
-from os.path import join
-from base.day import Day
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 class AttemptArgs(NamedTuple):
@@ -120,7 +120,7 @@ class Day17(Day):
         return res
 
     def solve(self) -> tuple[str, str]:
-        with open(join("src", "d17", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d17"), encoding="utf-8") as f:
             line = f.readline()
             if match := search(r"\d+", line):
                 orig_a = int(match.group())

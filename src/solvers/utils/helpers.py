@@ -24,5 +24,6 @@ def get_grid(f: TextIO) -> GridInfo:
 
     return GridInfo(grid, len(grid), len(grid[0]))
 
+
 def get_path(day: str) -> int:
     return join("src", "solvers", f"d{day}", "input.txt")

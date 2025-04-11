@@ -1,8 +1,8 @@
 """Day 11"""
 
 from collections import defaultdict
-from os.path import join
-from base.day import Day
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path
 
 
 # pylint: disable=R0903
@@ -18,7 +18,7 @@ class Day11(Day):
         pt_2_res = ""
 
         vals: dict[str, int] = defaultdict(int)
-        with open(join("src", "d11", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("11"), encoding="utf-8") as f:
             line = f.readline()
 
             for v in line.split(" "):

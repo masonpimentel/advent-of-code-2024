@@ -1,9 +1,8 @@
 """Day 20"""
 
 from sys import setrecursionlimit, maxsize
-from os.path import join
-from base.day import Day, SolveInfo
-from helpers import get_grid
+from solvers.interfaces.day import Day, SolveInfo
+from solvers.utils.helpers import get_path, get_grid
 
 
 class Day20(Day):
@@ -135,7 +134,7 @@ class Day20(Day):
     def solve(self) -> SolveInfo:
         setrecursionlimit(10**6)
 
-        with open(join("src", "d20", "input.txt"), encoding="utf-8") as f:
+        with open(get_path("d20"), encoding="utf-8") as f:
             self.grid, self.rows, self.cols = get_grid(f)
 
         self.dp = [[-1] * self.cols for _ in range(self.rows)]
