@@ -1,36 +1,21 @@
-<#
-.SYNOPSIS
-    Run all days or specific days in Pytest
-
-.PARAMETER Day
-    (Optional) The day to process (e.g., 04).
-
-.EXAMPLE
-    .\run.ps1
-    Runs all tests.
-
-.EXAMPLE
-    .\run.ps1 -Day 04
-    Runs tests for Day 04.
-#>
-
 param (
-    [string]$Day
+    [string]$Help
 )
 
-if ($Day -eq "-h" -or $Day -eq "--help") {
-    Get-Help $MyInvocation.MyCommand.Path -Detailed
+if ($Help -eq "-h" -or $Help -eq "--help") {
+    @"
+Usage: .\run.ps1 [-h|--help]
+
+Runs code quality checks:
+- Format: black
+- Type check: mypy
+- Lint: pylint
+- Tests: pytest
+"@
     exit 0
 }
 
-if ($Day -and $Day -notmatch "^\d{2}$") {
-    Write-Host "Error: Day must be a two-digit number (e.g., 04)." -ForegroundColor Red
-    exit 1
-}
-
-$testPath = "test/test_run.py"
-if ($Day) {
-    $testPath += "::test_Day$Day"
-}
-
-pipenv run pytest -s $testPath
+pipenv run black --check .
+pipenv run mypy src
+pipenv run pylint src
+pipenv run pytest -s test
