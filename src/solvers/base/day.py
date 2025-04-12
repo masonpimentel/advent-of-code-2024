@@ -1,14 +1,9 @@
 """Base Day class"""
 
 from abc import ABCMeta, abstractmethod
-from typing import NamedTuple
+from solvers.base.types import SolveInfo
 
 
-class SolveInfo(NamedTuple):
-    """Expected information from day solvers"""
-
-    pt_1_res: str
-    pt_2_res: str
 
 
 # pylint: disable=R0903,C0115
