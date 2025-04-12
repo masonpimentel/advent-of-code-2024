@@ -23,7 +23,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: |
+      - name: ${{ matrix.name }}
+        run: |
           pip install pipenv
           pipenv install --dev
           ${{ matrix.command }}
@@ -41,7 +42,7 @@ jobs:
           pipenv install --dev
       - name: Run tests with coverage
         run: |
-          pipenv run pytest --cov=src --cov-report=xml
+          pipenv run pytest -s --cov=src --cov-report=xml test
           pipenv run coverage combine
           pipenv run coverage xml
       - name: Upload coverage to Codecov
