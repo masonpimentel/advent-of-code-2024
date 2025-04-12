@@ -2,9 +2,11 @@
 
 from collections import deque
 from concurrent.futures import ProcessPoolExecutor
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
+# Named tuples not used to improve runtime performance
 
 class Day18(Day):
     """RAM Run"""
@@ -83,7 +85,7 @@ class Day18(Day):
         return ""
 
     def solve(self) -> SolveInfo:
-        with open(get_path("d18"), encoding="utf-8") as f:
+        with open(get_path("18"), encoding="utf-8") as f:
             line = f.readline()
 
             bytes_l: list[tuple[int, int]] = []

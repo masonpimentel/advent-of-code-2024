@@ -3,11 +3,16 @@
 from collections import defaultdict, deque
 from re import search
 from typing import NamedTuple
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
+class WireState(NamedTuple):
+    wire: str
+    state: int
 
-class GateEquation(NamedTuple):
+
+class Gate(NamedTuple):
     """Logic gate components"""
 
     wire_1: str
@@ -20,8 +25,8 @@ class Day24(Day):
     """Crossed Wires"""
 
     def __init__(self) -> None:
-        self.wire_tuples: list[tuple[str, int]] = []
-        self.logic_tuples: list[GateEquation] = []
+        self.wires: list[WireState] = []
+        self.gates: list[Gate] = []
         self.z_max_bit = 0
 
     def get_z_max_bit(self) -> int:
@@ -31,7 +36,7 @@ class Day24(Day):
         x_max_bit = 0
         y_max_bit = 0
         z_max_bit = 0
-        for wire1, _, wire2, res_wire in self.logic_tuples:
+        for wire1, _, wire2, res_wire in self.gates:
             match wire1[0]:
                 case "x":
                     x_max_bit = max(x_max_bit, get_wire_num(wire1))
@@ -65,12 +70,12 @@ class Day24(Day):
     def get_pt_1(self) -> str:
         z_bits = self.z_max_bit + 1
 
-        wires: defaultdict[str, int] = defaultdict(lambda: -1)
+        wire_lookup: defaultdict[str, int] = defaultdict(lambda: -1)
 
-        for wire, val in self.wire_tuples:
-            wires[wire] = val
+        for wire, val in self.wires:
+            wire_lookup[wire] = val
 
-        q: deque[GateEquation] = deque(self.logic_tuples)
+        q: deque[Gate] = deque(self.gates)
 
         cur_zs = 0
         q_count = 0
@@ -79,19 +84,19 @@ class Day24(Day):
 
             q_count += 1
 
-            if wires[wire1] < 0 or wires[wire2] < 0:
-                q.append(GateEquation(wire1, wire2, gate, res_wire))
+            if wire_lookup[wire1] < 0 or wire_lookup[wire2] < 0:
+                q.append(Gate(wire1, wire2, gate, res_wire))
                 continue
 
             match gate:
                 case "AND":
-                    wires[res_wire] = (
-                        1 if wires[wire1] == 1 and wires[wire2] == 1 else 0
+                    wire_lookup[res_wire] = (
+                        1 if wire_lookup[wire1] == 1 and wire_lookup[wire2] == 1 else 0
                     )
                 case "OR":
-                    wires[res_wire] = 1 if wires[wire1] == 1 or wires[wire2] == 1 else 0
+                    wire_lookup[res_wire] = 1 if wire_lookup[wire1] == 1 or wire_lookup[wire2] == 1 else 0
                 case "XOR":
-                    wires[res_wire] = 1 if wires[wire1] != wires[wire2] else 0
+                    wire_lookup[res_wire] = 1 if wire_lookup[wire1] != wire_lookup[wire2] else 0
 
             if res_wire[0] == "z":
                 cur_zs += 1
@@ -102,7 +107,7 @@ class Day24(Day):
         b = ""
         for i in range(z_bits - 1, -1, -1):
             wire = f"z{'0' if i < 10 else ''}{i}"
-            b += str(wires[wire])
+            b += str(wire_lookup[wire])
 
         return str(int(b, 2))
 
@@ -110,7 +115,7 @@ class Day24(Day):
         issues: set[str] = set()
 
         non_temp_bits = ["x", "y", "z"]
-        for wire1, gate, wire2, res_wire in self.logic_tuples:
+        for wire1, gate, wire2, res_wire in self.gates:
             wire1_first = wire1[0]
             wire2_first = wire2[0]
             res_wire_first = res_wire[0]
@@ -134,12 +139,12 @@ class Day24(Day):
             #
             #              ppf
             if gate == "AND" and wire1[1:] != "00" and wire2[1:] != "00":
-                for next_wire1, next_gate, next_wire2, _ in self.logic_tuples:
+                for next_wire1, next_gate, next_wire2, _ in self.gates:
                     if (res_wire in (next_wire1, next_wire2)) and next_gate != "OR":
                         issues.add(res_wire)
 
             if gate == "XOR":
-                for next_wire1, next_gate, next_wire2, _ in self.logic_tuples:
+                for next_wire1, next_gate, next_wire2, _ in self.gates:
                     # check 2
                     # the outputs of an "XOR" cannot be "ORed"
 
@@ -199,7 +204,7 @@ class Day24(Day):
         return ",".join([str(v) for v in sorted(list(issues))])
 
     def solve(self) -> SolveInfo:
-        with open(get_path("d24"), encoding="utf-8") as f:
+        with open(get_path("24"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:
@@ -208,7 +213,7 @@ class Day24(Day):
 
                 r = search(r"(\w*): (\d*)", line)
                 if r:
-                    self.wire_tuples.append((r.group(1), int(r.group(2))))
+                    self.wires.append(WireState(r.group(1), int(r.group(2))))
 
                 line = f.readline()
 
@@ -218,8 +223,8 @@ class Day24(Day):
                 r = search(r"(\w*) (\w*) (\w*) -> (\w*)", line)
 
                 if r:
-                    self.logic_tuples.append(
-                        GateEquation(r.group(1), r.group(2), r.group(3), r.group(4))
+                    self.gates.append(
+                        Gate(r.group(1), r.group(2), r.group(3), r.group(4))
                     )
 
                 line = f.readline()

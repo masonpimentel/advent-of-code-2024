@@ -2,7 +2,8 @@
 
 from enum import Enum
 from typing import NamedTuple
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo, RowCol
 from solvers.utils.helpers import get_grid, get_path
 
 
@@ -36,7 +37,7 @@ class Day04(Day):
         self.rows = 0
         self.cols = 0
 
-    def new_row_and_col(self, row: int, col: int, d: DIRECTION) -> tuple[int, int]:
+    def new_row_and_col(self, row: int, col: int, d: DIRECTION) -> RowCol:
         new_row = row
         new_col = col
         match d:
@@ -61,7 +62,7 @@ class Day04(Day):
                 new_row = row - 1
                 new_col = col - 1
 
-        return (new_row, new_col)
+        return RowCol(new_row, new_col)
 
     def search(self, row: int, col: int, looking_for: str, d: DIRECTION) -> bool:
         if row < 0 or row >= self.rows or col < 0 or col >= self.cols:

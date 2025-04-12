@@ -1,9 +1,17 @@
 """Day 10"""
 
-from os.path import join
-from solvers.interfaces.day import Day, SolveInfo
+from typing import NamedTuple
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path, get_grid
 
+# pylint: disable=C0115
+class DfsArgs(NamedTuple):
+    row: int
+    col: int
+    height: int
+    seen: set[str]
+    peaks: set[str]
 
 class Day10(Day):
     """Hoof It"""
@@ -13,7 +21,7 @@ class Day10(Day):
         self.cols = -1
         self.int_grid: list[list[int]] = []
 
-    def dfs(self, args: tuple[int, int, int, set[str], set[str]]) -> None:
+    def dfs(self, args: DfsArgs) -> None:
         row, col, height, seen, peaks = args
 
         s = str((row, col))
@@ -32,7 +40,7 @@ class Day10(Day):
 
         for row_diff, col_diff in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
             seen.add(s)
-            self.dfs((row + row_diff, col + col_diff, height + 1, seen, peaks))
+            self.dfs(DfsArgs(row + row_diff, col + col_diff, height + 1, seen, peaks))
             seen.remove(s)
 
         return
@@ -59,7 +67,7 @@ class Day10(Day):
 
         return res
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         with open(get_path("10"), encoding="utf-8") as f:
             grid, self.rows, self.cols = get_grid(f)
 
@@ -73,10 +81,10 @@ class Day10(Day):
                 if self.int_grid[row][col] == 0:
 
                     peaks: set[str] = set()
-                    self.dfs((row, col, 0, set(), peaks))
+                    self.dfs(DfsArgs(row, col, 0, set(), peaks))
                     trails = len(peaks)
 
                     pt_1_res += trails
                     pt_2_res += self.dfs_pt_2(row, col, 0, set())
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))

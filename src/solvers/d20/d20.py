@@ -1,8 +1,11 @@
 """Day 20"""
 
 from sys import setrecursionlimit, maxsize
-from solvers.interfaces.day import Day, SolveInfo
-from solvers.utils.helpers import get_path, get_grid
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
+from solvers.utils.helpers import get_path, get_grid, check_row_and_col
+
+# Named tuples not used to improve runtime performance
 
 
 class Day20(Day):
@@ -86,10 +89,7 @@ class Day20(Day):
 
             # pylint: disable=R0801
             if (
-                check_row < 0
-                or check_row >= self.rows
-                or check_col < 0
-                or check_col >= self.cols
+                check_row_and_col(check_row, check_col, self.rows, self.cols)
             ):
                 continue
 
@@ -134,7 +134,7 @@ class Day20(Day):
     def solve(self) -> SolveInfo:
         setrecursionlimit(10**6)
 
-        with open(get_path("d20"), encoding="utf-8") as f:
+        with open(get_path("20"), encoding="utf-8") as f:
             self.grid, self.rows, self.cols = get_grid(f)
 
         self.dp = [[-1] * self.cols for _ in range(self.rows)]

@@ -1,7 +1,8 @@
 """Day 1"""
 
 from collections import Counter
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 

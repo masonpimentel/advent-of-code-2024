@@ -1,6 +1,7 @@
 """Day 15"""
 
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo, RowCol
 from solvers.utils.helpers import get_path
 
 
@@ -16,7 +17,7 @@ class Day15(Day):
         self.rows_pt_2 = -1
         self.cols_pt_2 = -1
 
-    def right_pt_1(self, row: int, col: int) -> tuple[int, int]:
+    def right_pt_1(self, row: int, col: int) -> RowCol:
         to_move = -1
         can_move = False
         for i in range(col + 1, self.cols_pt_1 - 1):
@@ -34,11 +35,11 @@ class Day15(Day):
             if to_move > -1:
                 self.grid_pt_1[row][to_move + 1] = "O"
 
-            return (row, col + 1)
+            return RowCol(row, col + 1)
 
-        return (row, col)
+        return RowCol(row, col)
 
-    def left_pt_1(self, row: int, col: int) -> tuple[int, int]:
+    def left_pt_1(self, row: int, col: int) -> RowCol:
         to_move = -1
         can_move = False
         for i in range(col - 1, 0, -1):
@@ -56,11 +57,11 @@ class Day15(Day):
             if to_move > -1:
                 self.grid_pt_1[row][to_move - 1] = "O"
 
-            return (row, col - 1)
+            return RowCol(row, col - 1)
 
-        return (row, col)
+        return RowCol(row, col)
 
-    def down_pt_1(self, row: int, col: int) -> tuple[int, int]:
+    def down_pt_1(self, row: int, col: int) -> RowCol:
         to_move = -1
         can_move = False
         for i in range(row + 1, self.rows_pt_1 - 1):
@@ -78,11 +79,11 @@ class Day15(Day):
             if to_move > -1:
                 self.grid_pt_1[to_move + 1][col] = "O"
 
-            return (row + 1, col)
+            return RowCol(row + 1, col)
 
-        return (row, col)
+        return RowCol(row, col)
 
-    def up_pt_1(self, row: int, col: int) -> tuple[int, int]:
+    def up_pt_1(self, row: int, col: int) -> RowCol:
         to_move = -1
         can_move = False
         for i in range(row - 1, 0, -1):
@@ -100,11 +101,11 @@ class Day15(Day):
             if to_move > -1:
                 self.grid_pt_1[to_move - 1][col] = "O"
 
-            return (row - 1, col)
+            return RowCol(row - 1, col)
 
-        return (row, col)
+        return RowCol(row, col)
 
-    def compaction_pt_1(self, row: int, col: int, direc: str) -> tuple[int, int]:
+    def compaction_pt_1(self, row: int, col: int, direc: str) -> RowCol:
         match direc:
             case ">":
                 return self.right_pt_1(row, col)
@@ -115,7 +116,7 @@ class Day15(Day):
             case "v":
                 return self.down_pt_1(row, col)
 
-        return (row, col)
+        return RowCol(row, col)
 
     def push_row(self, row: int, cols_prev_row: set[int], direc: str) -> bool:
         new_cols: set[int] = set()
@@ -155,7 +156,7 @@ class Day15(Day):
             self.grid_pt_2[prev_row][set_col] = "."
         return True
 
-    def right_pt_2(self, row: int, col: int) -> tuple[int, int]:
+    def right_pt_2(self, row: int, col: int) -> RowCol:
         to_remove = -1
         for i in range(col + 1, self.cols_pt_2 - 1):
             if self.grid_pt_2[row][i] == ".":
@@ -173,11 +174,11 @@ class Day15(Day):
             )
             self.grid_pt_2[row][col] = "."
 
-            return (row, col + 1)
+            return RowCol(row, col + 1)
 
-        return (row, col)
+        return RowCol(row, col)
 
-    def left_pt_2(self, row: int, col: int) -> tuple[int, int]:
+    def left_pt_2(self, row: int, col: int) -> RowCol:
         to_remove = -1
         for i in range(col - 1, 0, -1):
             if self.grid_pt_2[row][i] == ".":
@@ -195,29 +196,29 @@ class Day15(Day):
             )
             self.grid_pt_2[row][col] = "."
 
-            return (row, col - 1)
+            return RowCol(row, col - 1)
 
-        return (row, col)
+        return RowCol(row, col)
 
-    def up_pt_2(self, row: int, col: int, direc: str) -> tuple[int, int]:
+    def up_pt_2(self, row: int, col: int, direc: str) -> RowCol:
         res = self.push_row(row - 1, set([col]), direc)
 
         if res:
             self.grid_pt_2[row][col] = "."
-            return (row - 1, col)
+            return RowCol(row - 1, col)
 
-        return (row, col)
+        return RowCol(row, col)
 
-    def down_pt_2(self, row: int, col: int, direc: str) -> tuple[int, int]:
+    def down_pt_2(self, row: int, col: int, direc: str) -> RowCol:
         res = self.push_row(row + 1, set([col]), direc)
 
         if res:
             self.grid_pt_2[row][col] = "."
-            return (row + 1, col)
+            return RowCol(row + 1, col)
 
-        return (row, col)
+        return RowCol(row, col)
 
-    def compaction_pt_2(self, row: int, col: int, direc: str) -> tuple[int, int]:
+    def compaction_pt_2(self, row: int, col: int, direc: str) -> RowCol:
         match direc:
             case ">":
                 return self.right_pt_2(row, col)
@@ -228,7 +229,7 @@ class Day15(Day):
             case "v":
                 return self.down_pt_2(row, col, direc)
 
-        return (row, col)
+        return RowCol(row, col)
 
     def get_pt_1(self) -> str:
         for row in range(self.rows_pt_1):
@@ -267,8 +268,8 @@ class Day15(Day):
 
         return str(res)
 
-    def solve(self) -> tuple[str, str]:
-        with open(get_path("d15"), encoding="utf-8") as f:
+    def solve(self) -> SolveInfo:
+        with open(get_path("15"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:
@@ -312,4 +313,4 @@ class Day15(Day):
             self.rows_pt_2 = len(self.grid_pt_2)
             self.cols_pt_2 = len(self.grid_pt_2[0])
 
-        return (self.get_pt_1(), self.get_pt_2())
+        return SolveInfo(self.get_pt_1(), self.get_pt_2())

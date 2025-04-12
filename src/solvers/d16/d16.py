@@ -4,7 +4,8 @@ from heapq import heappop, heappush
 from typing import NamedTuple
 from enum import Enum
 from collections import defaultdict
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo, RowCol
 from solvers.utils.helpers import get_path, get_grid
 
 
@@ -62,7 +63,7 @@ class Day16(Day):
         self.cols = -1
 
     def get_distance_from_start(
-        self, start_tpl: tuple[int, int]
+        self, start_tpl: RowCol
     ) -> list[list[defaultdict[int, int]]]:
         res: list[list[defaultdict[int, int]]] = [
             [defaultdict(lambda: -1) for _ in range(self.cols)]
@@ -100,7 +101,7 @@ class Day16(Day):
         return res
 
     def get_distance_from_end(
-        self, end_tpl: tuple[int, int]
+        self, end_tpl: RowCol
     ) -> list[list[defaultdict[int, int]]]:
         res: list[list[defaultdict[int, int]]] = [
             [defaultdict(lambda: -1) for _ in range(self.cols)]
@@ -138,19 +139,19 @@ class Day16(Day):
 
         return res
 
-    def solve(self) -> tuple[str, str]:
-        with open(get_path("d16"), encoding="utf-8") as f:
+    def solve(self) -> SolveInfo:
+        with open(get_path("16"), encoding="utf-8") as f:
             self.grid, self.rows, self.cols = get_grid(f)
 
-        start_tpl = (-1, -1)
-        end_tpl = (-1, -1)
+        start_tpl = RowCol(-1, -1)
+        end_tpl = RowCol(-1, -1)
 
         for row in range(self.rows):
             for col in range(self.cols):
                 if self.grid[row][col] == "S":
-                    start_tpl = (row, col)
+                    start_tpl = RowCol(row, col)
                 elif self.grid[row][col] == "E":
-                    end_tpl = (row, col)
+                    end_tpl = RowCol(row, col)
 
         flip: dict[int, int] = {
             DIRECTION.NORTH.value: DIRECTION.SOUTH.value,
@@ -179,4 +180,4 @@ class Day16(Day):
         for path_row in path:
             pt_2_res += sum(path_row)
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))

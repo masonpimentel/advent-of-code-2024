@@ -1,17 +1,10 @@
 """Day 6"""
 
 from concurrent.futures import ProcessPoolExecutor
-from typing import NamedTuple
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day, SolveInfo
 from solvers.utils.helpers import get_grid, get_path
 
-
-# pylint: disable=C0115
-class ProcessCellArgs(NamedTuple):
-    row: int
-    col: int
-    direc: str
-
+# Named tuples not used to improve runtime performance
 
 class Day06(Day):
     """Guard Gallivant"""
@@ -105,7 +98,7 @@ class Day06(Day):
 
         return False
 
-    def process_cell(self, args: ProcessCellArgs) -> int:
+    def process_cell(self, args) -> int:
         row, col, direc = args
         if self.grid[row][col] == "." and (
             row != self.start_row or col != self.start_col
@@ -138,7 +131,7 @@ class Day06(Day):
 
         with ProcessPoolExecutor() as executor:
             tasks = [
-                ProcessCellArgs(row, col, direc)
+                (row, col, direc)
                 for row in range(self.rows)
                 for col in range(self.cols)
             ]
