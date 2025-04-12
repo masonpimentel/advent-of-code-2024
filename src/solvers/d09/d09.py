@@ -91,7 +91,7 @@ class Day09(Day):
 
         return str(res)
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         with open(get_path("09"), encoding="utf-8") as f:
             line = f.readline()
 
@@ -117,4 +117,4 @@ class Day09(Day):
         pt_1_res = self.get_pt_1_res(pt_1_dq)
         pt_2_res = self.get_pt_2_res(pt_2_slots)
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))

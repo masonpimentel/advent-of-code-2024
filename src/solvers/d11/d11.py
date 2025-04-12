@@ -14,7 +14,7 @@ class Day11(Day):
     PT_2_BLINKS = 75
 
     # pylint: disable=R0914
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         pt_1_res = ""
         pt_2_res = ""
 
@@ -51,4 +51,4 @@ class Day11(Day):
 
         pt_2_res = str(sum(vals.values()))
 
-        return (pt_1_res, pt_2_res)
+        return SolveInfo(pt_1_res, pt_2_res)
