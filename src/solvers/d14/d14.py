@@ -1,7 +1,8 @@
 """Day 13"""
 
 from re import search
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 
@@ -134,8 +135,8 @@ class Day14(Day):
 
         return "Tree is not expected shape - see code for explanation"
 
-    def solve(self) -> tuple[str, str]:
-        with open(get_path("d14"), encoding="utf-8") as f:
+    def solve(self) -> SolveInfo:
+        with open(get_path("14"), encoding="utf-8") as f:
             robots: list[list[int]] = []
 
             line = f.readline()
@@ -157,4 +158,4 @@ class Day14(Day):
             self.pt_2_robots = [list(robot) for robot in robots]
             self.num_robots = len(robots)
 
-        return (self.get_pt_1(), self.get_pt_2())
+        return SolveInfo(self.get_pt_1(), self.get_pt_2())

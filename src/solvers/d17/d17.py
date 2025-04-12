@@ -3,7 +3,8 @@
 from re import search, findall
 from typing import Literal, NamedTuple
 from sys import maxsize
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 
@@ -119,8 +120,8 @@ class Day17(Day):
 
         return res
 
-    def solve(self) -> tuple[str, str]:
-        with open(get_path("d17"), encoding="utf-8") as f:
+    def solve(self) -> SolveInfo:
+        with open(get_path("17"), encoding="utf-8") as f:
             line = f.readline()
             if match := search(r"\d+", line):
                 orig_a = int(match.group())
@@ -157,4 +158,4 @@ class Day17(Day):
 
             pt_2_res = min(pt_2_res, rec_res)
 
-        return (pt_1_res, str(pt_2_res))
+        return SolveInfo(pt_1_res, str(pt_2_res))
