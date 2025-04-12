@@ -1,8 +1,14 @@
 """Day 23"""
 
 from collections import defaultdict
-from solvers.interfaces.day import Day, SolveInfo
+from typing import NamedTuple
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
+
+class Edge(NamedTuple):
+    computer_1: str
+    computer_2: str
 
 
 class Day23(Day):
@@ -10,7 +16,7 @@ class Day23(Day):
 
     def __init__(self) -> None:
         self.adj: dict[str, list[str]] = defaultdict(list)
-        self.edges: set[tuple[str, str]] = set()
+        self.edges: set[Edge] = set()
 
     def find_third(self, first: str, second: str, thirds: list[str]) -> list[str]:
         res: list[str] = []
@@ -60,7 +66,7 @@ class Day23(Day):
                 is_all_connected = True
 
                 for current_computer in network:
-                    if (new_computer, current_computer) not in self.edges:
+                    if Edge(new_computer, current_computer) not in self.edges:
                         is_all_connected = False
                         break
 
@@ -73,7 +79,7 @@ class Day23(Day):
         return ",".join(sorted(best))
 
     def solve(self) -> SolveInfo:
-        with open(get_path("d23"), encoding="utf-8") as f:
+        with open(get_path("23"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:
@@ -85,8 +91,8 @@ class Day23(Day):
                 self.adj[l].append(r)
                 self.adj[r].append(l)
 
-                self.edges.add((l, r))
-                self.edges.add((r, l))
+                self.edges.add(Edge(l, r))
+                self.edges.add(Edge(r, l))
 
                 line = f.readline()
 

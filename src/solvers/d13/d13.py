@@ -2,7 +2,8 @@
 
 from re import search
 from typing import NamedTuple
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 
@@ -75,13 +76,13 @@ class Day13(Day):
         return int((a * 3) + b) if a % 1 == 0 and b % 1 == 0 else 0
 
     def solve(self) -> tuple[str, str]:
-        with open(get_path("d13"), encoding="utf-8") as f:
+        with open(get_path("13"), encoding="utf-8") as f:
             line = f.readline()
 
             pt_1_res = 0
             pt_2_res = 0
 
-            values: list[tuple[int, int, int, int, int, int]] = []
+            values: list[EquationParts] = []
 
             while line:
                 a = search(r"Button A: X\+(\d*), Y\+(\d*)", line)
@@ -106,7 +107,7 @@ class Day13(Day):
                 else:
                     t_x, t_y = 0, 0
 
-                values.append((a_x, a_y, b_x, b_y, t_x, t_y))
+                values.append(EquationParts(a_x, a_y, b_x, b_y, t_x, t_y))
 
                 line = f.readline()
                 line = f.readline()

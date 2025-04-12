@@ -1,8 +1,8 @@
 """Day 9"""
 
 from collections import deque
-from os.path import join
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 

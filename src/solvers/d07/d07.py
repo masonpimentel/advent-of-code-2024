@@ -2,7 +2,8 @@
 
 from concurrent.futures import ProcessPoolExecutor
 from typing import NamedTuple
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 
@@ -12,6 +13,11 @@ class RecurseArgs(NamedTuple):
     cur: int
     vals: list[int]
     combine: bool
+
+
+class Calibration(NamedTuple):
+    result: int
+    operators: list[int]
 
 
 class Day07(Day):
@@ -24,26 +30,26 @@ class Day07(Day):
             return tot == cur
 
         # add
-        if self.rec((tot, cur + vals[0], vals[1:], combine)):
+        if self.rec(RecurseArgs(tot, cur + vals[0], vals[1:], combine)):
             return True
         # mul
-        if self.rec((tot, cur * vals[0], vals[1:], combine)):
+        if self.rec(RecurseArgs(tot, cur * vals[0], vals[1:], combine)):
             return True
         # combine
-        if combine and self.rec((tot, int(str(cur) + str(vals[0])), vals[1:], combine)):
+        if combine and self.rec(RecurseArgs(tot, int(str(cur) + str(vals[0])), vals[1:], combine)):
             return True
 
         return False
 
-    def solve(self) -> tuple[str, str]:
-        calibrations: list[tuple[int, list[int]]] = []
+    def solve(self) -> SolveInfo:
+        calibrations: list[Calibration] = []
 
         with open(get_path("07"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:
                 tot, vals = line.split(": ")
-                calibrations.append((int(tot), [int(x) for x in vals.split(" ")]))
+                calibrations.append(Calibration(int(tot), [int(x) for x in vals.split(" ")]))
 
                 line = f.readline()
 
@@ -65,4 +71,4 @@ class Day07(Day):
                 else:
                     pt_1_res += calib_tot
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))

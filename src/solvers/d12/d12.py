@@ -1,18 +1,23 @@
 """Day 12"""
 
 from collections import deque
+from typing import NamedTuple
 from enum import Enum
-from solvers.interfaces.day import Day, SolveInfo
-from solvers.utils.helpers import get_path, get_grid
-
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo, RowCol
+from solvers.utils.helpers import get_path, get_grid, check_row_and_col
 
 class DIRECTION(Enum):
-    """4 possible directions"""
-
     UP = 0
     RIGHT = 1
     DOWN = 2
     LEFT = 3
+
+
+class PT_2_SEEN(NamedTuple):
+    row: int
+    col: int
+    direction: DIRECTION
 
 
 class Day12(Day):
@@ -28,7 +33,7 @@ class Day12(Day):
         self.cols = -1
 
     def explore_pt_1(self, row: int, col: int, plant: str) -> int:
-        q: deque[tuple[int, int]] = deque([(row, col)])
+        q: deque[RowCol] = deque([RowCol(row, col)])
 
         area = 0
         perim = 0
@@ -51,17 +56,17 @@ class Day12(Day):
                     if self.orig_grid[add_row][add_col] == plant:
                         perim -= 1
 
-                    q.append((add_row, add_col))
+                    q.append(RowCol(add_row, add_col))
 
         return area * perim
 
     def explore_pt_2(self, row: int, col: int, plant: str) -> int:
-        q: deque[tuple[int, int]] = deque([(row, col)])
+        q: deque[RowCol] = deque([RowCol(row, col)])
 
         area = 0
         sides = 0
 
-        seen: set[tuple[int, int, DIRECTION]] = set()
+        seen: set[PT_2_SEEN] = set()
 
         def mark_horizontal(
             boundary: int, check: bool, direc: DIRECTION, check_row: int, check_col: int
@@ -75,14 +80,14 @@ class Day12(Day):
                     if self.orig_grid[check_row][seen_col] == plant and (
                         check or self.orig_grid[boundary][seen_col] != plant
                     ):
-                        seen.add((check_row, seen_col, direc))
+                        seen.add(PT_2_SEEN(check_row, seen_col, direc))
                     else:
                         break
                 for seen_col in range(check_col + 1, self.cols):
                     if self.orig_grid[check_row][seen_col] == plant and (
                         check or self.orig_grid[boundary][seen_col] != plant
                     ):
-                        seen.add((check_row, seen_col, direc))
+                        seen.add(PT_2_SEEN(check_row, seen_col, direc))
                     else:
                         break
                 return 1
@@ -101,14 +106,14 @@ class Day12(Day):
                     if self.orig_grid[seen_row][check_col] == plant and (
                         check or self.orig_grid[seen_row][boundary] != plant
                     ):
-                        seen.add((seen_row, check_col, direc))
+                        seen.add(PT_2_SEEN(seen_row, check_col, direc))
                     else:
                         break
                 for seen_row in range(check_row + 1, self.rows):
                     if self.orig_grid[seen_row][check_col] == plant and (
                         check or self.orig_grid[seen_row][boundary] != plant
                     ):
-                        seen.add((seen_row, check_col, direc))
+                        seen.add(PT_2_SEEN(seen_row, check_col, direc))
                     else:
                         break
                 return 1
@@ -118,12 +123,8 @@ class Day12(Day):
         while len(q) > 0:
             check_row, check_col = q.popleft()
 
-            # pylint: disable=R0801
             if (
-                check_row < 0
-                or check_row >= self.rows
-                or check_col < 0
-                or check_col >= self.cols
+                check_row_and_col(check_row, check_col, self.rows, self.cols)
             ):
                 continue
 
@@ -134,7 +135,7 @@ class Day12(Day):
             area += 1
 
             for row_diff, col_diff in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-                q.append((check_row + row_diff, check_col + col_diff))
+                q.append(RowCol(check_row + row_diff, check_col + col_diff))
 
             boundary = check_row - 1
             sides += mark_horizontal(
@@ -158,7 +159,7 @@ class Day12(Day):
 
         return area * sides
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         with open(get_path("12"), encoding="utf-8") as f:
             self.orig_grid, self.rows, self.cols = get_grid(f)
 
@@ -178,4 +179,4 @@ class Day12(Day):
                     res = self.explore_pt_2(row, col, v)
                     pt_2_res += res
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))

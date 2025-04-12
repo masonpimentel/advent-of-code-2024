@@ -1,9 +1,15 @@
 """Day 21"""
 
 from sys import maxsize
-from solvers.interfaces.day import Day, SolveInfo
+from typing import NamedTuple
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
+
+class SequenceInfo(NamedTuple):
+    sequence: str
+    move_count: int
 
 class Day21(Day):
     """Keypad Conundrum"""
@@ -31,8 +37,8 @@ class Day21(Day):
 
     def __init__(self) -> None:
         self.dp: dict[str, dict[str, int]] = {}
-        self.dir_pad_dp: dict[int, dict[str, dict[str, tuple[str, int]]]] = {}
-        self.dir_pad_same_level_dp: dict[str, dict[str, list[tuple[str, int]]]] = {}
+        self.dir_pad_dp: dict[int, dict[str, dict[str, SequenceInfo]]] = {}
+        self.dir_pad_same_level_dp: dict[str, dict[str, list[SequenceInfo]]] = {}
 
         self.row_col_from_num_pad = {
             self.NUMBER_PAD[row][col]: (row, col)
@@ -48,18 +54,18 @@ class Day21(Day):
     # pylint: disable=R0914
     def dir_pad_same_level(
         self, src: str, dst: str, seen: set[str]
-    ) -> list[tuple[str, int]]:
+    ) -> list[SequenceInfo]:
         if src in seen or src == "X":
-            return [("", maxsize)]
+            return [SequenceInfo("", maxsize)]
 
         if src == dst:
-            return [("A", 1)]
+            return [SequenceInfo("A", 1)]
 
         seen.add(src)
 
         src_row, src_col = self.row_col_from_dir_pad[src]
 
-        possible_this_level: list[tuple[str, int]] = []
+        possible_this_level: list[SequenceInfo] = []
 
         for row_diff, col_diff, pad_input in self.MOVE_DELTAS:
             check_row = src_row + row_diff
@@ -80,7 +86,7 @@ class Day21(Day):
             for this_layer_seq, this_layer_dist in this_layer_res:
                 if this_layer_dist < maxsize:
                     possible_this_level.append(
-                        (pad_input + this_layer_seq, 1 + this_layer_dist)
+                        SequenceInfo(pad_input + this_layer_seq, 1 + this_layer_dist)
                     )
 
         seen.remove(src)
@@ -90,7 +96,7 @@ class Day21(Day):
     # pylint: disable=R0914,R0912
     def dir_pad_all_levels(
         self, src: str, dst: str, level: int, human_level: int
-    ) -> tuple[str, int]:
+    ) -> SequenceInfo:
         if level not in self.dir_pad_dp:
             self.dir_pad_dp[level] = {}
         if src not in self.dir_pad_dp[level]:
@@ -99,13 +105,13 @@ class Day21(Day):
             return self.dir_pad_dp[level][src][dst]
 
         if level == human_level:
-            return (dst, 1)
+            return SequenceInfo(dst, 1)
 
         if src == "X":
-            return ("", maxsize)
+            return SequenceInfo("", maxsize)
 
         if src == dst:
-            return ("A", 1)
+            return SequenceInfo("A", 1)
 
         if src not in self.dir_pad_same_level_dp:
             self.dir_pad_same_level_dp[src] = {}
@@ -155,25 +161,25 @@ class Day21(Day):
                 best_distance = lower_layers_dist
                 seq = lower_layers_seq
 
-        r = (seq, best_distance)
+        r = SequenceInfo(seq, best_distance)
         self.dir_pad_dp[level][src][dst] = r
         return r
 
     # pylint: disable=R0914
     def number_pad_possible(
         self, src: str, dst: str, seen: set[str]
-    ) -> list[tuple[str, int]]:
+    ) -> list[SequenceInfo]:
         if src in seen or src == "X":
-            return [("", maxsize)]
+            return [SequenceInfo("", maxsize)]
 
         if src == dst:
-            return [("A", 1)]
+            return [SequenceInfo("A", 1)]
 
         seen.add(src)
 
         src_row, src_col = self.row_col_from_num_pad[src]
 
-        possible_this_level: list[tuple[str, int]] = []
+        possible_this_level: list[SequenceInfo] = []
 
         for row_diff, col_diff, pad_input in self.MOVE_DELTAS:
             check_row = src_row + row_diff
@@ -194,7 +200,7 @@ class Day21(Day):
             for this_layer_seq, this_layer_dist in this_layer_res:
                 if this_layer_dist < maxsize:
                     possible_this_level.append(
-                        (pad_input + this_layer_seq, 1 + this_layer_dist)
+                        SequenceInfo(pad_input + this_layer_seq, 1 + this_layer_dist)
                     )
 
         seen.remove(src)
@@ -248,7 +254,7 @@ class Day21(Day):
         self.dir_pad_same_level_dp = {}
         codes: list[str] = []
 
-        with open(get_path("d21"), encoding="utf-8") as f:
+        with open(get_path("21"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

@@ -1,7 +1,8 @@
 """Day 5"""
 
 from collections import defaultdict, Counter
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo, RowCol
 from solvers.utils.helpers import get_path
 
 
@@ -35,7 +36,7 @@ class Day05(Day):
 
     def get_pt_1_pt_2_res(
         self, page_list: list[int], banned_lookup: dict[int, list[int]]
-    ) -> tuple[int, int]:
+    ) -> RowCol:
         pt_1_add = 0
         pt_2_add = 0
         is_valid = True
@@ -56,7 +57,7 @@ class Day05(Day):
         else:
             pt_2_add += self.get_pt_2_add(page_list, banned_lookup, mid_idx)
 
-        return (pt_1_add, pt_2_add)
+        return RowCol(pt_1_add, pt_2_add)
 
     def solve(self) -> SolveInfo:
         with open(get_path("05"), encoding="utf-8") as f:
