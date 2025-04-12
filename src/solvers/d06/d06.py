@@ -1,10 +1,12 @@
 """Day 6"""
 
 from concurrent.futures import ProcessPoolExecutor
-from solvers.base.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_grid, get_path
 
 # Named tuples not used to improve runtime performance
+
 
 class Day06(Day):
     """Guard Gallivant"""
@@ -98,7 +100,7 @@ class Day06(Day):
 
         return False
 
-    def process_cell(self, args) -> int:
+    def process_cell(self, args: tuple[int, int, str]) -> int:
         row, col, direc = args
         if self.grid[row][col] == "." and (
             row != self.start_row or col != self.start_col
@@ -109,7 +111,7 @@ class Day06(Day):
             return 1 if res else 0
         return 0
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         with open(get_path("06"), encoding="utf-8") as f:
             self.grid, self.rows, self.cols = get_grid(f)
 
@@ -141,4 +143,4 @@ class Day06(Day):
 
         pt_2_res = sum(results)
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))

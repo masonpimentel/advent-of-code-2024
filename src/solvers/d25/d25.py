@@ -1,6 +1,7 @@
 """Day 25"""
 
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 
@@ -43,7 +44,7 @@ class Day25(Day):
         key_or_locks: list[list[list[str]]] = []
         cur_key_or_lock: list[list[str]] = []
 
-        with open(get_path("d25"), encoding="utf-8") as f:
+        with open(get_path("25"), encoding="utf-8") as f:
             line = f.readline()
 
             while line:

@@ -75,7 +75,7 @@ class Day13(Day):
         # Check if a and b are integers
         return int((a * 3) + b) if a % 1 == 0 and b % 1 == 0 else 0
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         with open(get_path("13"), encoding="utf-8") as f:
             line = f.readline()
 
@@ -118,4 +118,4 @@ class Day13(Day):
                 EquationParts(a_x, a_y, b_x, b_y, t_x, t_y), True
             )
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))

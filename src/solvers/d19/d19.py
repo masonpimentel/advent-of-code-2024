@@ -1,6 +1,7 @@
 """Day 19"""
 
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 
@@ -35,7 +36,7 @@ class Day19(Day):
     def solve(self) -> SolveInfo:
         designs: list[str] = []
 
-        with open(get_path("d19"), encoding="utf-8") as f:
+        with open(get_path("19"), encoding="utf-8") as f:
             line = f.readline()
 
             self.possible = set(line[:-1].split(", "))

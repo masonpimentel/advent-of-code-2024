@@ -7,6 +7,8 @@ from solvers.base.day import Day
 from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
+
+# pylint: disable=C0115
 class WireState(NamedTuple):
     wire: str
     state: int
@@ -94,9 +96,13 @@ class Day24(Day):
                         1 if wire_lookup[wire1] == 1 and wire_lookup[wire2] == 1 else 0
                     )
                 case "OR":
-                    wire_lookup[res_wire] = 1 if wire_lookup[wire1] == 1 or wire_lookup[wire2] == 1 else 0
+                    wire_lookup[res_wire] = (
+                        1 if wire_lookup[wire1] == 1 or wire_lookup[wire2] == 1 else 0
+                    )
                 case "XOR":
-                    wire_lookup[res_wire] = 1 if wire_lookup[wire1] != wire_lookup[wire2] else 0
+                    wire_lookup[res_wire] = (
+                        1 if wire_lookup[wire1] != wire_lookup[wire2] else 0
+                    )
 
             if res_wire[0] == "z":
                 cur_zs += 1

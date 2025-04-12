@@ -7,9 +7,11 @@ from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 
+# pylint: disable=C0115
 class SequenceInfo(NamedTuple):
     sequence: str
     move_count: int
+
 
 class Day21(Day):
     """Keypad Conundrum"""

@@ -10,7 +10,7 @@ from solvers.utils.helpers import get_path
 class Day01(Day):
     """Historian Hysteria"""
 
-    def solve(self) -> str:
+    def solve(self) -> SolveInfo:
         left: list[int] = []
         right: list[int] = []
 

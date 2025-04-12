@@ -25,8 +25,9 @@ def get_grid(f: TextIO) -> GridInfo:
     return GridInfo(grid, len(grid), len(grid[0]))
 
 
-def get_path(day: str) -> int:
+def get_path(day: str) -> str:
     return join("src", "solvers", f"d{day}", "input.txt")
+
 
 def check_row_and_col(row: int, col: int, rows: int, cols: int) -> bool:
     return row < 0 or row >= rows or col < 0 or col >= cols

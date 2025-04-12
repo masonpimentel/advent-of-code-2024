@@ -3,27 +3,26 @@ from solvers.d02.d02 import Day02
 from solvers.d03.d03 import Day03
 from solvers.d04.d04 import Day04
 from solvers.d05.d05 import Day05
-
-# from solvers.d06.d06 import Day06
-# from solvers.d07.d07 import Day07
-# from solvers.d08.d08 import Day08
-# from solvers.d09.d09 import Day09
-# from solvers.d10.d10 import Day10
-# from solvers.d11.d11 import Day11
-# from solvers.d12.d12 import Day12
-# from solvers.d13.d13 import Day13
-# from solvers.d14.d14 import Day14
-# from solvers.d15.d15 import Day15
-# from solvers.d16.d16 import Day16
-# from solvers.d17.d17 import Day17
-# from solvers.d18.d18 import Day18
-# from solvers.d19.d19 import Day19
-# from solvers.d20.d20 import Day20
-# from solvers.d21.d21 import Day21
-# from solvers.d22.d22 import Day22
-# from solvers.d23.d23 import Day23
-# from solvers.d24.d24 import Day24
-# from solvers.d25.d25 import Day25
+from solvers.d06.d06 import Day06
+from solvers.d07.d07 import Day07
+from solvers.d08.d08 import Day08
+from solvers.d09.d09 import Day09
+from solvers.d10.d10 import Day10
+from solvers.d11.d11 import Day11
+from solvers.d12.d12 import Day12
+from solvers.d13.d13 import Day13
+from solvers.d14.d14 import Day14
+from solvers.d15.d15 import Day15
+from solvers.d16.d16 import Day16
+from solvers.d17.d17 import Day17
+from solvers.d18.d18 import Day18
+from solvers.d19.d19 import Day19
+from solvers.d20.d20 import Day20
+from solvers.d21.d21 import Day21
+from solvers.d22.d22 import Day22
+from solvers.d23.d23 import Day23
+from solvers.d24.d24 import Day24
+from solvers.d25.d25 import Day25
 
 import time
 
@@ -102,121 +101,121 @@ def test_Day05():
     runner(d, s)
 
 
-# def test_Day06():
-#     d = Day06()
-#     s = "06"
-#     runner(d, s)
+def test_Day06():
+    d = Day06()
+    s = "06"
+    runner(d, s)
 
 
-# def test_Day07():
-#     d = Day07()
-#     s = "07"
-#     runner(d, s)
+def test_Day07():
+    d = Day07()
+    s = "07"
+    runner(d, s)
 
 
-# def test_Day08():
-#     d = Day08()
-#     s = "08"
-#     runner(d, s)
+def test_Day08():
+    d = Day08()
+    s = "08"
+    runner(d, s)
 
 
-# def test_Day09():
-#     d = Day09()
-#     s = "09"
-#     runner(d, s)
+def test_Day09():
+    d = Day09()
+    s = "09"
+    runner(d, s)
 
 
-# def test_Day10():
-#     d = Day10()
-#     s = "10"
-#     runner(d, s)
+def test_Day10():
+    d = Day10()
+    s = "10"
+    runner(d, s)
 
 
-# def test_Day11():
-#     d = Day11()
-#     s = "11"
-#     runner(d, s)
+def test_Day11():
+    d = Day11()
+    s = "11"
+    runner(d, s)
 
 
-# def test_Day12():
-#     d = Day12()
-#     s = "12"
-#     runner(d, s)
+def test_Day12():
+    d = Day12()
+    s = "12"
+    runner(d, s)
 
 
-# def test_Day13():
-#     d = Day13()
-#     s = "13"
-#     runner(d, s)
+def test_Day13():
+    d = Day13()
+    s = "13"
+    runner(d, s)
 
 
-# def test_Day14():
-#     d = Day14()
-#     s = "14"
-#     runner(d, s)
+def test_Day14():
+    d = Day14()
+    s = "14"
+    runner(d, s)
 
 
-# def test_Day15():
-#     d = Day15()
-#     s = "15"
-#     runner(d, s)
+def test_Day15():
+    d = Day15()
+    s = "15"
+    runner(d, s)
 
 
-# def test_Day16():
-#     d = Day16()
-#     s = "16"
-#     runner(d, s)
+def test_Day16():
+    d = Day16()
+    s = "16"
+    runner(d, s)
 
 
-# def test_Day17():
-#     d = Day17()
-#     s = "17"
-#     runner(d, s)
+def test_Day17():
+    d = Day17()
+    s = "17"
+    runner(d, s)
 
 
-# def test_Day18():
-#     d = Day18()
-#     s = "18"
-#     runner(d, s)
+def test_Day18():
+    d = Day18()
+    s = "18"
+    runner(d, s)
 
 
-# def test_Day19():
-#     d = Day19()
-#     s = "19"
-#     runner(d, s)
+def test_Day19():
+    d = Day19()
+    s = "19"
+    runner(d, s)
 
 
-# def test_Day20():
-#     d = Day20()
-#     s = "20"
-#     runner(d, s)
+def test_Day20():
+    d = Day20()
+    s = "20"
+    runner(d, s)
 
 
-# def test_Day21():
-#     d = Day21()
-#     s = "21"
-#     runner(d, s)
+def test_Day21():
+    d = Day21()
+    s = "21"
+    runner(d, s)
 
 
-# def test_Day22():
-#     d = Day22()
-#     s = "22"
-#     runner(d, s)
+def test_Day22():
+    d = Day22()
+    s = "22"
+    runner(d, s)
 
 
-# def test_Day23():
-#     d = Day23()
-#     s = "23"
-#     runner(d, s)
+def test_Day23():
+    d = Day23()
+    s = "23"
+    runner(d, s)
 
 
-# def test_Day24():
-#     d = Day24()
-#     s = "24"
-#     runner(d, s)
+def test_Day24():
+    d = Day24()
+    s = "24"
+    runner(d, s)
 
 
-# def test_Day25():
-#     d = Day25()
-#     s = "25"
-#     runner(d, s)
+def test_Day25():
+    d = Day25()
+    s = "25"
+    runner(d, s)

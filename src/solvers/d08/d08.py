@@ -49,7 +49,7 @@ class Day08(Day):
                         anti_row_pt2 += row_diff
                         anti_col_pt2 += col_diff
 
-    def solve(self) -> tuple[str, str]:
+    def solve(self) -> SolveInfo:
         with open(get_path("08"), encoding="utf-8") as f:
             self.grid, self.rows, self.cols = get_grid(f)
 
@@ -70,4 +70,4 @@ class Day08(Day):
             for v in res_row:
                 pt_2_res += 1 if v else 0
 
-        return (str(pt_1_res), str(pt_2_res))
+        return SolveInfo(str(pt_1_res), str(pt_2_res))

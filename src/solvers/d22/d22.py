@@ -1,9 +1,9 @@
 """Day 22"""
 
-from os.path import join
 from collections import deque, defaultdict
 from typing import NamedTuple
-from solvers.interfaces.day import Day, SolveInfo
+from solvers.base.day import Day
+from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 
@@ -73,7 +73,7 @@ class Day22(Day):
     def solve(self) -> SolveInfo:
         pt_1_res = 0
 
-        with open(get_path("d22"), encoding="utf-8") as f:
+        with open(get_path("22"), encoding="utf-8") as f:
             seeds: list[str] = []
 
             line = f.readline()
