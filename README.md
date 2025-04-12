@@ -29,7 +29,7 @@ Runtime (seconds):
 | Day 4 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
 | Day 5 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
 | Day 6 | 🟠 | ~ 5 | ~ 50 | ~ 53 | ~ 49 | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
-| Day 7 | 🟡 | ~ 1 | ~ 6 | ~ 5 | ~ 6 | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
+| Day 7 | 🟡 | ~ 2 | ~ 6 | ~ 5 | ~ 6 | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
 | Day 8 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
 | Day 9 | 🟡 | ~ 2 | ~ 3 | ~ 3 | ~ 2 |
 | Day 10 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
@@ -45,7 +45,7 @@ Runtime (seconds):
 | Day 20 | 🟡 | ~ 3 | ~ 5 | ~ 4 | ~ 4 | |
 | Day 21 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
 | Day 22 | 🟠 | ~ 5 | ~ 12 | ~ 9 | ~ 8 | |
-| Day 23 | 🔵 | < 0.1 | ~ 1 | ~ 1 | ~ 1 | |
+| Day 23 | 🔵 | ~ 1 | ~ 1 | ~ 1 | ~ 1 | |
 | Day 24 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
 | Day 25 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
 
