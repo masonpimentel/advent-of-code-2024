@@ -1,3 +1,5 @@
+# pylint: disable=C0114
+
 from typing import NamedTuple
 
 
@@ -8,6 +10,7 @@ class SolveInfo(NamedTuple):
     pt_2_res: str
 
 
+# pylint: disable=C0115
 class RowCol(NamedTuple):
     row: int
     col: int

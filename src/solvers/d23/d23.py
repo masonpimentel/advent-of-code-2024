@@ -7,6 +7,7 @@ from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
 
+# pylint: disable=C0115
 class Edge(NamedTuple):
     computer_1: str
     computer_2: str
