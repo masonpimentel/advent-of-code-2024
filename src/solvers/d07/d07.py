@@ -36,7 +36,9 @@ class Day07(Day):
         if self.rec(RecurseArgs(tot, cur * vals[0], vals[1:], combine)):
             return True
         # combine
-        if combine and self.rec(RecurseArgs(tot, int(str(cur) + str(vals[0])), vals[1:], combine)):
+        if combine and self.rec(
+            RecurseArgs(tot, int(str(cur) + str(vals[0])), vals[1:], combine)
+        ):
             return True
 
         return False
@@ -49,7 +51,9 @@ class Day07(Day):
 
             while line:
                 tot, vals = line.split(": ")
-                calibrations.append(Calibration(int(tot), [int(x) for x in vals.split(" ")]))
+                calibrations.append(
+                    Calibration(int(tot), [int(x) for x in vals.split(" ")])
+                )
 
                 line = f.readline()
 

@@ -5,6 +5,7 @@ from solvers.base.day import Day
 from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path, get_grid
 
+
 # pylint: disable=C0115
 class DfsArgs(NamedTuple):
     row: int
@@ -12,6 +13,7 @@ class DfsArgs(NamedTuple):
     height: int
     seen: set[str]
     peaks: set[str]
+
 
 class Day10(Day):
     """Hoof It"""

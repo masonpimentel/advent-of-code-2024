@@ -8,6 +8,7 @@ from solvers.utils.helpers import get_path
 
 # Named tuples not used to improve runtime performance
 
+
 class Day18(Day):
     """RAM Run"""
 

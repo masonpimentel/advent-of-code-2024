@@ -6,6 +6,7 @@ from solvers.utils.helpers import get_grid, get_path
 
 # Named tuples not used to improve runtime performance
 
+
 class Day06(Day):
     """Guard Gallivant"""
 

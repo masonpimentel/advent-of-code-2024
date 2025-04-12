@@ -11,6 +11,7 @@ class SequenceInfo(NamedTuple):
     sequence: str
     move_count: int
 
+
 class Day21(Day):
     """Keypad Conundrum"""
 

@@ -6,6 +6,7 @@ from solvers.base.day import Day
 from solvers.base.types import SolveInfo
 from solvers.utils.helpers import get_path
 
+
 class Edge(NamedTuple):
     computer_1: str
     computer_2: str

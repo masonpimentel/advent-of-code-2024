@@ -88,9 +88,7 @@ class Day20(Day):
             check_col = col + col_diff
 
             # pylint: disable=R0801
-            if (
-                check_row_and_col(check_row, check_col, self.rows, self.cols)
-            ):
+            if check_row_and_col(check_row, check_col, self.rows, self.cols):
                 continue
 
             if self.dp[check_row][check_col] == -1:

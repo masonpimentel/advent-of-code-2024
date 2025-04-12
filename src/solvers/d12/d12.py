@@ -7,6 +7,7 @@ from solvers.base.day import Day
 from solvers.base.types import SolveInfo, RowCol
 from solvers.utils.helpers import get_path, get_grid, check_row_and_col
 
+
 class DIRECTION(Enum):
     UP = 0
     RIGHT = 1
@@ -123,9 +124,7 @@ class Day12(Day):
         while len(q) > 0:
             check_row, check_col = q.popleft()
 
-            if (
-                check_row_and_col(check_row, check_col, self.rows, self.cols)
-            ):
+            if check_row_and_col(check_row, check_col, self.rows, self.cols):
                 continue
 
             if self.pt_2_grid[check_row][check_col] != plant:
