@@ -1,5 +1,7 @@
 ## Advent of Code 2024
 
+![Build Status](https://github.com/masonpimentel/advent-of-code-2024/actions/workflows/ci.yml/badge.svg) [![codecov](https://codecov.io/gh/masonpimentel/advent-of-code-2024/branch/main/graph/badge.svg)](https://codecov.io/gh/masonpimentel/advent-of-code-2024/)
+
 Python solutions for Advent of Code 2024 with code quality managed by these tools:
 
 * Linting: pylint https://pylint.readthedocs.io/en/stable/
