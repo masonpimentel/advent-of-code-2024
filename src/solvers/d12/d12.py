@@ -9,6 +9,8 @@ from solvers.utils.helpers import get_path, get_grid, check_row_and_col
 
 
 class DIRECTION(Enum):
+    """4 possible directions"""
+
     UP = 0
     RIGHT = 1
     DOWN = 2
@@ -16,6 +18,8 @@ class DIRECTION(Enum):
 
 
 class Pt2Seen(NamedTuple):
+    """Info to cache for part 2"""
+
     row: int
     col: int
     direction: DIRECTION
