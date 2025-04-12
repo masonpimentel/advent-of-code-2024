@@ -22,8 +22,8 @@ Machines:
 Runtime (seconds):
 
 | Day | Status | PC | Mac | Gitlab runner | Github runner | Notes |
-| -----       | --- | ---       | ---       | ---       | ---       | ---       |
-| Day 1 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
+| ----- | --- | --- | --- | --- | --- | --- |
+| Day 1 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
 | Day 2 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
 | Day 3 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
 | Day 4 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
@@ -32,7 +32,7 @@ Runtime (seconds):
 | Day 7 | 🟡 | ~ 2 | ~ 6 | ~ 12 | ~ 6 | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
 | Day 8 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
 | Day 9 | 🟡 | ~ 2 | ~ 3 | ~ 3 | ~ 2 |
-| Day 10 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
+| Day 10 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
 | Day 11 | 🔵 | < 0.1 | ~ 1 | ~ 1 | ~ 1 |
 | Day 12 | 🔵 | < 0.1 | ~ 1 | < 0.1 | < 0.1 |
 | Day 13 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
