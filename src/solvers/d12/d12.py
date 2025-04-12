@@ -15,7 +15,7 @@ class DIRECTION(Enum):
     LEFT = 3
 
 
-class PT_2_SEEN(NamedTuple):
+class Pt2Seen(NamedTuple):
     row: int
     col: int
     direction: DIRECTION
@@ -67,7 +67,7 @@ class Day12(Day):
         area = 0
         sides = 0
 
-        seen: set[PT_2_SEEN] = set()
+        seen: set[Pt2Seen] = set()
 
         def mark_horizontal(
             boundary: int, check: bool, direc: DIRECTION, check_row: int, check_col: int
@@ -81,14 +81,14 @@ class Day12(Day):
                     if self.orig_grid[check_row][seen_col] == plant and (
                         check or self.orig_grid[boundary][seen_col] != plant
                     ):
-                        seen.add(PT_2_SEEN(check_row, seen_col, direc))
+                        seen.add(Pt2Seen(check_row, seen_col, direc))
                     else:
                         break
                 for seen_col in range(check_col + 1, self.cols):
                     if self.orig_grid[check_row][seen_col] == plant and (
                         check or self.orig_grid[boundary][seen_col] != plant
                     ):
-                        seen.add(PT_2_SEEN(check_row, seen_col, direc))
+                        seen.add(Pt2Seen(check_row, seen_col, direc))
                     else:
                         break
                 return 1
@@ -107,14 +107,14 @@ class Day12(Day):
                     if self.orig_grid[seen_row][check_col] == plant and (
                         check or self.orig_grid[seen_row][boundary] != plant
                     ):
-                        seen.add(PT_2_SEEN(seen_row, check_col, direc))
+                        seen.add(Pt2Seen(seen_row, check_col, direc))
                     else:
                         break
                 for seen_row in range(check_row + 1, self.rows):
                     if self.orig_grid[seen_row][check_col] == plant and (
                         check or self.orig_grid[seen_row][boundary] != plant
                     ):
-                        seen.add(PT_2_SEEN(seen_row, check_col, direc))
+                        seen.add(Pt2Seen(seen_row, check_col, direc))
                     else:
                         break
                 return 1
