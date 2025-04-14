@@ -40,9 +40,12 @@ jobs:
       - run: |
           pip install pipenv
           pipenv install --dev
+      - name: Run tests without coverage for performance times
+        run: |
+          pipenv run pytest -s test
       - name: Run tests with coverage
         run: |
-          pipenv run pytest -s --cov=src --cov-report=xml test
+          pipenv run pytest --cov=src --cov-report=xml test
           pipenv run coverage xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
