@@ -59,15 +59,15 @@ Only dev packages are needed so use `--dev`
 
 ### Running
 
-Run using `pytest`
+Run using `pytest` and see solution output
 
 #### Mac
 
-Use `./run-all.sh`
+Use `./run.sh`
 
 #### Windows
 
-Use `.\run-all.ps1`
+Use `.\run.ps1`
 
 ### Formatting
 
@@ -83,7 +83,6 @@ To ensure CI will pass, run `pipenv run black --check .`
 
 `pipenv run pylint src`
 
-### Coverage
+### To run all the above
 
-`pipenv run coverage run -m pytest`
-`pipenv run coverage report`
+Use `./run-all.sh` or `run-all.ps1`
