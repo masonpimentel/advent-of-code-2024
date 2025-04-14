@@ -2,7 +2,7 @@
 
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then
   cat <<EOF
-Usage: ./run.sh [--help]
+Usage: ./run.sh [-h|--help]
 Runs code quality checks:
 - Format: black
 - Type check: mypy

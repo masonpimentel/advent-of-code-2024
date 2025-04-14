@@ -104,7 +104,7 @@ class Day04(Day):
             and self.mat[row + 2][col + 2] == pattern.bottom_right
         )
 
-    def part_one(self) -> str:
+    def get_pt_1(self) -> str:
         res = 0
         for row in range(self.rows):
             for col in range(self.cols):
@@ -112,7 +112,7 @@ class Day04(Day):
 
         return str(res)
 
-    def part_two(self) -> str:
+    def get_pt_2(self) -> str:
         patterns: list[Pattern] = [
             Pattern("M", "S", "M", "S"),
             Pattern("M", "M", "S", "S"),
@@ -133,7 +133,4 @@ class Day04(Day):
         with open(get_path("04"), encoding="utf-8") as f:
             self.mat, self.rows, self.cols = get_grid(f)
 
-        pt_1_res = self.part_one()
-        pt_2_res = self.part_two()
-
-        return SolveInfo(pt_1_res, pt_2_res)
+        return SolveInfo(self.get_pt_1(), self.get_pt_2())
