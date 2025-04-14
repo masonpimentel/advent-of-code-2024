@@ -85,4 +85,4 @@ To ensure CI will pass, run `pipenv run black --check .`
 
 ### To run all the above
 
-Use `./run-all.sh` or `run-all.ps1`
+Use `./run-all.sh` or `.\run-all.ps1`
