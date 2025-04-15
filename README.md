@@ -30,8 +30,8 @@ Runtime (seconds):
 | Day 3 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
 | Day 4 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
 | Day 5 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | 
-| Day 6 | 🟠 | ~ 5 | ~ 50 | ~ 53 | ~ 49 | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
-| Day 7 | 🟡 | ~ 2 | ~ 6 | ~ 12 | ~ 6 | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
+| Day 6 | 🟠 | ~ 5 | ~ 59 | ~ 53 | ~ 49 | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
+| Day 7 | 🟡 | ~ 2 | ~ 14 | ~ 12 | ~ 6 | This uses Python concurrent.futures.ProcessPoolExecutor - optimized for 16+ cores |
 | Day 8 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
 | Day 9 | 🟡 | ~ 2 | ~ 3 | ~ 3 | ~ 2 |
 | Day 10 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 |
@@ -42,7 +42,7 @@ Runtime (seconds):
 | Day 15 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
 | Day 16 | 🔵 | ~ 1 | ~ 1 | ~ 1 | ~ 1 | |
 | Day 17 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
-| Day 18 | 🟠 | ~ 8 | ~ 16 | ~ 12 | ~ 12 | This uses Python concurrent.futures.ProcessPoolExecutor, needs at least 2 cores |
+| Day 18 | 🟠 | ~ 8 | ~ 17 | ~ 12 | ~ 12 | This uses Python concurrent.futures.ProcessPoolExecutor, needs at least 2 cores |
 | Day 19 | 🔵 | < 0.1 | ~ 1 | < 0.1 | < 0.1 | |
 | Day 20 | 🟡 | ~ 3 | ~ 5 | ~ 4 | ~ 4 | |
 | Day 21 | 🟢 | < 0.1 | < 0.1 | < 0.1 | < 0.1 | |
