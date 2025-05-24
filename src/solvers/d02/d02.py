@@ -9,23 +9,19 @@ class Day02(Day):
     """Red-Nosed Reports"""
 
     def check_level(self, vals: list[int]) -> bool:
-        is_safe = True
-
         is_increase = vals[1] > vals[0]
+
         for i in range(len(vals) - 1):
             diff = abs(vals[i + 1] - vals[i])
             if diff < 1 or diff > 3:
-                is_safe = False
-                break
+                return False
 
-            if is_increase and vals[i + 1] <= vals[i]:
-                is_safe = False
-                break
-            if not is_increase and vals[i + 1] >= vals[i]:
-                is_safe = False
-                break
+            if (is_increase and vals[i + 1] <= vals[i]) or (
+                not is_increase and vals[i + 1] >= vals[i]
+            ):
+                return False
 
-        return is_safe
+        return True
 
     def solve(self) -> SolveInfo:
         levels: list[list[int]] = []

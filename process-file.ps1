@@ -41,7 +41,7 @@ if ($Day -notmatch "^\d{2}$") {
 }
 
 # Construct the file path
-$FilePath = "src\d$Day\d$Day.py"
+$FilePath = "src\solvers\d$Day\d$Day.py"
 
 # Check if the file exists
 if (-Not (Test-Path $FilePath)) {
