@@ -82,7 +82,7 @@ if [[ ! "$DAY" =~ ^[0-9]{2}$ ]]; then
 fi
 
 # Construct the file path
-FILE_PATH="src/d$DAY/d$DAY.py"
+FILE_PATH="src/solvers/d$DAY/d$DAY.py"
 
 # Check if the file exists
 if [[ ! -f "$FILE_PATH" ]]; then
