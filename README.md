@@ -2,13 +2,13 @@
 
 ![Build Status](https://github.com/masonpimentel/advent-of-code-2024/actions/workflows/ci.yml/badge.svg) [![codecov](https://codecov.io/gh/masonpimentel/advent-of-code-2024/branch/main/graph/badge.svg)](https://codecov.io/gh/masonpimentel/advent-of-code-2024/)
 
-Python solutions for Advent of Code 2024 with code quality managed by these tools:
+Python solutions for Advent of Code 2024 (https://adventofcode.com/2024/) with code quality managed by these tools:
 
 * Linting: pylint https://pylint.readthedocs.io/en/stable/
 * Typing: mypy https://mypy-lang.org/
 * Formatting: black https://black.readthedocs.io/en/stable/
 
-Join my leaderboard! https://adventofcode.com/2024/leaderboard/private: `4780152-1e037a8f`
+Join my leaderboard! https://adventofcode.com/2024/leaderboard/private: `4780152-1e037a8f` (note you need to be signed in to join private leaderboards)
 
 ### Performance
 
