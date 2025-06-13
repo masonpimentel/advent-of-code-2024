@@ -72,150 +72,100 @@ def runner(d, day_str: str):
 
 
 def test_Day01():
-    d = Day01()
-    s = "01"
-    runner(d, s)
+    runner(Day01(), "01")
 
 
 def test_Day02():
-    d = Day02()
-    s = "02"
-    runner(d, s)
+    runner(Day02(), "02")
 
 
 def test_Day03():
-    d = Day03()
-    s = "03"
-    runner(d, s)
+    runner(Day03(), "03")
 
 
 def test_Day04():
-    d = Day04()
-    s = "04"
-    runner(d, s)
+    runner(Day04(), "04")
 
 
 def test_Day05():
-    d = Day05()
-    s = "05"
-    runner(d, s)
+    runner(Day05(), "05")
 
 
 def test_Day06():
-    d = Day06()
-    s = "06"
-    runner(d, s)
+    runner(Day06(), "06")
 
 
 def test_Day07():
-    d = Day07()
-    s = "07"
-    runner(d, s)
+    runner(Day07(), "07")
 
 
 def test_Day08():
-    d = Day08()
-    s = "08"
-    runner(d, s)
+    runner(Day08(), "08")
 
 
 def test_Day09():
-    d = Day09()
-    s = "09"
-    runner(d, s)
+    runner(Day09(), "09")
 
 
 def test_Day10():
-    d = Day10()
-    s = "10"
-    runner(d, s)
+    runner(Day10(), "10")
 
 
 def test_Day11():
-    d = Day11()
-    s = "11"
-    runner(d, s)
+    runner(Day11(), "11")
 
 
 def test_Day12():
-    d = Day12()
-    s = "12"
-    runner(d, s)
+    runner(Day12(), "12")
 
 
 def test_Day13():
-    d = Day13()
-    s = "13"
-    runner(d, s)
+    runner(Day13(), "13")
 
 
 def test_Day14():
-    d = Day14()
-    s = "14"
-    runner(d, s)
+    runner(Day14(), "14")
 
 
 def test_Day15():
-    d = Day15()
-    s = "15"
-    runner(d, s)
+    runner(Day15(), "15")
 
 
 def test_Day16():
-    d = Day16()
-    s = "16"
-    runner(d, s)
+    runner(Day16(), "16")
 
 
 def test_Day17():
-    d = Day17()
-    s = "17"
-    runner(d, s)
+    runner(Day17(), "17")
 
 
 def test_Day18():
-    d = Day18()
-    s = "18"
-    runner(d, s)
+    runner(Day18(), "18")
 
 
 def test_Day19():
-    d = Day19()
-    s = "19"
-    runner(d, s)
+    runner(Day19(), "19")
 
 
 def test_Day20():
-    d = Day20()
-    s = "20"
-    runner(d, s)
+    runner(Day20(), "20")
 
 
 def test_Day21():
-    d = Day21()
-    s = "21"
-    runner(d, s)
+    runner(Day21(), "21")
 
 
 def test_Day22():
-    d = Day22()
-    s = "22"
-    runner(d, s)
+    runner(Day22(), "22")
 
 
 def test_Day23():
-    d = Day23()
-    s = "23"
-    runner(d, s)
+    runner(Day23(), "23")
 
 
 def test_Day24():
-    d = Day24()
-    s = "24"
-    runner(d, s)
+    runner(Day24(), "24")
 
 
 def test_Day25():
-    d = Day25()
-    s = "25"
-    runner(d, s)
+    runner(Day25(), "25")
