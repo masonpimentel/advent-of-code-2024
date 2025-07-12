@@ -26,7 +26,7 @@ class Day05(Day):
 
                     if other_v in banned_lookup[v]:
                         is_valid = False
-                        continue
+                        break
                 if is_valid:
                     to_choose = v
             new_order += [to_choose] * count[to_choose]
