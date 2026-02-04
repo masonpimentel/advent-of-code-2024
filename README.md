@@ -1,6 +1,6 @@
 ## Advent of Code 2024
 
-![Build Status](https://github.com/masonpimentel/advent-of-code-2024/actions/workflows/ci.yml/badge.svg) [![codecov](https://codecov.io/gh/masonpimentel/advent-of-code-2024/branch/main/graph/badge.svg)](https://codecov.io/gh/masonpimentel/advent-of-code-2024/)
+![Build Status](https://github.com/masonpimentel/advent-of-code-2024/actions/workflows/ci.yml/badge.svg) [![codecov](https://codecov.io/gh/masonpimentel/advent-of-code-2024/branch/master/graph/badge.svg)](https://codecov.io/gh/masonpimentel/advent-of-code-2024/)
 
 Python solutions for Advent of Code 2024 (https://adventofcode.com/2024/) with code quality managed by these tools:
 
@@ -86,3 +86,9 @@ To ensure CI will pass, run `pipenv run black --check .`
 ### To run all the above
 
 Use `./run-all.sh` or `.\run-all.ps1`
+
+### To get average time over n runs
+
+`pipenv run pytest -s test --runs n`
+
+Example for the average over 3 runs: `pipenv run pytest -s test --runs 3`

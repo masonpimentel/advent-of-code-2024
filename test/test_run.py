@@ -55,117 +55,138 @@ EXPECTED_RESULTS = {
 }
 
 
-def runner(d, day_str: str):
-    print(f"\nRunning Day {day_str}")
-    expected = EXPECTED_RESULTS[day_str]
+def do_run(d, expected: str, times: list[float]):
     start = time.perf_counter()
-
     res = d.solve()
+    end = time.perf_counter()
+
     assert res[0] == expected[0]
     assert res[1] == expected[1]
+
+    elapsed = end - start
+    times.append(elapsed)
+
+    return res
+
+
+def runner(d, day_str: str, runs: int = 1):
+    print(f"\nRunning Day {day_str}")
+    expected = EXPECTED_RESULTS[day_str]
+
+    # Warm-up
+    d.solve()
+
+    times = []
+    if runs == 1:
+        res = do_run(d, expected, times)
+        print(f"Elapsed {times[-1]:.03f} seconds")
+    else:
+        for i in range(runs):
+            res = do_run(d, expected, times)
+            print(f"Run {i + 1}: {times[-1]:.03f}s")
+
+        avg = sum(times) / runs
+        print(f"Average over {runs} runs: {avg:.03f}s")
+
     print(f"pt_1_res: {res[0]}")
     print(f"pt_2_res: {res[1]}")
 
-    end = time.perf_counter()
-    s = end - start
-    print(f"Elapsed {s:.03f} seconds")
+
+def test_Day01(runs):
+    runner(Day01(), "01", runs)
 
 
-def test_Day01():
-    runner(Day01(), "01")
+def test_Day02(runs):
+    runner(Day02(), "02", runs)
 
 
-def test_Day02():
-    runner(Day02(), "02")
+def test_Day03(runs):
+    runner(Day03(), "03", runs)
 
 
-def test_Day03():
-    runner(Day03(), "03")
+def test_Day04(runs):
+    runner(Day04(), "04", runs)
 
 
-def test_Day04():
-    runner(Day04(), "04")
+def test_Day05(runs):
+    runner(Day05(), "05", runs)
 
 
-def test_Day05():
-    runner(Day05(), "05")
+def test_Day06(runs):
+    runner(Day06(), "06", runs)
 
 
-def test_Day06():
-    runner(Day06(), "06")
+def test_Day07(runs):
+    runner(Day07(), "07", runs)
 
 
-def test_Day07():
-    runner(Day07(), "07")
+def test_Day08(runs):
+    runner(Day08(), "08", runs)
 
 
-def test_Day08():
-    runner(Day08(), "08")
+def test_Day09(runs):
+    runner(Day09(), "09", runs)
 
 
-def test_Day09():
-    runner(Day09(), "09")
+def test_Day10(runs):
+    runner(Day10(), "10", runs)
 
 
-def test_Day10():
-    runner(Day10(), "10")
+def test_Day11(runs):
+    runner(Day11(), "11", runs)
 
 
-def test_Day11():
-    runner(Day11(), "11")
+def test_Day12(runs):
+    runner(Day12(), "12", runs)
 
 
-def test_Day12():
-    runner(Day12(), "12")
+def test_Day13(runs):
+    runner(Day13(), "13", runs)
 
 
-def test_Day13():
-    runner(Day13(), "13")
+def test_Day14(runs):
+    runner(Day14(), "14", runs)
 
 
-def test_Day14():
-    runner(Day14(), "14")
+def test_Day15(runs):
+    runner(Day15(), "15", runs)
 
 
-def test_Day15():
-    runner(Day15(), "15")
+def test_Day16(runs):
+    runner(Day16(), "16", runs)
 
 
-def test_Day16():
-    runner(Day16(), "16")
+def test_Day17(runs):
+    runner(Day17(), "17", runs)
 
 
-def test_Day17():
-    runner(Day17(), "17")
+def test_Day18(runs):
+    runner(Day18(), "18", runs)
 
 
-def test_Day18():
-    runner(Day18(), "18")
+def test_Day19(runs):
+    runner(Day19(), "19", runs)
 
 
-def test_Day19():
-    runner(Day19(), "19")
+def test_Day20(runs):
+    runner(Day20(), "20", runs)
 
 
-def test_Day20():
-    runner(Day20(), "20")
+def test_Day21(runs):
+    runner(Day21(), "21", runs)
 
 
-def test_Day21():
-    runner(Day21(), "21")
+def test_Day22(runs):
+    runner(Day22(), "22", runs)
 
 
-def test_Day22():
-    runner(Day22(), "22")
+def test_Day23(runs):
+    runner(Day23(), "23", runs)
 
 
-def test_Day23():
-    runner(Day23(), "23")
+def test_Day24(runs):
+    runner(Day24(), "24", runs)
 
 
-def test_Day24():
-    runner(Day24(), "24")
-
-
-def test_Day25():
-    runner(Day25(), "25")
+def test_Day25(runs):
+    runner(Day25(), "25", runs)
